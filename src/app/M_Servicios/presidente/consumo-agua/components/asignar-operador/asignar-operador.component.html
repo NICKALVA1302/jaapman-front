@@ -1,0 +1,194 @@
+<div class="container">
+  <h2>Apertura actual realizada</h2>
+  <div class="row">
+      <div class="col">
+          <select class="form-select" aria-label="Elija Operador" disabled>
+              <option *ngFor="let datosAll of datosAllApertura" [value]="datosAll.anio" [selected]="datosAll.anio">{{ datosAll.anio }}</option>
+          </select>
+      </div>
+      <div class="col">
+          <select class="form-select" aria-label="Elija Localidad" disabled>
+              <option *ngFor="let datosAll of datosAllApertura" [value]="datosAll.mes" [selected]="datosAll.mes">{{ datosAll.mes }}</option>
+          </select>
+      </div>
+  </div>
+</div>
+<br>
+<!-- Primer Modal -->
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Elija al <b>operador</b> y la <b>localidad</b>:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col">
+                  <select class="form-select" aria-label="Elija Operador" [(ngModel)]="selectedOperador" (change)="capturaIdUserRol($event)">
+                      <option disabled [ngValue]="0" selected>Elija Operador:</option>
+                      <option *ngFor="let operador of operadores" [value]="operador.id_usuario_rol">{{ operador.fullname }}</option>
+                  </select>
+              </div>
+              <div class="col">
+                  <select class="form-select" aria-label="Elija Localidad" [(ngModel)]="selectedLocalidad " (change)="capturaIdLoc($event)">
+                      <option disabled [ngValue]="0" selected>Elija Localidad:</option>
+                      <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre }}</option>
+                  </select>
+              </div>
+          </div>
+        </div>      
+        
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Cerrar</button>
+            <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" [disabled]="selectedLocalidad === 0 || selectedOperador===0">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Segundo Modal -->
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">AVISO!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de asignar al usuario <b>{{ selectedOperadorNombre }}</b> a la localidad <b>{{ selectedLocalidadNombre }}</b>?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">No, corregir</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!selectedOperador || !selectedLocalidad" (click)="agregarOperador(selectedOperador,selectedLocalidad)">Sí, agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+  
+  
+  
+  <div class="container rounded border">
+    <div class="row align-items-center">
+        <div class="col">
+            <h4 class="border-bottom pb-2 mt-2 mb-4 border-secondary">Operadores asignados:</h4>
+        </div>
+        <div class="col-auto">
+            <!-- Botón para abrir el primer modal -->
+            <button [disabled]="id_estado_apertura === 0" (click)="obtenerOperadoresYLocalidad()" class="btn btn-primary" style="--bs-btn-padding-y: .5rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .9rem;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                Agregar <img src="../../../../../../assets/img/plus.svg" alt="Agregar">
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive">
+
+        <table class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Localidad</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr *ngFor="let operador of operadoresAsig; let i = index">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ operador.fullname }}</td>
+                    <td>{{ operador.localidad }}</td>
+                    <td class="text-end">
+                        <div class="btn-group dropend">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../../../../../../assets/img/list.svg" alt="List">
+                        </button>
+                        
+                            <ul class="dropdown-menu dropdown-menu-lg-end">
+                                <li><a (click)="cargarDatosEditar(operador)" type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditOperador">Editar</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a (click)="cargarDatosEditar(operador)" type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalDeletedOperador">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Modal para editar operador - localidad -->
+<div class="modal fade" id="modalEditOperador" aria-hidden="true" aria-labelledby="modalEditOperador" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalEditOperadorLabel">Editar al <b>operador</b> y <b>localidad</b>:</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col">
+            <select class="form-select" aria-label="Elija Operador" (change)="capturaIdUserRolAndIdLoc2($event, 'id_usuario_rol')">
+              <option disabled>Elija Operador:</option>
+              <option *ngFor="let operador of operadores" [value]="operador.id_usuario_rol" [selected]="operador.fullname === usuarioSeleccionado.fullname">{{ operador.fullname }}</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-select" aria-label="Elija Localidad" (change)="capturaIdUserRolAndIdLoc2($event, 'id_localidad')">
+              <option disabled>Elija Localidad:</option>
+              <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad" [selected]="localidad.nombre === usuarioSeleccionado.nombre">{{ localidad.nombre }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button class="btn btn-primary" data-bs-target="#modalEditOperador2" data-bs-toggle="modal">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Segundo Modal -->
+  <div class="modal fade" id="modalEditOperador2" aria-hidden="true" aria-labelledby="modalEditOperador2" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalEditOperador2">AVISO!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ¿Está seguro de <b>ACTUALIZAR</b> al usuario?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-target="#modalEditOperador" data-bs-toggle="modal">No, corregir</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="actualizarOperador()">Sí, actualizar</button>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal para eliminar operador - localidad -->
+<div class="modal fade" id="modalDeletedOperador" aria-hidden="true" aria-labelledby="modalDeletedOperador" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalDeletedOperador">AVISO!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ¿Está seguro que desea <b>ELIMINAR</b> al usuario?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">No, cerrar</button>
+          <button (click)="eliminarOperador()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Sí, eliminar</button>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,246 @@
+.custom-brand {
+  padding: 5px 10px;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.custom-brand:hover {
+  border-color: #fff;
+}
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+  background-position: center left;  /* Posicionar la imagen a la izquierda del texto */
+  padding-left: 10px;               /* Crear espacio para el icono */
+}
+
+button.d-flex {
+  align-items: center;
+}
+
+.btn img {
+  filter: invert(100%);
+  width: 20px; /* Ancho de la imagen */
+  height: 20px; /* Altura de la imagen */
+}
+
+.btn {
+  color: white;
+  font-size: 10px; /* Tamaño de fuente para dispositivos grandes */ /* Ajustar el padding del botón para dispositivos grandes */
+  width: 80px; /* Ancho automático para adaptarse al contenido */
+  height:50px;  /* Altura automática para adaptarse al contenido */
+}
+
+.agregar {
+  width: 150px; /* Ancho deseado */
+  height: 50px; /* Altura deseada */
+  /* Otros estilos personalizados */
+}
+
+.btn-eliminar {
+  width: 100px; /* Ancho deseado */
+  height: 30px; /* Altura deseada */
+  font-size: 15px; /* Tamaño de fuente deseado */
+  padding: 5px 10px; /* Espaciado interno deseado */
+  /* Otros estilos personalizados */
+  text-align: center; /* Centrar el texto horizontalmente */
+  display: flex; /* Aplicar un diseño flexible */
+  justify-content: center; /* Centrar el contenido horizontalmente */
+  align-items: center; /* Centrar el contenido verticalmente */
+}
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.3); /* Ajusta la opacidad según sea necesario */
+}
+
+.empty-list {
+  text-align: center;
+  margin-top: 20px; /* Ajusta según sea necesario para el espaciado deseado */
+}
+
+.empty-list h5 {
+  color: #888; /* Color del texto */
+}
+
+.empty-list i {
+  font-size: 24px; /* Ajusta según sea necesario para el tamaño del icono */
+  color: #888; /* Color del icono */
+  margin-top: 10px; /* Ajusta según sea necesario para el espaciado entre el texto y el icono */
+}
+
+.empty-list {
+  margin-top: 50px; /* Ajusta según sea necesario para el espaciado deseado */
+  color: #888; /* Color del texto */
+}
+
+.empty-list h3 {
+  margin-bottom: 20px;
+}
+
+.empty-list i {
+  font-size: 3em; /* Ajusta según sea necesario para el tamaño del icono */
+  color: #888; /* Color del icono */
+}
+
+.logo {
+  height: 130px;
+  margin-bottom: 10px;
+  opacity: 50%;
+}
+
+/* Reducir el tamaño del contenido */
+.container {
+  max-width: 90%; /* Ajusta el ancho máximo del contenido */
+}
+
+/* Agregar bordes negros a cada contenedor */
+.container-fluid,
+.col-4,
+.col-8 {
+
+  margin-bottom: 20px; /* Añade margen inferior para separar los contenedores */
+}
+
+.form-control {
+  font-size: 0.8rem; /* Ajusta el tamaño del texto de los campos de entrada */
+}
+
+.navbar {
+  background-color: #007bff;
+  height: 70px;
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+  padding: 10px 0; /* Ajuste del padding */
+}
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+.row {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+button {
+  background-position: center left;
+  padding-left: 10px;
+}
+
+button.d-flex {
+  align-items: center;
+}
+
+ /* Establecer el ancho de los selectores en dispositivos móviles */
+ .col-md-6 {
+  width: 50%; /* Dividir el ancho de la columna en dos */
+  float: left; /* Permitir que las columnas se coloquen una al lado de la otra */
+  box-sizing: border-box; /* Incluir el padding y el borde en el ancho de la columna */
+}
+
+.col-md-4 {
+  width: 30%; /* Dividir el ancho de la columna en dos */
+  float: left; /* Permitir que las columnas se coloquen una al lado de la otra */
+  box-sizing: border-box; /* Incluir el padding y el borde en el ancho de la columna */
+}
+
+.btn img {
+  filter: invert(100%);
+}
+
+/* Ajustar el tamaño del contenido de la tabla en dispositivos pequeños */
+.table {
+  font-size: 10px; /* Reducir el tamaño de fuente para la tabla */
+}
+
+.table td,
+.table th {
+  padding: 0.1rem; /* Ajustar el padding de las celdas de la tabla en dispositivos pequeños */
+}
+
+/* Ajustar el tamaño de los botones en dispositivos pequeños */
+.btn {
+  font-size: 10px; /* Reducir el tamaño de fuente para los botones */
+  padding: 0.1rem 0.2rem; /* Ajustar el padding del botón */
+  color: white;
+}
+
+.agregar {
+  width: 150px; /* Ancho deseado */
+  height: 50px; /* Altura deseada */
+  /* Otros estilos personalizados */
+}
+
+.logo {
+  height: 80px;
+  margin-bottom: 10px;
+  opacity: 50%;
+}
+
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.empty-list {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.empty-list h5 {
+  color: #888;
+}
+
+.container {
+  max-width: 90%;
+}
+
+.container-fluid,
+.col-4,
+.col-8 {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  font-size: 0.8rem;
+}
+
+.navbar {
+  background-color: #007bff;
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.btn-eliminar {
+  width: 50px; /* Ancho deseado */
+  height: 17px; /* Altura deseada */
+  font-size: 8px; /* Tamaño de fuente deseado */
+  padding: 5px 10px; /* Espaciado interno deseado */
+  /* Otros estilos personalizados */
+  text-align: center; /* Centrar el texto horizontalmente */
+  display: flex; /* Aplicar un diseño flexible */
+  justify-content: center; /* Centrar el contenido horizontalmente */
+  align-items: center; /* Centrar el contenido verticalmente */
+}
+
+
+}

@@ -1,0 +1,117 @@
+.custom-brand {
+  padding: 5px 10px;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+
+.custom-brand:hover {
+  border-color: #fff;
+}
+
+.navbar {
+  background-color: #007bff;
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+button.d-flex {
+  align-items: center;
+}
+
+.btn img {
+  filter: invert(100%);
+}
+
+.btn {
+  color: white;
+}
+
+.form-group.border {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Añadido el estilo para los bordes en las columnas */
+.border {
+  border: 1px solid #808080; /* Color plomo para los bordes */
+  border-radius: 5px; /* Borde redondeado */
+}
+
+/* Cambiado el nombre de la clase para los botones */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .col-lg-6 {
+        flex: 0 0 100%; /* Para asegurar que ocupe todo el ancho en dispositivos móviles */
+        max-width: 100%;
+    }
+
+    .input-group .col-sm-4,
+    .input-group .col-sm-8 {
+        flex: 0 0 auto; /* Reiniciar la flexibilidad */
+        max-width: none; /* Restaurar el ancho máximo */
+    }
+
+    .input-group-prepend,
+    .input-group-text,
+    .form-control {
+        width: auto; /* Ancho automático */
+        margin-bottom: 1px; /* Espaciado entre los elementos */
+    }
+
+  .btn-container {
+    display: flex;
+
+    margin-top: 5px;
+  }
+
+  .btn {
+    font-size: 10px; /* Tamaño de fuente para dispositivos móviles */
+    padding: 10px 20px; /* Espaciado dentro de los botones */
+    margin: 5px; /* Espaciado entre los botones */
+    width: auto; /* Ancho automático */
+    height: 50px; /* Altura de los botones en vista móvil */
+    max-width: 120px; /* Ancho máximo de los botones */
+    max-height: 100px;
+  }
+
+  .btn img {
+    max-width: 20px; /* Tamaño máximo del icono */
+    margin-right: 5px; /* Espacio entre el icono y el texto del botón */
+  }
+
+  .input-group {
+    display: flex;
+  /* Alinear elementos verticalmente */
+  }
+
+  .input-group .col-sm-4,
+  .input-group .col-sm-8 {
+    flex: 0 0 auto; /* Reiniciar la flexibilidad */
+  }
+
+  /* Estilos para labels y h5 en dispositivos móviles */
+  label,
+  h5 {
+    font-size: 0.8rem; /* Tamaño de fuente para dispositivos móviles */
+    margin-bottom: 5px; /* Espaciado inferior */
+  }
+}

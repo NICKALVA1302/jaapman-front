@@ -1,0 +1,102 @@
+<div>
+    <button class="volver-button" type="button" (click)="volver()">Volver</button>
+</div>
+
+<form class="container mt-5">
+    <h2 class="mb-4">REGISTRO DE NUEVO USUARIO</h2>
+
+    <div class="mb-3">
+        <div class="flex">
+          <label for="cedula" class="form-label">Cédula:</label>
+          <div class="search-input-container">
+            <input type="text" id="cedula" [(ngModel)]="cedula" name="cedula" class="form-control" [disabled]="cedulaEnabled" placeholder="CÉDULA" appOnlyNumbers maxlength="10">
+            <button type="button" class="btn btn-search" (click)="habilitarCampos()" [disabled]="cedulaEnabled || cedula.length !== 10">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="mensajeCedula" class="mensaje-cedula">{{ mensajeCedula }}</div>
+      </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="nombre" class="form-label">Nombres:</label>
+            <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" class="form-control" [disabled]="!cedulaEnabled" required appOnlyLetters placeholder="NOMBRES">
+        </div>
+    </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="apellido" class="form-label">Apellidos:</label>
+            <input type="text" id="apellido" [(ngModel)]="apellido" name="apellido" class="form-control" [disabled]="!cedulaEnabled" appOnlyLetters placeholder="APELLIDOS" required>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="flex">
+          <label for="localidad" class="form-label">Localidad:</label>
+          <select id="localidad" [(ngModel)]="selectedLocalidad" name="localidad" class="form-select" [disabled]="!cedulaEnabled" required>
+            <option *ngFor="let loc of localidades" [value]="loc.id_localidad">{{ loc.nombre }}</option>
+          </select>
+        </div>
+      </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="direccion" class="form-label">Dirección:</label>
+            <input type="text" id="direccion" [(ngModel)]="direccion" name="direccion" class="form-control" [disabled]="!cedulaEnabled" required placeholder="DIRECCIÓN">
+        </div>
+    </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="telefono" class="form-label">Teléfono:</label>
+            <input type="text" id="telefono" [(ngModel)]="telefono" name="telefono" class="form-control" [disabled]="!cedulaEnabled" required appOnlyNumbers placeholder="09xxxxxxxx">
+        </div>
+    </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="genero" class="form-label">Género:</label>
+            <select id="genero" [(ngModel)]="genero" name="genero" [disabled]="!cedulaEnabled" class="form-control" required>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="flex">
+          <label for="email" class="form-label">Correo electrónico:</label>
+          <div class="search-input-container">
+            <input type="text" id="email" [(ngModel)]="email" name="email" class="form-control-email" placeholder="example@gmail.com" [disabled]="correoInputHabilitado || !cedulaEnabled">
+            <button type="button" (click)="habilitarBoton()" class="btn btn-search-email" [disabled]="correoInputHabilitado || !cedulaEnabled">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="mensajeCorreo" class="mensaje-correo">{{ mensajeCorreo }}</div>
+      </div>
+        
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="password" class="form-label">Contraseña:</label>
+            <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control" [disabled]="!cedulaEnabled" placeholder="***********" required>
+        </div>
+    </div>
+
+        <div class="mb-3">
+            <div class="flex">
+            <label for="confirmarPassword" class="form-label">Confirmar Contraseña:</label>
+            <input type="password" id="confirmarPassword" [(ngModel)]="confirmarPassword" name="confirmarPassword" class="form-control" [disabled]="!cedulaEnabled" placeholder="***********" required>
+        </div>
+    </div>
+    <button type="button" (click)="registrar()" class="btn btn-primary" [disabled]="!camposCompletos() || !correoInputHabilitado">Registrarse</button>
+
+
+    <div *ngIf="mostrarMensajeRegistro" class="mensaje-flotante">
+        {{ mensajeRegistroExitoso }}
+      </div>
+</form>

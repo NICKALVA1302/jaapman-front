@@ -1,0 +1,5 @@
+.pdf-container {
+    max-width: 100%; /* Establece el ancho máximo al 100% del contenedor principal */
+    width: 800px; /* Ajusta el ancho según tus necesidades */
+    margin: 0 auto; /* Centra horizontalmente el contenedor */
+}

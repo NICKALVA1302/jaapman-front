@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">MULTA</a>
+    </div>
+</nav>
+
+<app-progress-bar *ngIf="loading"></app-progress-bar>
+
+<div *ngIf="!loading" class="row mt-3">
+    <div class="col-lg-12 d-flex justify-content-center align-items-center">
+        <div class="col-lg-4">
+            <div class="card bg-light mb-3" style="max-width: 25rem;">
+                <div class="card-header text-center" style="font-size: 16px;"><strong>EDITAR</strong></div>
+                <div class="card-body">
+                    <!-- Aquí usamos la propiedad multa para mostrar los valores -->
+                    <input [(ngModel)]="multa.usuario.persona.nombre" type="text" class="form-control mt-2 mb-3"
+                        placeholder="Ingrese Nombre" style="opacity: 0.7;" readonly>
+    
+                    <input [(ngModel)]="multa.usuario.persona.apellido" type="text" class="form-control mt-2 mb-3"
+                        placeholder="Ingrese Apellido" style="opacity: 0.7;" readonly>
+        
+                    <input [(ngModel)]="multa.usuario.localidad.nombre" type="text" class="form-control mt-2 mb-3"
+                        placeholder="Ingrese Localidad" style="opacity: 0.7;" readonly>
+
+                    <input [(ngModel)]="multa.valor_multa" type="number" class="form-control mt-2 mb-3"
+                        placeholder="Ingrese Valor Multa" style="opacity: 0.7;">
+              
+
+                    <textarea [(ngModel)]="multa.observacion" type="text" class="form-control mt-2 mb-3"
+                        placeholder="Ingrese Observación" style="opacity: 0.7;"></textarea>
+            
+
+                    <div class="row mt-3 text-center">
+                        <div class="col-lg-6">
+                            <button [routerLink]="['/presidente/listMulta']" type="button" class="btn btn-danger">VOLVER</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button (click)="actualizarMulta()" class="btn btn-primary">ACEPTAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

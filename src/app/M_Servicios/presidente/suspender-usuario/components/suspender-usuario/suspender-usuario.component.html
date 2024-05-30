@@ -1,0 +1,108 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">SUSPENDER USUARIO</a>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <!-- Buscador y filtros -->
+    <div class="row mb-3">
+        <div class="col-md-6 mt-2">
+            <div class="form-group">
+                <input class="form-control me-2" type="search" placeholder="Buscar usuario por nombre, apellido o cédula..." aria-label="Search"
+                       [(ngModel)]="buscarUsuario" name="buscarUsu">
+            </div>
+        </div>
+        <div class="col-md-3 mt-2">
+            <div class="form-group">
+                <select class="form-select" aria-label="Elija Localidad" (change)="onLocalidadSelected($event)">
+                    <option selected disabled>Elija Localidad:</option>
+                    <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 mt-2">
+            <div class="btn-group w-100">
+                <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtrar por...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end w-100">
+                    <li class="list-group-item d-flex align-items-center p-1">
+                        <input class="form-check-input me-2" type="radio" name="listGroupRadio" value="todos" id="allRadio" (change)="filtroSeleccionado='todos'" checked>
+                        <label class="form-check-label d-flex justify-content-between w-100" for="allRadio">
+                            <span>Todos</span> <span class="badge text-bg-primary rounded-pill ms-auto">O</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center p-1">
+                        <input class="form-check-input me-2" type="radio" name="listGroupRadio" value="suspendidos" id="suspendedRadio" (change)="filtroSeleccionado='suspendidos'">
+                        <label class="form-check-label d-flex justify-content-between w-100" for="suspendedRadio">
+                            <span>Suspendidos</span> <span class="badge text-bg-warning rounded-pill ms-auto">O</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center p-1">
+                        <input class="form-check-input me-2" type="radio" name="listGroupRadio" value="activos" id="activeRadio" (change)="filtroSeleccionado='activos'">
+                        <label class="form-check-label d-flex justify-content-between w-100" for="activeRadio">
+                            <span>Activos</span> <span class="badge text-bg-success rounded-pill ms-auto">O</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aquí mostramos los datos de la localidad seleccionada si están disponibles -->
+    <div class="table-responsive mt-3" *ngIf="Usuxlocalidad && Usuxlocalidad.length > 0">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Nº</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">APELLIDO</th>
+                    <th scope="col">DOCUMENTO</th>
+                    <th scope="col">SUSPENDER</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of filtrarUsuarios(); let i = index" class="table-secondary">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.persona.nombre }}</td>
+                    <td>{{ item.persona.apellido }}</td>
+                    <td>{{ item.persona.cedula }}</td>
+                    <td>
+                        <input type="checkbox" style="margin-left: 25px;" [checked]="item.isChecked" (click)="onCheckboxClick(item, $event)">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!Usuxlocalidad || Usuxlocalidad.length === 0" class="empty-list text-center d-flex align-items-center flex-column">
+        <h2 style="font-size: 1.0rem; opacity: 0.5;">NO HAY USUARIO PARA MOSTRAR</h2>
+        <img class="logo" src="../../../assets/img/icono.png" alt="img icono">
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center flex-column mb-3">
+        <button type="button" class="btn btn-warning btn-sm mt-2" style="width: 150px;" [routerLink]="['/presidente']">
+            <img src="../../../assets/img/Salir.png" alt="salir"> SALIR
+        </button>
+    </div>
+</div>
+
+<!-- Modal para confirmar acción -->
+<div class="modal fade" id="modalSuspenderUsuario" aria-hidden="true" aria-labelledby="modalSuspenderUsuarioTitle" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSuspenderUsuarioTitle">Confirmación de Acción</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea {{ userAction === 'suspender' ? 'suspender' : 'reactivar' }} al usuario <b>{{ selectedUser?.persona.nombre }} {{ selectedUser?.persona.apellido }}</b>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="confirmAction()" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+
+    <form class="container mt-5">
+        <div class="text-center mb-4">
+            <img src="../../assets/img/logo_manglaralto.png" alt="Logo Manglaralto" class="img-fluid">
+        </div>
+    
+        <h2 class="mb-4">REESTABLECER CONTRASEÑA</h2>
+      
+        <div class="mb-3">
+            <label for="nuevaClave" class="form-label">Nueva clave:</label>
+            <br>
+            <br>
+            <input type="password" id="nuevaClave" [(ngModel)]="nuevaClave" name="nuevaClave" class="form-control" placeholder="***********" required>
+          </div>
+      
+          <div class="mb-3">
+            <label for="nuevaClaveVerify" class="form-label">Verificar nueva clave:</label>
+            <br>
+            <br>
+            <input type="password" id="nuevaClaveVerify" [(ngModel)]="nuevaClaveVerify" name="nuevaClaveVerify" class="form-control" placeholder="***********" required>
+          </div>
+      
+          <button type="button" (click)="actualizar()" class="btn btn-primary">Actualizar clave</button>
+          <br>
+        </form>

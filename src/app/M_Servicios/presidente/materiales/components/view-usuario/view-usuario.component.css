@@ -1,0 +1,29 @@
+.custom-modal-header {
+    background-color: #1a237e; /* Azul oscuro para el encabezado */
+    color: #fff; /* Texto blanco para el encabezado */
+}
+
+.custom-modal-body {
+    background-color: #2196f3; /* Azul claro para el cuerpo */
+    color: #000; /* Texto negro para el cuerpo */
+    text-align: center; /* Centrar el contenido del cuerpo */
+    padding: 20px; /* Ajustar el espacio interno del cuerpo del modal según sea necesario */
+}
+
+.custom-modal-footer {
+    background-color: #1a237e; /* Puedes usar el mismo color que el encabezado o ajustar según tu preferencia */
+    color: #fff; /* Texto blanco para el pie de página */
+}
+
+.custom-modal-body table th,
+.custom-modal-body table td {
+    border: 1px solid #020306; /* Agregar bordes a las celdas de la tabla */
+    padding: 8px; /* Ajustar el espacio interno de las celdas según sea necesario */
+}
+
+/* Estilo para centrar y hacer negrita los label de búsqueda */
+.custom-modal-body label {
+    font-weight: bold; /* Hacer que los label estén en negrita */
+    display: inline-block; /* Alinear en línea para centrar */
+    margin-bottom: 5px; /* Agregar espacio en la parte inferior de los label */
+}

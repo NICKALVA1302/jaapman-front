@@ -1,0 +1,107 @@
+<div class="container">
+  <h1 class="display-4 text-center mb-5">DERECHOS DE INSTALACION</h1>
+    <div class="row">
+      <!-- Parte de Búsqueda -->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Datos del Cliente</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nombre">Nombre</label>
+                  <input type="text" class="form-control" id="nombre" placeholder="Nombre" disabled>
+                </div>
+                          <div class="form-group">
+                              <label for="apellido">Apellido</label>
+                              <input type="text" class="form-control" id="apellido" placeholder="Apellido" disabled>
+                          </div>
+                          <div class="form-group">
+                              <label for="cedula">Cédula</label>
+                              <input type="text" class="form-control" id="cedula" placeholder="Cédula"  disabled>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="codigo">Código Medidor</label>
+                              <input type="text" class="form-control" id="codigo" placeholder="Código" disabled>
+                          </div>
+                          <div class="form-group">
+                              <label for="localidad">Localidad</label>
+                              <input type="text" class="form-control" id="localidad" placeholder="Localidad" disabled>
+                          </div>
+                          <div class="form-group">
+                              <label for="direccion">Dirección</label>
+                              <input type="text" class="form-control" id="direccion" placeholder="Dirección" disabled>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary"(click)="abrirModal()">
+                      Buscar
+                  </button>
+              </div>                
+          </div>
+      </div>
+  <!-- Parte de Valor, Número y Observación -->
+  <div class="col-md-6">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="number" class="form-label">Número:</label>
+          <!-- Utiliza el atributo "readonly" para hacer que el campo sea no editable -->
+          <input type="tel" id="number" name="number" class="form-control" [value]="proximoNumeroInstalacion" readonly required/>
+      </div>
+      <div class="col-md-6">
+        <label for="installationFee" class="form-label">Valor Derecho de Instalación:</label>
+        <input type="number" id="installationFee" name="installationFee" class="form-control" required/>
+      </div>
+      <!-- <div class="col-md-6">
+        <label for="paymentStatus" class="form-check-label">Estado de Pago:</label>
+        <input type="checkbox" id="paymentStatus" name="paymentStatus" class="form-check-input" [(ngModel)]="estadoPago"/>
+        <label for="paymentStatus" class="form-check-label">Pagado</label>
+      </div>
+      <div >
+        <label for="observation" class="form-label">Observación:</label>
+        <textarea id="observation" name="observation" class="form-control" rows="4"></textarea>
+      </div> -->
+      <div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="observation" class="form-label">Observación:</label>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <input type="checkbox" id="paymentStatus" name="paymentStatus" class="form-check-input" [(ngModel)]="estadoPago"/>
+            <label for="paymentStatus" class="form-check-label ms-2">CANCELADO</label>
+          </div>
+        </div>
+        <textarea id="observation" name="observation" class="form-control" rows="4"></textarea>
+      </div>
+      
+    </div>
+    
+    <!-- Botones Editar, Eliminar -->
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-md-12"> <!-- Utiliza toda la anchura para los botones -->
+          <button type="submit" class="btn btn-success me-4"  (click)="guardarInstalacion()">
+            <img src="../../../assets/img/Guardar.png" alt="Guardar"> GUARDAR
+          </button>
+          <button type="button" class="btn btn-primary me-4" (click)="abrirModalEdit()">
+            <img src="../../../assets/img/Editar.png" alt="Editar"> EDITAR
+          </button>
+          <button type="button" class="btn btn-danger" (click)="abrirModalElim()">
+            <img src="../../../assets/img/Eliminar.png" alt="Eliminar"> ELIMINAR
+          </button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="personaError" class="alert alert-danger">{{ personaError }}</div>
+      <div class="alert alert-success" *ngIf="mensaje">{{ mensaje }}</div>
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+</div>
+</div>

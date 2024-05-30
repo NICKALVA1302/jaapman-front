@@ -1,0 +1,13 @@
+<div class="container">
+    <h4 class="display-5 text-center mb-4">Listado Clientes</h4>
+    <div class="container d-flex justify-content-center align-items-center">
+        <label for="localidad" class="me-2">Localidad:</label>
+        <select class="form-select form-select-sm me-2"  [(ngModel)]="selectedLocalidadId" (change)="obtenerIdLocalidadeleccionado($event)" style="width: 200px;">
+            <option *ngFor="let opcion of localidades"[value]="opcion.id_localidad">{{opcion.nombre}}</option>
+            <!-- Agrega más opciones aquí -->
+        </select>
+        <button type="button" class="btn btn-primary btn-sm" (click)="generarPdf()">Generar</button>
+    </div>
+  </div>
+  <div #pdfContainer class="row justify-content-center pdf-container"></div>
+  

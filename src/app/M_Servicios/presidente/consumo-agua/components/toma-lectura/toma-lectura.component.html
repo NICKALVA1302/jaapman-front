@@ -1,0 +1,306 @@
+<!-- Buscador -->
+<nav class="navbar bg-body-tertiary fixed-top">
+    <div class="container-fluid">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Buscar usuario por nombre, apellido o cédula..." aria-label="Search" 
+            [(ngModel)]="buscarUsuario" name="buscarUsu">
+            <div class="row">
+                <div class="col pe-3">
+                    <select class="form-select" aria-label="Elija Localidad" (change)="seleccionarLocalidad($event)">
+                        <option selected disabled>Elija Localidad:</option>
+                        <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtrar por...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="list-group-item d-flex align-items-center p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="1" id="firstRadio" (change)="estadoLectura =1 ;estadoMedidor=0">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="firstRadio">
+                            <span>Realizado</span>
+                            <span class="badge text-bg-success rounded-pill">{{ usuariosConLecturaRealizada }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="2" id="secondRadio" (change)="estadoLectura=2; estadoMedidor=0">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="secondRadio">
+                            <span>Pendiente</span>
+                            <span class="badge text-bg-warning rounded-pill">{{ usuariosConLecturaPendiente }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="3" id="tercero" (change)="estadoMedidor=2; estadoLectura=0">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="tercero">
+                            <span>Suspendidos</span>
+                            <span class="badge text-bg-warning rounded-pill">{{ usersConMedidorSuspendido }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="4" id="cuarto" (change)="estadoMedidor=3; estadoLectura=0">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="cuarto">
+                            <span>Cortados</span>
+                            <span class="badge text-bg-danger rounded-pill">{{ usersConMedidorCortado }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="0" id="ultimo" (change)="estadoLectura=0 || estadoMedidor=0" checked>
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="ultimo">
+                            <span>Todos</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ totalUsuarios }}</span>
+                        </label>
+                    </li>
+                </ul>
+                
+            </div>
+        </form>
+    </div>
+</nav>
+<div class="position-absolute top-0 start-50 translate-middle-x">
+
+    <h3 class="">{{aperturaActual}}</h3>
+</div>
+
+
+<hr>
+<div class="container-fluid expand">
+    
+        <div class="contenedorList">
+        <table class="table table-responsive-xxl table-hover">
+            <thead class="table-light fixed-top2">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" class="d-none d-sm-table-cell">Código</th>
+                <th scope="col" class="pointer" (click)="cambiarOrdenamiento('apellido')">Apellidos
+                <span *ngIf="campoOrdenamiento === 'apellido' && ordenamiento === 'asc'">&#9650;</span>
+                <span *ngIf="campoOrdenamiento === 'apellido' && ordenamiento === 'desc'">&#9660;</span>
+                </th>
+                <th scope="col" class="pointer" (click)="cambiarOrdenamiento('nombre')">Nombres
+                <span *ngIf="campoOrdenamiento === 'nombre' && ordenamiento === 'asc'">&#9650;</span>
+                <span *ngIf="campoOrdenamiento === 'nombre' && ordenamiento === 'desc'">&#9660;</span>
+                </th>
+                <th scope="col" class="d-none d-sm-table-cell">Cédula</th>
+                <th scope="col" class="d-none d-sm-table-cell">Lectura Anterior</th>
+                <th scope="col" class="d-none d-sm-table-cell">Lectura Actual</th>
+                <th scope="col" class="d-none d-sm-table-cell">Consumo Total</th>
+                <th scope="col" class="d-none d-sm-table-cell">Exedente</th>
+                <th scope="col" class="d-none d-sm-table-cell">Categoria</th>
+                <th scope="col" class="d-none d-sm-table-cell">T C B</th>
+                <th scope="col" class="d-none d-sm-table-cell">T C E</th>
+                <th scope="col" class="d-none d-sm-table-cell">T O C</th>
+                <th scope="col" class="d-none d-sm-table-cell">Otro campo</th>
+
+            </tr>
+            </thead>
+            <tbody class="table-group-divider" *ngIf="!loading">
+            <tr class="pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="capturarPosicion(usuario)"
+            *ngFor="let usuario of (userxLocalidad | consumoAgua:buscarUsuario:estadoLectura:estadoMedidor | consumoAguaPresi:campoOrdenamiento:ordenamiento); let i = index"
+            [ngClass]="{'table-info': usuario.estado_lectura === 1}">
+            <th scope="row">{{ i + 1 }}</th>
+            <td class="d-none d-sm-table-cell">{{ usuario.codigo }}</td>
+            <td>{{ usuario.apellido_persona }}</td>
+            <td>{{ usuario.nombre_persona }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.cedula }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.lectura_anterior }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.lectura_actual }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.consumo_total }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.exedente }}</td>
+            <td class="d-none d-sm-table-cell">{{ usuario.nombre_categoria }}</td>
+            <td class="d-none d-sm-table-cell">null</td>
+            <td class="d-none d-sm-table-cell">null</td>
+            <td class="d-none d-sm-table-cell">null</td>
+            <td class="d-none d-sm-table-cell">null</td>
+            
+            </tr>
+            </tbody>
+        </table>
+        
+        <div *ngIf="(userxLocalidad | consumoAgua:buscarUsuario:estadoLectura:estadoMedidor).length === 0 && !loading" class="text-center mt-3 alert alert-light" role="alert">
+            <p>No se encontraron datos.</p>
+        </div>
+        </div>
+    
+    <app-spinner *ngIf="loading"></app-spinner>
+</div>
+
+<!-- Primer Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar lectura del usuario</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <div class="modal-body">
+                <form (submit)="guardarCambios()">
+                    <div class="form-group">
+                        <label for="nombre">Apellidos y Nombres:</label>
+                        <span class="badge text-bg-warning position-absolute top-0 end-0 mt-2 me-3" *ngIf="usuarioSeleccionado.id_estado_medidor === 2">Suspendido</span>
+                        <span class="badge text-bg-danger position-absolute top-0 end-0 mt-2 me-3" *ngIf="usuarioSeleccionado.id_estado_medidor === 3">Cortado</span>
+                        <input type="text" class="form-control" id="nombre" [value]="usuarioSeleccionado.apellido + ' ' + usuarioSeleccionado.nombre" disabled="true">
+                    </div>
+                    
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="codigo">Codigo Medidor: </label>
+                            <input type="text" class="form-control" id="codigo" [(ngModel)]="usuarioSeleccionado.codigo" name="codigo" disabled="true">
+                        </div>
+                            <div class="col">
+                            <label for="lectura_anterior">Lectura Anterior: </label>
+                            <input type="text" class="form-control" id="lectura_anterior" [(ngModel)]="usuarioSeleccionado.lectura_anterior" name="lectura_anterior" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="lectura_actual">Lectura Actual: </label>
+                            <input type="number" class="form-control" id="lectura_actual" [(ngModel)]="usuarioSeleccionado.lectura_actual" name="lectura_actual">
+                        </div>
+                        <div class="col text-center">
+                            <label class="form-check-label" for="estadoSwitch">Marcar lectura: </label>
+                            <div class="form-check form-switch">
+                                
+                                <input class="form-check-input" type="checkbox" id="estadoSwitch" [(ngModel)]="usuarioSeleccionado.estado_lectura" name="estadoSwitch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones: </label>
+                        <input type="text" class="form-control" id="observaciones" [(ngModel)]="usuarioSeleccionado.observaciones" name="observaciones">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="nombre_resp_edit">Editado por: </label>
+                            <input type="text" class="form-control" id="nombre_resp_edit" [value]="usuarioSeleccionado.editadoPor ? usuarioSeleccionado.editadoPor : 'Sin editar aún...'" disabled>
+                        </div>
+                        
+                        <div class="col">
+                            <label for="resp_edit">Editor responsable: </label>
+                            <input type="text" class="form-control" id="resp_edit" [value]="responsableEncargado" disabled>
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="usuarioSeleccionado.lectura_actual < usuarioSeleccionado.lectura_anterior
+                        || (usuarioSeleccionado.id_estado_medidor == 2 || usuarioSeleccionado.id_estado_medidor == 3)">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" (click)="capturaIdUser(usuarioSeleccionado.id_usuario)" name="idUser">Editar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Segundo Modal -->
+<div class="modal fade modal-lg" id="exampleModalToggle2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalToggleLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Editar lectura del usuario</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="nombre">Apellidos y Nombres:</label>
+                <input type="text" class="form-control" id="nombre" [value]="usuarioSeleccionado.apellido + ' ' + usuarioSeleccionado.nombre" disabled="true">
+            </div>
+
+            <div class="form-group">
+                <div class="row align-items-center">
+
+                    <div class="col-6">
+                        <label for="localidad">Localidad: </label>
+                        <input type="text" class="form-control" id="localidad" [value]="usuarioSeleccionado.localidad" disabled="true">
+                    </div>
+
+                    <div class="col text-center">
+                        <input class="form-check-input input2 m-1" type="checkbox" value="" id="flexCheckDefault" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Validar
+                        </label>
+                    </div>
+                    <div class="col text-center">
+                        <input class="form-check-input input2 m-1" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">
+                            Rebajar
+                        </label>
+                    </div>
+            </div>
+            </div>
+            
+            <div class="custom-container container-fluid">
+                <table class="table">
+                    <thead class="table-light fixed-top2">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Año</th>
+                        <th scope="col">Mes</th>
+                        <th scope="col">L. anterior</th>
+                        <th scope="col">L. actual</th>
+                        <th scope="col">Consumo Total</th>
+                        <th scope="col">Exedente</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">T C B</th>
+                        <th scope="col">T C E</th>
+                        <th scope="col">T O C</th>
+                        <th scope="col">Otro campo</th>
+
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr *ngFor="let usuario of userxApertura ; let i = index">
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ usuario.nom_anio }}</td>
+                        <td>{{ usuario.nom_mes }}</td>
+                        <td>{{ usuario.lectura_anterior }}</td>
+                        <td>{{ usuario.lectura_actual }}</td>
+                        <td>{{ usuario.consumo_total }}</td>
+                        <td>{{ usuario.exedente }}</td>
+                        <td>{{ usuario.nombre_categoria }}</td>
+
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                    </tr>
+
+
+
+
+
+
+
+
+            <!--         <tr>
+                        <th scope="row">1</th>
+                        <td>  <input type="text" class="form-control" id="floatingInputValue" placeholder="anterior" value="120"></td>
+                        <td>  <input type="text" class="form-control" id="floatingInputValue" placeholder="actual" value="150"></td>
+                        <td>mdo</td>
+                    </tr> -->
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <label for="observaciones">Observaciones: </label>
+                <input type="text" class="form-control" id="observacion_presidente" [(ngModel)]="usuarioSeleccionado.observacion_presidente" name="observacion_presidente">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" (click)="guardarCambios2()" >Guardar Cambios</button>
+            <button class="btn btn-secondary" data-bs-target="#staticBackdrop" data-bs-toggle="modal">Regresar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

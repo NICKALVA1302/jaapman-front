@@ -1,0 +1,20 @@
+
+<form class="container mt-5">
+    <h2 class="mb-4">INGRESO DE OTP</h2>
+
+    <div class="mb-3">
+      <div class="flex">
+        <label for="otp" class="form-label">Ingresa el OTP enviado a tu correo electrónico:</label>
+        <div class="search-input-container">
+            <input type="text" id="otp" [(ngModel)]="otp" name="otp" class="form-control" placeholder="123456" appOnlyNumbers (input)="verificarLongitudOTP()" maxlength="6">
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="verificarOTP(otp)" class="btn btn-primary" [disabled]="!longitudOTPCorrecta">Verificar OTP</button>
+
+
+    <div *ngIf="mostrarMensajeRegistro" class="mensaje-flotante">
+        {{ mensajeRegistroExitoso }}
+      </div>
+
+</form>

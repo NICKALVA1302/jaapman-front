@@ -1,0 +1,154 @@
+.custom-brand {
+    padding: 5px 10px;
+    color: #ffffff;
+    /* Color del texto negro */
+    font-weight: bold;
+    text-decoration: none;
+    /* Elimina la subrayado de enlace */
+    position: relative;
+    display: inline-block;
+}
+
+.custom-brand:hover {
+    border-color: #fff;
+    /* Cambia el color del borde al pasar el ratón */
+}
+
+.row {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    background-position: center left;
+    /* Posicionar la imagen a la izquierda del texto */
+    padding-left: 10px;
+    /* Crear espacio para el icono */
+}
+
+button.d-flex {
+    align-items: center;
+}
+
+.btn img {
+    filter: invert(100%);
+}
+
+.btn {
+    color: white;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.3);
+    /* Ajusta la opacidad según sea necesario */
+}
+
+.empty-list {
+    text-align: center;
+    margin-top: 20px;
+    /* Ajusta según sea necesario para el espaciado deseado */
+}
+
+.empty-list h5 {
+    color: #888;
+    /* Color del texto */
+}
+
+.empty-list i {
+    font-size: 24px;
+    /* Ajusta según sea necesario para el tamaño del icono */
+    color: #888;
+    /* Color del icono */
+    margin-top: 10px;
+    /* Ajusta según sea necesario para el espaciado entre el texto y el icono */
+}
+
+.empty-list {
+    margin-top: 50px;
+    /* Ajusta según sea necesario para el espaciado deseado */
+    color: #888;
+    /* Color del texto */
+}
+
+.empty-list h3 {
+    margin-bottom: 20px;
+}
+
+.empty-list i {
+    font-size: 3em;
+    /* Ajusta según sea necesario para el tamaño del icono */
+    color: #888;
+    /* Color del icono */
+}
+
+.logo {
+    height: 130px;
+    margin-bottom: 10px;
+    opacity: 50%;
+}
+
+/* Reducir el tamaño del contenido */
+.container {
+    max-width: 90%;
+    /* Ajusta el ancho máximo del contenido */
+}
+
+.cliente-label {
+    font-weight: bold;
+    font-size: 0.9 rem; /* Tamaño de la letra deseado */
+    /* Otros estilos si es necesario */
+}
+
+.navbar {
+    background-color: #007bff; /* Cambiar color de fondo del navbar */
+  }
+  
+  /* Estilo para la marca del navbar */
+  .navbar-brand {
+    color: #ffffff; /* Color de texto blanco */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 1.5rem; /* Tamaño de fuente */
+    text-align: center; /* Centrar el texto */
+    width: 100%; /* Ajustar ancho al 100% */
+  }
+
+  @media (max-width: 768px) {
+    /* Ajustes específicos para pantallas pequeñas */
+    .row {
+        flex-direction: row; /* Cambia la dirección de los elementos de fila a fila */
+    }
+
+    .col-6 {
+        width: 50%; /* Ajusta el ancho de las columnas a la mitad del contenedor */
+        padding: 1px; /* Añade un pequeño espacio de relleno a los lados */
+        margin-bottom: 10px; /* Agrega un margen inferior para separar las columnas */
+    }
+
+    .col-6:nth-child(2) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-group.row {
+        margin-bottom: 1px; /* Añade espacio entre los grupos de input */
+    }
+
+    .form-group.row input[type="text"],
+    .form-group.row input[type="number"],
+    .form-group.row textarea {
+        width: 100%; /* Ajusta el ancho de los input para ocupar todo el ancho disponible */
+    }
+
+    .form-group.row label {
+        font-size: 14px; /* Ajusta el tamaño de la letra de los labels */
+    }
+
+    .btn {
+        width: 100%; /* Ajusta el ancho del botón buscar para ocupar todo el ancho disponible */
+        max-width: 190px; /* Limita el ancho máximo del botón */
+        margin-bottom: 20px; /* Añade espacio inferior al botón */
+    }
+}

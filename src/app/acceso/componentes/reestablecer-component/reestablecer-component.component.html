@@ -1,0 +1,27 @@
+<div>
+    <button class="volver-button" type="button" (click)="volver()">Volver</button>
+</div>
+
+<form class="container mt-5">
+    <h2 class="mb-4">REESTABLECER CONTRASEÑA</h2>
+
+    <div class="mb-3">
+      <div class="flex">
+        <label for="correo" class="form-label">Ingresa tu correo electrónico:</label>
+        <div class="search-input-container">
+          <input type="text" id="correo" [(ngModel)]="correo" name="correo" class="form-control" placeholder="example@gmail.com" [disabled]="correoInputHabilitado">
+          <button type="button" (click)="habilitarBoton()" class="btn btn-search" [disabled]="!esCorreoValido(correo) || !camposCompletos()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="mensajeCorreo" class="mensaje-correo">{{ mensajeCorreo }}</div>
+    </div>
+      
+      <button type="button" (click)="enviarOTP()" class="btn btn-primary" [disabled]="!correoEnabled">Enviar OTP</button>
+
+
+    <div *ngIf="mostrarMensajeRegistro" class="mensaje-flotante">
+        {{ mensajeRegistroExitoso }}
+      </div>
+</form>

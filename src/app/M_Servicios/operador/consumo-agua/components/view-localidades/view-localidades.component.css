@@ -1,0 +1,19 @@
+app-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center{
+    text-align: center;
+}
+
+.w {
+    box-shadow: 0 0 10px rgba(0 0 0 / 10%);
+    height: 12rem;
+}
+
+.pointer{
+    cursor: pointer !important;
+}

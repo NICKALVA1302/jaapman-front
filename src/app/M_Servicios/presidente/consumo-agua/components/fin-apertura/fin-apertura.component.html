@@ -1,0 +1,48 @@
+<div class="container">
+    <h2>Cierre ciclo de apertura</h2>
+    <div class="row">
+        <div class="col">
+            <select class="form-select" aria-label="Elija Operador" >
+                <option disabled>Elija año:</option>
+                <option *ngFor="let datosAll of datosAllApertura" [value]="datosAll.anio" [selected]="datosAll.anio">{{ datosAll.anio }}</option>
+            </select>
+        </div>
+        <div class="col">
+            <select class="form-select" aria-label="Elija Localidad" >
+                <option disabled>Elija mes:</option>
+                <option *ngFor="let datosAll of datosAllApertura" [value]="datosAll.mes" [selected]="datosAll.mes">{{ datosAll.mes }}</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-primary" (click)="cerrarApertura()">Cerrar ciclo</button>
+</div>
+
+
+
+<div class="container">
+    <h2>Aperturas de ciclos realizadas</h2>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>F. inicio</th>
+            <th>F. cierre</th>
+            <th>Mes</th>
+            <th>Año</th>
+            <th>Clientes</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let datosAll of datosAllApertura2">
+            <td>{{datosAll.id_apertura}}</td>
+            <td>{{datosAll.fecha}}</td>
+            <td>{{datosAll.fecha_fin}}</td>
+            <td>{{datosAll.mes}}</td>
+            <td>{{datosAll.anio}}</td>
+            <td>{{datosAll.num_personas}}</td>
+            <td>{{datosAll.estado_apertura}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

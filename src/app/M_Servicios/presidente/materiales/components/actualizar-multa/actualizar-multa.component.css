@@ -1,0 +1,80 @@
+/* Estilos generales */
+.custom-brand {
+  font-size: 2rem; /* Tamaño de fuente para pantalla grande */
+}
+
+.card {
+  max-width: 25rem; /* Ancho máximo de la tarjeta */
+}
+
+.card-header {
+  font-size: 24px; /* Tamaño de fuente del encabezado de la tarjeta */
+}
+
+.form-control {
+  opacity: 0.7; /* Opacidad de los campos de entrada */
+  font-size: 1rem; /* Tamaño de fuente de los campos de entrada */
+  padding: 0.5rem; /* Relleno de los campos de entrada */
+}
+
+.small {
+  opacity: 0.7; /* Opacidad del texto pequeño */
+  font-size: 0.8rem; /* Tamaño de fuente del texto pequeño */
+}
+
+.btn {
+  font-size: 1rem; /* Tamaño de fuente de los botones */
+  padding: 0.5rem 1rem; /* Relleno de los botones */
+  margin: 0.5rem; /* Espacio entre los botones */
+}
+
+/* Estilo para el navbar */
+.navbar {
+background-color: #007bff; /* Cambiar color de fondo del navbar */
+}
+
+/* Estilo para la marca del navbar */
+.navbar-brand {
+color: #ffffff; /* Color de texto blanco */
+font-weight: bold; /* Texto en negrita */
+font-size: 1.5rem; /* Tamaño de fuente */
+text-align: center; /* Centrar el texto */
+width: 100%; /* Ajustar ancho al 100% */
+}
+
+/* Ajustar estilos en dispositivos móviles */
+@media (max-width: 768px) {
+/* Ajustar tamaño de fuente de la marca del navbar */
+.navbar-brand {
+    font-size: 1.2rem; /* Reducir tamaño de fuente en dispositivos móviles */
+}
+}
+
+/* Media queries para ajustar estilos en diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+  .custom-brand {
+      font-size: 1.5rem; /* Reducción del tamaño de fuente para pantalla mediana */
+  }
+
+  .card {
+      max-width: 20rem; /* Reducción del ancho máximo de la tarjeta */
+  }
+
+  .card-header {
+      font-size: 20px; /* Reducción del tamaño de fuente del encabezado de la tarjeta */
+  }
+
+  .form-control {
+      font-size: 0.9rem; /* Reducción del tamaño de fuente de los campos de entrada */
+  }
+
+  .small {
+      font-size: 0.7rem; /* Reducción del tamaño de fuente del texto pequeño */
+  }
+
+  .btn {
+      font-size: 0.9rem; /* Reducción del tamaño de fuente de los botones */
+      padding: 0.4rem 0.8rem; /* Reducción del relleno de los botones */
+      margin: 0.3rem; /* Reducción del espacio entre los botones */
+  }
+}

@@ -1,0 +1,88 @@
+<div>
+    <nav class="navbar" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <img src="../../../assets/img/OIP.png" [routerLink]="['/presidente/materiales']" class="img-fluid me-2 rounded-circle" style="max-height: 70px;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" aria-current="page" [routerLink]="['/presidente']">Menú Principal</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Materiales
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/material']" routerLinkActive="disabled" >Agregar</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/reporteMaterial']" routerLinkActive="disabled" >Reporte</a>
+                        </li>
+                        
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/mantenimiento']" routerLinkActive="disabled" >Mantenimiento</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/tarifa']" routerLinkActive="disabled" >Tarifa</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/multa']">Multas</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/suspender']">Suspender</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/clientes-suspendidos']">Reporte de cliente suspendido</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/instalacion']">Instalacion</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/asignar-operador']" routerLinkActive="disabled">Asignar operador</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/toma-lectura']" routerLinkActive="disabled">Toma lecturas</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/inicio-apertura']" routerLinkActive="disabled">Inicio Apertura</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/fin-apertura']" routerLinkActive="disabled">Cierre Apertura</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-dismiss="offcanvas" [routerLink]="['/presidente/cambiar-clave']">Cambiar Contraseña</a>
+                </li>
+                
+                <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">Cerrar Sesión</a>
+                </li>
+                </ul>
+            </div>
+            </div>
+        </div>
+        </nav>
+    </div>

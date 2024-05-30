@@ -1,0 +1,25 @@
+<div class="container">
+    <h4 class="display-5 text-center mb-4">CARTERA VENCIDA ANUAL</h4>
+    <div class="container d-flex justify-content-center align-items-center mb-3">
+      <label for="localidad" class="me-2">Localidad:</label>
+      <select class="form-select form-select-sm me-2" [(ngModel)]="selectedLocalidadId" (change)="obtenerCartera()">
+        <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{opcion.nombre}}</option>
+      </select>
+      <label for="tipoServicio" class="me-2">Tipo de Servicio:</label>
+      <select class="form-select form-select-sm me-2" [(ngModel)]="selectedTipoServicio">
+        <option value="Agua">Agua</option>
+        <option value="Alcantarillado">Alcantarillado</option>
+        <option value="Instalación">Instalación</option>
+        <option value="Mantenimiento">Mantenimiento</option>
+      </select>
+      <label for="anio" class="me-2">Año:</label>
+      <select class="form-select form-select-sm me-2" [(ngModel)]="selectedAnio">
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+      </select>
+      <button type="button" class="btn btn-primary btn-sm" (click)="generarPdf()">Generar</button>
+    </div>
+  </div>
+  <div #pdfContainer class="row justify-content-center pdf-container"></div>
+  

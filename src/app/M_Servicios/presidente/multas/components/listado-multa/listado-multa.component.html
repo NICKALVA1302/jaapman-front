@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">LISTA DE MULTAS</a>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <!-- Agregar el select para filtrar por localidades -->
+    <div class="mb-3 filter-container">
+        <label for="filtroLocalidades" class="form-label"><strong>BUSQUEDA POR LOCALIDAD</strong></label>
+        <select class="form-select" id="filtroLocalidades" (change)="filtrarPorLocalidad($event)">
+            <option value="">TODAS LAS LOCALIDADES</option>
+            <option *ngFor="let localidad of obtenerNombresLocalidades()" [value]="localidad">{{ localidad }}</option>
+        </select>
+    </div>
+
+    <!-- Mostrar la tabla de multas -->
+    <div class="table-responsive">
+        <table *ngIf="multasFiltradas.length > 0" class="table table-hover">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Nº</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">APELLIDO</th>
+                    <th scope="col">LOCALIDAD</th>
+                    <th scope="col">VALOR</th>
+                    <th scope="col">OBSERVACION</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let multa of multasFiltradas; let i = index" class="table-secondary">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ multa.usuario.persona.nombre }}</td>
+                    <td>{{ multa.usuario.persona.apellido }}</td>
+                    <td>{{ multa.usuario.localidad.nombre }}</td>
+                    <td>{{ multa.valor_multa | currency }}</td>
+                    <td>{{ multa.observacion }}</td>
+                    <td>
+                        <button [routerLink]="['/presidente/actualizar', multa.id_multa]" type="button"
+                            class="btn btn-warning btn-sm text-white">EDITAR</button>
+                            <button (click)="confirmarEliminacionMulta(multa)" type="button" class="btn btn-danger btn-sm ms-3"
+                            data-bs-toggle="modal" data-bs-target="#modalDeletedMulta">ELIMINAR</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="multasFiltradas.length == 0" class="empty-list text-center d-flex align-items-center flex-column">
+        <h2 style="font-size: 1.0rem; opacity: 0.5;">NO HAY MULTAS PARA MOSTRAR</h2>
+        <img class="logo" src="../../../assets/img/icono.png" alt="img icono">
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center flex-column mb-3 mt-4">
+    
+        <button type="button" class="btn btn-warning btn-sm mt-2" style="width: 150px;" [routerLink]="['/presidente/multa']">
+            <img src="../../../assets/img/Salir.png" alt="salir"> VOLVER
+        </button>
+    </div>
+</div>
+
+<!-- Modal para eliminar Multa -->
+<div class="modal fade" id="modalDeletedMulta" aria-hidden="true" aria-labelledby="modalDeletedMultaTitle" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalDeletedMultaTitle">Confirmación de Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que desea eliminar la multa del usuario <b>{{ getUsuarioNombreCompleto() }}</b>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" (click)="confirmarEliminarMulta()" data-bs-dismiss="modal">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

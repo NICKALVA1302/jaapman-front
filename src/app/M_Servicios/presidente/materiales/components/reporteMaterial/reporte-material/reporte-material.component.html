@@ -1,0 +1,19 @@
+<!-- reporte-material.component.html -->
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand">REPORTES</a>
+    </div>
+  </nav>
+  
+  <div class="container mt-3">
+    <div class="container d-flex justify-content-center align-items-center">
+      <label for="localidad" class="me-2">Localidad:</label>
+      <select class="form-select form-select-sm me-2" [(ngModel)]="selectedLocalidadId" (change)="obtenerIdLocalidadSeleccionada($event)" style="width: 200px;">
+        <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{ opcion.nombre }}</option>
+        <!-- Agrega más opciones aquí si es necesario -->
+      </select>
+      <button type="button" class="btn btn-dark btn-sm" (click)="generarPdf()">Generar</button>
+    </div>
+  </div>
+  
+  <div #pdfContainer class="row justify-content-center pdf-container mt-3"></div>

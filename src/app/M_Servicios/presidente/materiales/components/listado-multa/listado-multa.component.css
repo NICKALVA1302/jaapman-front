@@ -1,0 +1,123 @@
+/* Ajustar el tamaño del texto principal */
+body {
+  font-size: 10px; /* Tamaño de fuente principal */
+}
+
+/* Ajustar el tamaño del texto de la marca del navbar */
+.navbar-brand {
+  font-size: 1.5rem; /* Tamaño de fuente de la marca del navbar */
+}
+
+/* Ajustar el tamaño del botón de salida */
+.btn-exit {
+  font-size: 0.8rem; /* Tamaño de fuente más pequeño */
+}
+
+/* Ajustar el tamaño del contenido de la tabla */
+.table {
+  font-size: 12px; /* Tamaño de fuente para la tabla */
+}
+
+.table td,
+.table th {
+  padding: 0.5rem; /* Ajustar el padding de las celdas de la tabla */
+}
+
+/* Ajustar el tamaño de los botones */
+.btn {
+  font-size: 10px; /* Tamaño de fuente para los botones */
+  padding: 0.25rem 0.5rem; /* Ajustar el padding del botón */
+}
+
+/* Ajustar el tamaño del input de búsqueda */
+.form-control {
+  font-size: 12px; /* Tamaño de fuente para el input de búsqueda */
+}
+
+/* Estilo para el navbar */
+.navbar {
+  background-color: #007bff; /* Cambiar color de fondo del navbar */
+}
+
+/* Estilo para la marca del navbar */
+.navbar-brand {
+  color: #ffffff; /* Color de texto blanco */
+  font-weight: bold; /* Texto en negrita */
+  font-size: 1.5rem; /* Tamaño de fuente */
+  text-align: center; /* Centrar el texto */
+  width: 100%; /* Ajustar ancho al 100% */
+}
+
+/* Ajustar el tamaño y la opacidad del logo en dispositivos móviles */
+@media (max-width: 768px) {
+  .logo {
+    height: 80px; /* Reducir la altura del logo */
+    margin-bottom: 5px; /* Reducir el margen inferior */
+    opacity: 0.5; /* Reducir la opacidad del logo */
+  }
+}
+
+/* Ajustar el tamaño y la opacidad del logo en dispositivos de escritorio */
+@media (min-width: 769px) {
+  .logo {
+    height: 130px; /* Tamaño original del logo */
+    margin-bottom: 10px; /* Margen inferior original */
+    opacity: 0.5; /* Opacidad original del logo */
+  }
+}
+
+/* Ajustar estilos en dispositivos móviles */
+@media (max-width: 768px) {
+  /* Ajustar tamaño de fuente de la marca del navbar */
+  .navbar-brand {
+      font-size: 1.2rem; /* Reducir tamaño de fuente en dispositivos móviles */
+  }
+}
+
+/* Ajustar el tamaño del texto en dispositivos pequeños */
+@media (max-width: 768px) {
+  /* Ajustar el tamaño del texto principal */
+  body {
+      font-size: 12px; /* Reducir el tamaño de fuente principal */
+  }
+
+  /* Ajustar el tamaño del texto de la marca del navbar */
+  .navbar-brand {
+      font-size: 1.2rem; /* Reducir el tamaño de fuente de la marca del navbar */
+  }
+
+  /* Ajustar el tamaño del botón de salida en dispositivos pequeños */
+  .btn-exit {
+      font-size: 0.7rem; /* Reducir el tamaño de fuente del botón de salida */
+  }
+
+  filter-container .form-label {
+    font-size: 12px; /* Reducir el tamaño de fuente para etiqueta en dispositivos móviles */
+}
+
+.filter-container .form-select {
+    font-size: 12px; /* Reducir el tamaño de fuente para select en dispositivos móviles */
+    padding: 0.2rem 0.5rem; /* Ajustar el padding del select */
+}
+
+  /* Ajustar el tamaño del contenido de la tabla en dispositivos pequeños */
+  .table {
+      font-size: 10px; /* Reducir el tamaño de fuente para la tabla */
+  }
+
+  .table td,
+  .table th {
+      padding: 0.1rem; /* Ajustar el padding de las celdas de la tabla en dispositivos pequeños */
+  }
+
+  /* Ajustar el tamaño de los botones en dispositivos pequeños */
+  .btn {
+      font-size: 10px; /* Reducir el tamaño de fuente para los botones */
+      padding: 0.1rem 0.2rem; /* Ajustar el padding del botón */
+  }
+
+  /* Ajustar el tamaño del input de búsqueda en dispositivos pequeños */
+  .form-control {
+      font-size: 10px; /* Reducir el tamaño de fuente para el input de búsqueda */
+  }
+}

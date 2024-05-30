@@ -1,0 +1,106 @@
+
+hr{
+    margin: 0rem 0
+}
+.form-switch .form-check-input{
+    width: 3.2em;
+}
+
+.form-check-input{
+    height: 1.7em;
+}
+
+.form-switch, .modal-footer {
+    padding-top: 1em;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+}
+
+.modal-footer {
+    justify-content: center;
+    text-align: center;
+    display: flex;
+}
+
+.padd{
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.form-switch{
+    padding-top: 0em;
+}
+
+.custom-background {
+    background-color: #add8e6c7;
+}
+
+
+.card-spacing {
+    margin-bottom: 10px; 
+}
+
+.fixed-top{
+    position: sticky;
+    top: 98px;
+    z-index: 1000;
+}
+.fixed-top2{
+    position: sticky;
+    top: -2px;
+    z-index: 1;
+}
+
+.center{
+    text-align: center;
+}
+app-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* cdk-virtual-scroll-viewport {
+    height: calc(100vh - 235px);
+} */
+
+.contenedorList{
+    height: calc(100vh - 170px);
+    border: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+
+.expand{
+    --bs-gutter-x: none;
+}
+.form{
+    height: 1.3em;
+    width: 1.3em;
+}
+
+.box{
+    box-shadow: 0 0 10px rgba(0 0 0 / 10%);
+}
+
+.gr{
+    --bs-gutter-y: -0.5rem;
+    --bs-gutter-x: -0.5rem;
+}
+
+.dropdown-menu.show {
+    padding: 5px;
+    width: 190px;
+}
+
+.d-flex {
+
+    width: 100% !important;
+}
+
+.pointer{
+    cursor: pointer !important;
+}

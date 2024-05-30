@@ -1,0 +1,71 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">SUSPENDER USUARIO</a>
+    </div>
+</nav>
+
+<div class="container mt-3">
+    <!-- Filas para los filtros -->
+    <div class="row">
+        <!-- Columna para el filtro de localidad -->
+        <div class="col-md-6 mt-2">
+            <div class="form-group">
+                <h3 class="mb-3 text-center"><strong>LOCALIDAD</strong></h3>
+                <select class="form-select" (change)="onLocalidadSelected($event)">
+                    <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre}}</option>
+                </select>
+            </div>
+        </div>
+        <!-- Columna para el filtro de usuarios -->
+        <div class="col-md-6 mt-2">
+            <div class="form-group">
+                <h3 class="mb-3 text-center"><strong>USUARIOS</strong></h3>
+                <select class="form-select" [(ngModel)]="filtroSeleccionado" (change)="aplicarFiltro()">
+                    <option value="todos">TODOS</option>
+                    <option value="suspendidos">SUSPENDIDOS</option>
+                    <option value="activos">ACTIVOS</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aquí mostramos los datos de la localidad seleccionada si están disponibles -->
+    <div class="table-responsive mt-3" *ngIf="Usuxlocalidad">
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Nº</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">APELLIDO</th>
+                    <th scope="col">DOCUMENTO</th>
+                    <th scope="col">SUSPENDER</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Usuxlocalidad; let i = index" class="table-secondary">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.persona.nombre }}</td>
+                    <td>{{ item.persona.apellido }}</td>
+                    <td>{{ item.persona.cedula }}</td>
+                    <td>
+                        <input type="checkbox" style="margin-left: 25px;" [checked]="item.isChecked"
+                            (change)="suspenderUsuario(item.id_usuario, $event)">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!Usuxlocalidad || Usuxlocalidad.length === 0"
+        class="empty-list text-center d-flex align-items-center flex-column">
+        <h2 style="font-size: 1.0rem; opacity: 0.5;">NO HAY USUARIO PARA MOSTRAR</h2>
+        <img class="logo" src="../../../assets/img/icono.png" alt="img icono">
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center flex-column mb-3">
+    
+        <button type="button" class="btn btn-warning btn-sm mt-2" style="width: 150px;" [routerLink]="['/presidente/materiales']">
+            <img src="../../../assets/img/Salir.png" alt="salir"> SALIR
+        </button>
+    </div>
+</div>

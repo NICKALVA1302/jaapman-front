@@ -1,0 +1,27 @@
+.fixed-top{
+    position: sticky;
+}
+
+app-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+ul.fixed-top{
+    position: sticky;
+    background: #f8f9fa;;
+    top: 56px;
+    z-index: 20;
+}
+
+a.nav{
+    color: rgb(24 161 207);
+    font-weight: 500;
+}
+
+
+.pointer{
+    cursor: pointer !important;
+}

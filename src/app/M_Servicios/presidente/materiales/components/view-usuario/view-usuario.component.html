@@ -1,0 +1,71 @@
+<div class="modal-header custom-modal-header">
+  <h4>BUSCAR CLIENTE</h4>
+  <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body custom-modal-body">
+  <div class="container">
+      <div class="row d-flex align-items-center">
+          <!-- Columna izquierda para localidad -->
+          <div class="col-md-6">
+              <div class="form-group">
+                  <label for="localidad">Localidad:</label>
+                  <select class="form-select" (change)="onLocalidadSelected($event)">
+                      <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre }}</option>
+                  </select>
+              </div>
+          </div>
+          <!-- Columna derecha para búsqueda -->
+          <div class="col-md-6">
+              <h5 class="mb-3 text-center"><strong>BUSQUEDA</strong></h5>
+              <!-- Search: buscar cliente por cédula -->
+              <div class="form-group">
+                  <label for="buscarCedula">Cédula:</label>
+                  <input type="number" class="form-control" id="buscarCedula" [(ngModel)]="filtroBusqueda.cedula" (input)="buscarPorCedula($event)">
+              </div>
+
+              <!-- Search: buscar cliente por nombre -->
+              <div class="form-group">
+                  <label for="buscarNombre">Nombre:</label>
+                  <input type="text" class="form-control" id="buscarNombre" [(ngModel)]="filtroBusqueda.nombre" (input)="buscarPorNombre($event)">
+              </div>
+
+              <!-- Search: buscar cliente por apellido -->
+              <div class="form-group">
+                  <label for="buscarApellido">Apellido:</label>
+                  <input type="text" class="form-control mb-3" id="buscarApellido" [(ngModel)]="filtroBusqueda.apellido" (input)="buscarPorApellido($event)">
+              </div>
+
+          </div>
+      </div>
+
+      <!-- Agregar el resto de tu contenido aquí -->
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>NOMBRE</th>
+                  <th>APELLIDO</th>
+                  <th>CEDULA</th>
+              </tr>
+          </thead>
+          <tbody *ngIf="!filtroBusqueda.mostrarListaFiltrada">
+              <tr *ngFor="let item of datosPorLocalidad" (click)="seleccionarUsuario(item)">
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.apellido }}</td>
+                  <td>{{ item.cedula }}</td>
+              </tr>
+          </tbody>
+          <tbody *ngIf="filtroBusqueda.mostrarListaFiltrada">
+              <tr *ngFor="let item of filtroBusqueda.personasFiltradas" (click)="seleccionarUsuario(item)">
+                  <td>{{ item.nombre }}</td>
+                  <td>{{ item.apellido }}</td>
+                  <td>{{ item.cedula }}</td>
+              </tr>
+          </tbody>
+      </table>
+
+  </div>
+</div>
+
+<div class="modal-footer custom-modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Close</button>
+</div>

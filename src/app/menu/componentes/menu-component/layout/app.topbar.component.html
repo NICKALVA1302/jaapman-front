@@ -1,0 +1,27 @@
+<div class="layout-topbar" style="height: 80px; "> <!-- Ajustar la altura del encabezado -->
+    <a class="layout-topbar-logo" routerLink="menu/dashboard">
+        <img src="assets/Imágenes/JAAPMAN logo completo.png" alt="JAAPMAN Logo" style="width: 150px; height: auto;"> <!-- Ajustar el ancho del logo -->
+        <span style="font-size: 28px; margin-left: 0,75cm;"> <!-- Ajustar el tamaño y el margen de JAAPMAN -->
+            <span style="color: lightblue; font-weight: bold;">JAAP</span> <!-- Estilos para JAAP -->
+            <span style="color: lightgreen; font-weight: bold;">MAN</span> <!-- Estilos para MAN -->
+        </span>
+    </a>
+
+    <div style="font-size: 17px; font-weight: bold;">Junta de Agua Potable de la Parroquia Manglaralto</div> <!-- Descripción adicional -->
+
+    <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button" (click)="layoutService.showProfileSidebar()">
+        <i class="pi pi-ellipsis-v"></i>
+    </button>
+
+    <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        <!-- Los elementos del menú relacionados con el calendario y el usuario se han eliminado -->
+        <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
+            <i class="pi pi-info-circle"></i>
+            <span>Settings</span>
+        </button>
+    </div>
+</div>

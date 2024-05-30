@@ -1,0 +1,46 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .cont {
+    max-width: 95%;
+    margin: 15px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    color: #333;
+    text-align: center;
+  }
+  
+  .function-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .function-list li {
+    margin-bottom: 10px;
+  }
+  
+  .function-list strong {
+    color: #007bff;
+  }
+  
+  .negrita {
+    font-weight: 500;
+  }
+  .center{
+    text-align: center;
+  }
+
+  .pointer{
+    cursor: pointer !important;
+}

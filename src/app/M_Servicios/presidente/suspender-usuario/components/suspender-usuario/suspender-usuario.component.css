@@ -1,0 +1,128 @@
+/* Estilos para la tabla */
+.table {
+  font-size: 12px; /* Tamaño de fuente para la tabla */
+}
+
+.table td,
+.table th {
+  padding: 0.5rem; /* Ajustar el padding de las celdas de la tabla */
+}
+
+/* Estilos para el navbar */
+.navbar {
+  background-color: #007bff; /* Cambiar color de fondo del navbar */
+}
+
+/* Estilo para la marca del navbar */
+.navbar-brand {
+  color: #ffffff; /* Color de texto blanco */
+  font-weight: bold; /* Texto en negrita */
+  font-size: 1.5rem; /* Tamaño de fuente */
+  text-align: center; /* Centrar el texto */
+  width: 100%; /* Ajustar ancho al 100% */
+}
+
+/* Estilos para el logo */
+.logo {
+  height: 130px; /* Tamaño del logo */
+  margin-bottom: 10px; /* Margen inferior */
+  opacity: 0.5; /* Opacidad del logo */
+}
+
+/* Estilos para los selectores */
+.form-select {
+  font-size: 0.9rem; /* Tamaño de fuente del selector */
+  padding: 0.5rem; /* Ajustar el padding del selector */
+  width: 100%; /* Ancho del selector */
+  height: 40px; /* Altura del selector */
+  appearance: none; /* Eliminar el estilo predeterminado del selector */
+  background-color: #ffffff; /* Color de fondo del selector */
+  border: 1px solid #ced4da; /* Borde del selector */
+  border-radius: 5px; /* Radio del borde del selector */
+}
+
+.form-select option {
+  font-size: 12px; /* Tamaño de fuente de las opciones */
+}
+
+.form-select:focus {
+  border-color: #80bdff; /* Cambiar color del borde al enfocar el select */
+  outline: 0; /* Quitar el contorno al enfocar el select */
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Añadir sombra al enfocar el select */
+}
+
+/* Estilos para el título h5 en dispositivos móviles */
+.mb-3.text-center strong {
+  font-size: 1.0rem !important; /* Reducir el tamaño de fuente del strong en dispositivos móviles */
+}
+
+/* Ajustar el tamaño del texto en dispositivos pequeños */
+@media (max-width: 768px) {
+  /* Ajustar el tamaño del texto principal */
+  body {
+    font-size: 12px; /* Reducir el tamaño de fuente principal */
+  }
+
+  /* Ajustar el tamaño del texto de la marca del navbar */
+  .navbar-brand {
+    font-size: 1.2rem; /* Reducir el tamaño de fuente de la marca del navbar */
+  }
+
+  /* Estilos para los selects en dispositivos móviles */
+  .form-select {
+    font-size: 12px;
+    padding: 0.2rem 0.5rem; /* Ajustar el padding del select en dispositivos móviles */
+    width: 100%; /* Ocupar todo el ancho disponible */
+  }
+
+  .form-select option {
+    font-size: 12px; /* Tamaño de fuente de las opciones */
+  }
+
+  .form-select:focus {
+    border-color: #80bdff; /* Cambiar color del borde al enfocar el select */
+    outline: 0; /* Quitar el contorno al enfocar el select */
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); /* Añadir sombra al enfocar el select */
+  }
+
+  /* Estilos para el título h3 en dispositivos móviles */
+  .mb-3.text-center strong {
+    font-size: 1.0rem; /* Tamaño de fuente del h3 en dispositivos móviles */
+  }
+
+  /* Estilos para la tabla en dispositivos móviles */
+  .table {
+    font-size: 10px; /* Tamaño de fuente de la tabla en dispositivos móviles */
+  }
+
+  /* Ajustar el padding de las celdas de la tabla en dispositivos móviles */
+  .table td,
+  .table th {
+    padding: 0.1rem; /* Padding de las celdas en dispositivos móviles */
+  }
+
+  /* Ajustar el tamaño de los botones en dispositivos móviles */
+  .btn {
+    font-size: 10px; /* Tamaño de fuente de los botones en dispositivos móviles */
+    padding: 0.1rem 0.2rem; /* Padding de los botones en dispositivos móviles */
+  }
+
+  /* Ajustar el tamaño del input de búsqueda en dispositivos móviles */
+  .form-control {
+    font-size: 10px; /* Tamaño de fuente del input de búsqueda en dispositivos móviles */
+  }
+
+  /* Establecer el ancho de los selectores en dispositivos móviles */
+  .col-md-6 {
+    width: 50%; /* Dividir el ancho de la columna en dos */
+    float: left; /* Permitir que las columnas se coloquen una al lado de la otra */
+    box-sizing: border-box; /* Incluir el padding y el borde en el ancho de la columna */
+  }
+
+  /* Limpiar el float después de las columnas */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+}

@@ -1,0 +1,49 @@
+<div class="modal-header">
+  <h4 class="modal-title">Pagos</h4>
+  <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-3">
+    <label for="selectPago" class="form-label">Seleccionar tipo de servicio:</label>
+    <select class="form-select" id="selectPago" [(ngModel)]="selectedServicio" (change)="actualizarTotal()">
+      <!-- Itera sobre las opciones de tipo de pago -->
+      <option *ngFor="let opcion of opcionesServicioPago" [value]="opcion">{{ opcion }}</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="selectTipoPago" class="form-label">Seleccionar tipo de pago:</label>
+    <select class="form-select" [(ngModel)]="selectedTipoPagoId" (change)="obtenerIdTipoPagoSeleccionado($event)">
+      <option *ngFor="let tipoPago of tipopagos" [value]="tipoPago.id_tipopago">{{ tipoPago.nombre }}</option>
+    </select>
+  </div>
+  
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Total</th>
+        <th>Abono</th>
+        <th>Saldo</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="text" class="form-control" id="total" [value]="actualizarTotal()" readonly></td>
+        <td><input type="text" class="form-control" id="abono" [(ngModel)]="abonoRealizado"></td>
+        <td><input type="text" class="form-control" id="saldo" readonly></td>
+        <td>
+          <select class="form-select" id="estado">
+            <option value="CANCELADO">CANCELADO</option>
+            <option value="SALDO PENDIENTE">SALDO PENDIENTE</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary"  >Guardar</button>
+
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cerrar</button>
+</div>

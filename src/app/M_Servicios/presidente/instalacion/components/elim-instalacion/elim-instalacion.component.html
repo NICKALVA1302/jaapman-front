@@ -1,0 +1,101 @@
+<div class="modal-header bg-primary text-light">
+    <h4 class="modal-title">Buscar Cliente e instalacion</h4>
+    <button type="button" class="btn-close btn-close-white" (click)="activeModal.dismiss()" aria-label="Cerrar"></button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group mb-4">
+            <label for="localidad">Localidad:</label>
+            <select class="form-select" (change)="onLocalidadSelected($event)">
+              <option *ngFor="let localidad of localidades" [value]="localidad.id_localidad">{{ localidad.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-4">
+              <label for="buscarCedula">Cédula:</label>
+              <input type="number" class="form-control" id="buscarCedula" [(ngModel)]="filtroBusqueda.cedula"
+                (input)="buscarPorCedula($event)">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h5 class="mb-3 text-center">Búsqueda</h5>
+          <div class="form-group mb-4">
+            <label for="buscarNombre">Nombre:</label>
+            <input type="text" class="form-control" id="buscarNombre" [(ngModel)]="filtroBusqueda.nombre"
+              (input)="buscarPorNombre($event)">
+          </div>
+          <div class="form-group mb-4">
+            <label for="buscarApellido">Apellido:</label>
+            <input type="text" class="form-control" id="buscarApellido" [(ngModel)]="filtroBusqueda.apellido"
+              (input)="buscarPorApellido($event)">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Cedula</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="filtroBusqueda.mostrarListaFiltrada">
+              <tr *ngFor="let item of filtroBusqueda.personasFiltradas" (click)="seleccionarUsuario(item)">
+                <td class="text-center">{{ item.cedula }}</td>
+                <td class="text-center">{{ item.nombre }}</td>
+                <td class="text-center">{{ item.apellido }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Número de Instalación</th>
+                <th>Valor</th>
+                <th>Estado Pago</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="instalaciones.length > 0">
+              <tr *ngFor="let instalacion of instalaciones">
+                <td class="text-center">{{ instalacion.numero }}</td>
+                <td class="text-center">{{instalacion.valor}}</td>
+                <td class="text-center">{{ getEstadoPagoLegible(instalacion.id_estado_pago) }}</td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="eliminarInstalacion(instalacion.numero)">
+                    ELIMINAR
+                </button>                                                                                       
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Alerta de confirmación -->
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="mostrarConfirmacion">
+          ¿Estás seguro de que deseas eliminar los datos?
+          <button type="button" class="btn-close" aria-label="Close" (click)="cancelarModificacion()"></button>
+          <button type="button" class="btn btn-warning btn-sm" (click)="confirmarModificacion()">Sí</button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="mostrarConfirmacion = false">No</button>
+        </div>
+  
+  
+        <!-- Alerta de éxito -->
+        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="mostrarExito">
+          Datos eliminado exitosamente.
+          <button type="button" class="btn-close" aria-label="Close" (click)="mostrarExito = false"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cerrar</button>
+  </div>

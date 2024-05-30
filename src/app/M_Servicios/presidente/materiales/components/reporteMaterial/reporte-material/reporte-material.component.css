@@ -1,0 +1,43 @@
+/* Ajustar el tamaño del texto principal */
+body {
+    font-size: 10px; /* Tamaño de fuente principal */
+  }
+  
+  /* Ajustar el tamaño del texto de la marca del navbar */
+  .navbar-brand {
+    font-size: 1.5rem; /* Tamaño de fuente de la marca del navbar */
+  }
+  
+  /* Estilo para el navbar */
+  .navbar {
+    background-color: #007bff; /* Cambiar color de fondo del navbar */
+  }
+  
+  /* Estilo para la marca del navbar */
+  .navbar-brand {
+    color: #ffffff; /* Color de texto blanco */
+    font-weight: bold; /* Texto en negrita */
+    font-size: 1.5rem; /* Tamaño de fuente */
+    text-align: center; /* Centrar el texto */
+    width: 100%; /* Ajustar ancho al 100% */
+  }
+  
+  .pdf-container {
+    max-width: 100%; /* Establece el ancho máximo al 100% del contenedor principal */
+    width: 800px; /* Ajusta el ancho según tus necesidades */
+    margin: 0 auto; /* Centra horizontalmente el contenedor */
+}
+
+  
+  /* Ajustar el tamaño del texto en dispositivos pequeños */
+  @media (max-width: 768px) {
+    /* Ajustar el tamaño del texto principal */
+    body {
+        font-size: 12px; /* Reducir el tamaño de fuente principal */
+    }
+  
+    /* Ajustar el tamaño del texto de la marca del navbar */
+    .navbar-brand {
+        font-size: 1.2rem; /* Reducir el tamaño de fuente de la marca del navbar */
+    }
+  }

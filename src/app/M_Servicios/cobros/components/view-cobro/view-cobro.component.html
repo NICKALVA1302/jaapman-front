@@ -1,0 +1,123 @@
+<div class="container">
+    <h1 class="display-4 text-center mb-5">Ingreso de Cobros</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Datos del Cliente</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" placeholder="Nombre" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="apellido">Apellido</label>
+                                <input type="text" class="form-control" id="apellido" placeholder="Apellido" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="cedula">Cédula</label>
+                                <input type="text" class="form-control" id="cedula" placeholder="Cédula"  disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="codigo">Código Medidor</label>
+                                <input type="text" class="form-control" id="codigo" placeholder="Código" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="localidad">Localidad</label>
+                                <input type="text" class="form-control" id="localidad" placeholder="Localidad" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" placeholder="Dirección" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary"(click)="abrirModal()">
+                        Buscar
+                    </button>
+                </div>                
+            </div>
+        </div>
+        <!-- Sección de Resumen -->
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Resumen</h5>
+                    <table id="tablaResumen" class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Deuda</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr >
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-group">
+                        <label for="tarifa_sin_descuento">Tarifa Sin Descuento</label>
+                        <input type="text" class="form-control" id="tarifa_sin_descuento" disabled> 
+                    </div>
+                    <div class="form-group">
+                        <label for="tarifa_con_descuento">Tarifa Con Descuento</label>
+                        <input type="text" class="form-control" id="tarifa_con_descuento" disabled>
+                    </div>
+                    <button type="button" class="btn btn-primary">
+                        Agregar Descuento
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Sección de Deuda -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Deuda</h5>
+                        <!-- Aquí puedes agregar campos para ingresar detalles de la planilla utilizando form controls de Bootstrap -->
+                        <table  id="tabla-deudas" class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Concepto</th>
+                                    <th>Consumo</th>
+                                    <th>Exedente</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr >
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Sección de Pago -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Pago</h5>
+                        <button type="button" class="btn btn-primary" (click)="abrirModalPago()">Agregar Pago</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

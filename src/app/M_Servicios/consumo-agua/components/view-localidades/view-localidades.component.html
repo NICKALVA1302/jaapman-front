@@ -1,0 +1,28 @@
+<!-- Muestra las localidades -->
+<div class="container mt-4 text-center">
+  <h3>Elija la localidad 👇 </h3>
+  <br>
+  <div class="container">
+    <div *ngIf="!loading" class="row g-2">
+      <!-- Verificar si hay localidades -->
+      <ng-container *ngIf="localidades && localidades.length > 0; else noLocalidades">
+        <div *ngFor="let localidad of localidades" class="col-sm-12 p-2" (click)="capturarIdLocalidad(localidad.id_localidad)">
+          <div class="card w pointer border-secondary-subtle p-2" style="--bs-border-opacity: .5;">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+              <h4 class="card-title">{{ localidad.nombre }}</h4>
+              <br>
+              <h5 class="card-subtitle text-muted">Número de personas: {{ localidad.total_personas }}</h5>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- Mostrar mensaje si no hay localidades -->
+      <ng-template #noLocalidades>
+        <div class="text-center mt-3 alert alert-light" role="alert">
+          <p>Aún no tiene localidades asignadas.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <app-spinner *ngIf="loading"></app-spinner>
+</div>

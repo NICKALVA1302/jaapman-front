@@ -1,0 +1,36 @@
+.custom-brand {
+    padding: 5px 10px;
+    color: #ffffff; /* Color del texto negro */
+    font-weight: bold;
+    text-decoration: none; /* Elimina la subrayado de enlace */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-brand:hover {
+    border-color: #fff; /* Cambia el color del borde al pasar el ratón */
+  }
+
+  .row {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+  background-position: center left;  /* Posicionar la imagen a la izquierda del texto */
+  padding-left: 10px;               /* Crear espacio para el icono */
+}
+
+button.d-flex {
+  align-items: center;
+}
+
+.btn img {
+  filter: invert(100%);
+}
+
+.btn {
+  color: white;
+}

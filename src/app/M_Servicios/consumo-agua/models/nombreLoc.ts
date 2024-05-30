@@ -1,0 +1,2 @@
+import { ResultadoL } from "./Localidades";
+

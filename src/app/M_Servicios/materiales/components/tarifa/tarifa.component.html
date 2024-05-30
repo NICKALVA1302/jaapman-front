@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto text-center custom-brand" style="flex-grow: 35; font-size: 2rem;"
+            >TARIFA</a>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="width: 525px; height: 500px; border: 10px solid black; margin-top: 5rem;">
+    <div class="row">
+        <div class="col-12">
+            <label><strong>Valor a cobrar por Rango</strong></label>
+            <div class="form-group row" style="width: 500px; height: 400px; margin-top: 50px;">
+
+                <label class="col-sm-2 col-form-label">0 - 10:</label>
+                <div class="col-sm-10" style="width: 80%;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-0">$</span>
+                        </div>
+                        <input type="number" class="form-control mb-3" [disabled]="!editar" [(ngModel)]="valor1" min="0">
+                    </div>
+                </div>
+
+                <label class="col-sm-2 col-form-label">11 - 16:</label>
+                <div class="col-sm-10" style="width: 80%;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-0">$</span>
+                        </div>
+                        <input type="number" class="form-control mb-3" [disabled]="!editar" [(ngModel)]="valor2" min="0">
+                    </div>
+                </div>
+
+                <label class="col-sm-2 col-form-label">> 17:</label>
+                <div class="col-sm-10" style="width: 80%;">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-0">$</span>
+                        </div>
+                        <input type="number" class="form-control mb-3" [disabled]="!editar" [(ngModel)]="valor3" min="0">
+                    </div>
+                </div>
+
+                <div class="container" style="margin-top: 20px;">
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-success btn-sm mb-5"
+                            style="width: 150px;  margin-right: 10px;" (click)="editar = !editar">
+                            <img src="../../../assets/img/Editar.png" alt="editar">EDITAR
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm mb-5"
+                            style="width: 150px;  margin-right: 10px;" (click)="guardarTarifas()">
+                            <img src="../../../assets/img/Guardar.png" alt="guardar">GUARDAR
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm mb-5 mr-2" style="width: 150px;"
+                            [routerLink]="['/presidente/materiales']">
+                            <img src="../../../assets/img/Salir.png" alt="salir">SALIR
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

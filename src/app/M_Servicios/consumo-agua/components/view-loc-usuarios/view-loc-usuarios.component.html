@@ -1,0 +1,162 @@
+<!-- Buscador -->
+<nav class="navbar bg-body-tertiary fixed-top">
+    <div class="container-fluid">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Buscar usuario..." aria-label="Search" 
+            [(ngModel)]="buscarUsuario" name="buscarUsu">
+            <div class="btn-group">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filtrar por...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li class="list-group-item d-flex align-items-center p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="1" id="firstRadio" (change)="estadoLectura =1">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="firstRadio">
+                            <span>Realizado</span>
+                            <span class="badge text-bg-success rounded-pill">{{ usuariosConLecturaRealizada }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="2" id="secondRadio" (change)="estadoLectura=2">
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="secondRadio">
+                            <span>Pendiente</span>
+                            <span class="badge text-bg-warning rounded-pill">{{ usuariosConLecturaPendiente }}</span>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center  p-1">
+                        <input class="form-check-input form me-2" type="radio" name="listGroupRadio" value="0" id="thirdRadio" (change)="estadoLectura=0" checked>
+                        <label class="form-check-label stretched-link d-flex justify-content-between" for="thirdRadio">
+                            <span>Todos</span>
+                            <span class="badge text-bg-primary rounded-pill">{{ totalUsuarios }}</span>
+                        </label>
+                    </li>
+                </ul>
+                
+                
+            </div>
+        </form>
+    </div>
+</nav>
+
+<br>
+
+<h3 class="center">Listado de usuarios: </h3>
+<div class="container">
+    <div *ngIf="!loading">
+        <cdk-virtual-scroll-viewport itemSize="100">
+            <div class="row row-cols-1 row-cols-sm-2 gr g-lg-3">
+                <div *cdkVirtualFor="let usuario of userxLoc | consumoAgua:buscarUsuario:estadoLectura; let i = index">
+                    <div class="container mt-3 text-center" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        <div class="card pointer card-spacing box" [ngClass]="{'custom-background': usuario.estado_lectura === 1}">
+                            <div (click)="capturarPosicion(usuario)" class="card-body">
+                                <h4 class="card-title">{{ usuario.codigo }}</h4>
+                                <h5 class="card-subtitle mb-2"> {{ usuario.apellido }} {{ usuario.nombre }}</h5>
+                                <div class="container p-2">
+                                    <div class="row row-cols-auto" style="justify-content: center;">
+                                        <div class="col mb-2">
+                                            Lectura Anterior: {{ usuario.lectura_anterior }}
+                                        </div>
+                                        <div class="col">
+                                            Lectura Actual: {{ usuario.lectura_actual }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text">Consumo Total: {{ usuario.consumo_total }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="(userxLoc | consumoAgua:buscarUsuario:estadoLectura).length === 0 " class="text-center mt-3 alert alert-light" role="alert">
+                <p>No se encontraron datos.</p>
+            </div>
+
+        </cdk-virtual-scroll-viewport>
+        
+    </div>
+    <app-spinner *ngIf="loading"></app-spinner>
+    
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar lectura del usuario</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <div class="modal-body">
+                <form (submit)="guardarCambios()">
+                    <div class="form-group">
+                        <label for="nombre">Apellidos y Nombres:</label>
+                        <input type="text" class="form-control" id="nombre" [value]="usuarioSeleccionado.apellido + ' ' + usuarioSeleccionado.nombre" disabled="true">
+                    </div>
+                    
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="codigo">Codigo Medidor: </label>
+                            <input type="text" class="form-control" id="codigo" [(ngModel)]="usuarioSeleccionado.codigo" name="codigo" disabled="true">
+                        </div>
+                            <div class="col">
+                            <label for="lectura_anterior">Lectura Anterior: </label>
+                            <input type="text" class="form-control" id="lectura_anterior" [(ngModel)]="usuarioSeleccionado.lectura_anterior" name="lectura_anterior" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="lectura_actual">Lectura Actual: </label>
+                            <input type="text" class="form-control" id="lectura_actual" [(ngModel)]="usuarioSeleccionado.lectura_actual" name="lectura_actual">
+                        </div>
+                        <div class="col text-center">
+                            <label class="form-check-label" for="estadoSwitch">Marcar lectura: </label>
+                            <div class="form-check form-switch">
+                                
+                                <input class="form-check-input" type="checkbox" id="estadoSwitch" [(ngModel)]="usuarioSeleccionado.estado_lectura" name="estadoSwitch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="observaciones">Observaciones: </label>
+                        <input type="text" class="form-control" id="observaciones" [(ngModel)]="usuarioSeleccionado.observaciones" name="observaciones">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label for="nombre_resp_edit">Editado por: </label>
+                            <input type="text" class="form-control" id="nombre_resp_edit" [value]="usuarioSeleccionado.editadoPor ? usuarioSeleccionado.editadoPor : 'Sin editar aún...'" disabled>
+                        </div>
+                        
+                        <div class="col">
+                            <label for="resp_edit">Editor responsable: </label>
+                            <input type="text" class="form-control" id="resp_edit" [value]="responsableEncargado" disabled>
+                        </div>
+                    </div>
+                    <!-- LONGITUD Y LATITUD -->
+                    <div class="row">
+                        <div class="col">
+                            <p>Latitud: {{ latitude }}</p>
+                        </div>
+                        <div class="col">
+                            <p>Longitud: {{ longitude }}</p>
+                        </div>
+                    </div>
+                    
+                    <br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="usuarioSeleccionado.lectura_actual < usuarioSeleccionado.lectura_anterior || !usuarioSeleccionado.id_responsable_lectura">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Regresar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

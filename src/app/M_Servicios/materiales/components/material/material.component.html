@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto text-center custom-brand" style="flex-grow: 35; font-size: 2rem;">MATERIALES</a>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+        </div>
+    </div>
+</nav>
+
+<app-progress-bar *ngIf="loading"></app-progress-bar>
+
+<div *ngIf="!loading" class="container">
+    <!-- <div class="titulo">
+        <h4>LISTADO DE MATERIALES</h4>
+    </div> -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center justify-content-start">
+                <input aria-label="Search" type="search" placeholder="Buscar material" name="filtroMaterial" class="form-control" [(ngModel)]="filtroMaterial">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex align-items-center justify-content-end">
+                <button type="button" class="btn btn-success" [routerLink]="['/presidente/materiales/agregar']">AGREGAR MATERIAL</button>
+            </div>
+        </div>
+    </div>
+    <table *ngIf="listMaterial.length > 0" class="table table-hover">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Nº</th>
+                    <th scope="col">ESTADO</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">DESCRIPCION</th>
+                    <th scope="col">STOCK</th>
+                    <th scope="col">PRECIO</th>
+                    <th></th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr *ngFor="let item of listMaterial | filtro: filtroMaterial; let i = index" class="table-secondary">
+                <td>{{ i + 1 }}</td>
+                <td>{{ item.estado }} </td>
+                <td>{{ item.nombre }} </td>
+                <td>{{ item.descripcion }} </td>
+                <td>{{ item.stock }} </td>
+                <!-- Formato de dollar -->
+                <td>{{ item.precio | currency}} </td> 
+                <td>
+                    <button [routerLink]="['/presidente/materiales/editar', item.id_material]" type="button" class="btn btn-warning btn-sm text-white">EDITAR</button>
+                    <button (click)="deleteMaterial(item.id_material!)" type="button" class="btn btn-danger btn-sm ms-3">ELIMINAR</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="listMaterial.length == 0" class="empty-list">
+        <h5>NO HAY MATERIALES PARA MOSTRAR</h5>
+        <img class="logo" src="../../../assets/img/icono.png" alt="img icono">
+    </div>
+
+    <div class="container">
+        <app-progress-bar *ngIf="loading"></app-progress-bar>
+    
+        <div class="d-flex justify-content-center align-items-center flex-column mb-5">
+            <!-- Otros elementos aquí, si los hay -->
+    
+            <button type="button" class="btn btn-warning btn-sm mt-2" style="width: 150px;" [routerLink]="['/presidente/materiales']">
+                <img src="../../../assets/img/Salir.png" alt="salir"> SALIR
+            </button>
+        </div>
+    </div>
+
+</div>

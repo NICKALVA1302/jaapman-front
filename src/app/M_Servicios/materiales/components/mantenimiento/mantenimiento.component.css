@@ -1,0 +1,75 @@
+.custom-brand {
+    padding: 5px 10px;
+    color: #ffffff; /* Color del texto negro */
+    font-weight: bold;
+    text-decoration: none; /* Elimina la subrayado de enlace */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-brand:hover {
+    border-color: #fff; /* Cambia el color del borde al pasar el ratón */
+  }
+
+  .row {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+  background-position: center left;  /* Posicionar la imagen a la izquierda del texto */
+  padding-left: 10px;               /* Crear espacio para el icono */
+}
+
+button.d-flex {
+  align-items: center;
+}
+
+.btn img {
+  filter: invert(100%);
+}
+
+.btn {
+  color: white;
+}
+
+.form-control::placeholder {
+  color: rgba(0, 0, 0, 0.3); /* Ajusta la opacidad según sea necesario */
+}
+
+.empty-list {
+  text-align: center;
+  margin-top: 20px; /* Ajusta según sea necesario para el espaciado deseado */
+}
+
+.empty-list h5 {
+  color: #888; /* Color del texto */
+}
+
+.empty-list i {
+  font-size: 24px; /* Ajusta según sea necesario para el tamaño del icono */
+  color: #888; /* Color del icono */
+  margin-top: 10px; /* Ajusta según sea necesario para el espaciado entre el texto y el icono */
+}
+
+.empty-list {
+  margin-top: 50px; /* Ajusta según sea necesario para el espaciado deseado */
+  color: #888; /* Color del texto */
+}
+
+.empty-list h3 {
+  margin-bottom: 20px;
+}
+
+.empty-list i {
+  font-size: 3em; /* Ajusta según sea necesario para el tamaño del icono */
+  color: #888; /* Color del icono */
+}
+
+.logo {
+  height: 130px;
+  margin-bottom: 10px;
+  opacity: 50%;
+}

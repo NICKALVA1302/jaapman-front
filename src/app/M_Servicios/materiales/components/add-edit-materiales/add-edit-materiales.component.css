@@ -1,0 +1,12 @@
+.custom-brand {
+    padding: 5px 10px;
+    color: #ffffff; /* Color del texto negro */
+    font-weight: bold;
+    text-decoration: none; /* Elimina la subrayado de enlace */
+    position: relative;
+    display: inline-block;
+  }
+  
+  .custom-brand:hover {
+    border-color: #fff; /* Cambia el color del borde al pasar el ratón */
+  }

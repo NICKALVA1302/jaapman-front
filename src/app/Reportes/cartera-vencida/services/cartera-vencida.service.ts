@@ -15,6 +15,16 @@ export interface CarteraVA {
   tipo_de_servicio: string;
 }
 
+export interface GeneralCarteraVA {
+  anio: number;
+  mes: number;
+  total_con_descuento: number;
+  total_sin_descuento: number;
+  total_facturado: number;
+  total_por_facturar: number;
+  tipo_de_servicio: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,6 +48,15 @@ export class CarteraVencidaService {
       localidad
     };
     return this.http.post<CarteraVA[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraVA`, body);
+  }
+
+  obtenerGeneralCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date): Observable<GeneralCarteraVA[]> {
+    const body = {
+      tipo_servicio,
+      fecha_inicio,
+      fecha_fin
+    };
+    return this.http.post<GeneralCarteraVA[]>(`${this.myAppUrl}${this.myApiURLCajero}/getGeneralCarteraVA`, body);
   }
 
   // Llamada a la función obtenerLocalidades en el usuario-controlador del backend.

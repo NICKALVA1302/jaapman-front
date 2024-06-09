@@ -16,8 +16,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ViewReporteCVComponent implements OnInit {
   localidades: Localidad[] = [];
   selectedLocalidadId: number | null = null;
-  selectedTipoServicio: string = 'Agua';
-  selectedAnio: string = '2023';
+  selectedTipoServicio: string | null = null;
+  selectedAnio: string | null = null;
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
   carteraVA: CarteraVA[] = [];
 
@@ -31,154 +31,173 @@ export class ViewReporteCVComponent implements OnInit {
 
   obtenerLocalidades(): void {
     this.carteraVencidaService.obtenerLocalidades().subscribe(
-      (Localidad: Localidad[]) => {
-        this.localidades = Localidad;
+      localidades => {
+        this.localidades = localidades;
       },
-      (error) => {
-        console.error(error);
+      error => {
+        console.error('Error al cargar localidades:', error);
       }
     );
   }
 
   obtenerCartera(): void {
-    const fechaInicio = new Date(`${this.selectedAnio}-01-01`);
-    const fechaFin = new Date(`${this.selectedAnio}-12-31`);
-    if (this.selectedLocalidadId) {
-      this.carteraVencidaService.obtenerCarteraVA(this.selectedTipoServicio, fechaInicio, fechaFin, this.selectedLocalidadId)
-        .subscribe(data => {
+    if (this.selectedLocalidadId && this.selectedTipoServicio && this.selectedAnio) {
+      const fechaInicio = new Date(`${this.selectedAnio}-01-01`);
+      const fechaFin = new Date(`${this.selectedAnio}-12-31`);
+      this.carteraVencidaService.obtenerCarteraVA(this.selectedTipoServicio, fechaInicio, fechaFin, this.selectedLocalidadId).subscribe(
+        data => {
           this.carteraVA = data;
-        }, error => {
-          console.error('Error al obtener la cartera vencida', error);
-        });
+          this.generarPdf(); // Llama a generar PDF independientemente de si hay datos o no
+        },
+        error => {
+          console.error('Error al obtener la cartera vencida:', error);
+        }
+      );
+    } else {
+      alert('Por favor, seleccione una localidad, un tipo de servicio y un año para generar el reporte.');
     }
   }
 
   generarPdf(): void {
-    if (this.selectedLocalidadId && this.carteraVA.length > 0) {
-      const content: any[] = [];
-      const fechaActual = new Date();
-      const fechaFormateada = fechaActual.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-
-      function createLine(x1: number, y1: number, x2: number): object {
-        return {
-          type: 'line',
-          x1: x1,
-          y1: y1,
-          x2: x2,
-          y2: y1,
-          lineWidth: 1,
-          lineColor: 'black'
-        };
-      }
-
-      content.push({
-        alignment: 'center',
-        fontSize: 7,
-        style: 'header',
-        columns: [
-          {
-            fontSize: 15,
-            characterSpacing: 10,
-            alignment: 'center',
-            stack: [
-              {
-                text: 'CARTERA VENCIDA ANUAL',
-              },
-              {
-                canvas: [
-                  createLine(0, 2, 250),
-                  createLine(0, 4, 250)
-                ]
-              }
-            ]
-          },
-          [
-            'JUNTA ADMINISTRADORA DE AGUA POTABLE REGIONAL MANGLARALTO',
-            '24900013639001 Calle 5 de junio via a Montañita junto al Colegio Fiscal Manglaralto'
-          ]
-        ],
-        styles: {
-          header: {
-            alignment: 'justify'
-          }
-        }
-      });
-
-      const tableData = this.carteraVA.map(item => [
-        item.localidad,
-        item.anio,
-        item.mes,
-        item.total_con_descuento,
-        item.total_sin_descuento,
-        item.total_facturado,
-        item.total_por_facturar,
-        item.tipo_de_servicio
-      ]);
-
-      content.push({
-        table: {
-          headerRows: 1,
-          widths: ['*', '*', '*', '*', '*', '*', '*', '*'],
-          body: [
-            [
-              { text: 'Localidad', style: 'tableHeader' },
-              { text: 'Año', style: 'tableHeader' },
-              { text: 'Mes', style: 'tableHeader' },
-              { text: 'Total con Descuento', style: 'tableHeader' },
-              { text: 'Total sin Descuento', style: 'tableHeader' },
-              { text: 'Total Facturado', style: 'tableHeader' },
-              { text: 'Total por Facturar', style: 'tableHeader' },
-              { text: 'Tipo de Servicio', style: 'tableHeader' }
-            ],
-            ...tableData
+    const content: any[] = [];
+    const currentDate = new Date().toLocaleDateString('es-ES');
+  
+    function createLine(x1: number, y1: number, x2: number): object {
+      return {
+        type: 'line',
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y1,
+        lineWidth: 1,
+        lineColor: 'black'
+      };
+    }
+  
+    // Encabezado con diseño específico
+    content.push({
+      alignment: 'center',
+      style: 'header',
+      columns: [
+        {
+          width: '*',
+          text: ''
+        },
+        {
+          width: 'auto',
+          stack: [
+            { text: 'CARTERA VENCIDA ANUAL', fontSize: 15, characterSpacing: 10, alignment: 'center' },
+            { canvas: [createLine(0, 5, 515), createLine(0, 10, 515)] },
+            { text: 'JUNTA ADMINISTRADORA DE AGUA POTABLE REGIONAL MANGLARALTO', fontSize: 12, margin: [0, 10, 0, 0] },
+            { text: '24900013639001 Calle 5 de junio vía a Montañita junto al Colegio Fiscal Manglaralto', fontSize: 12 }
           ]
         },
-        layout: 'lightHorizontalLines',
-        style: 'tableExample'
-      });
-
-      const dd: TDocumentDefinitions = {
-        content: content,
-        styles: {
-          header: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 10, 0, 5]
-          },
-          tableExample: {
-            margin: [0, 5, 0, 15],
-            alignment: 'center'
-          },
-          tableHeader: {
-            bold: true,
-            fontSize: 12,
-            color: 'black'
-          },
+        {
+          width: '*',
+          text: ''
         }
-      };
+      ],
+      columnGap: 10
+    });
+  
 
-      const pdf = pdfMake.createPdf(dd);
-      pdf.getBlob((blob: Blob) => {
-        const url = URL.createObjectURL(blob);
-        this.mostrarPdf(url);
-      });
-    } else {
-      console.error('No se ha seleccionado ninguna localidad o no hay datos para generar el PDF');
-    }
+  if (this.carteraVA.length > 0) {
+    const firstItem = this.carteraVA[0];  // Asumiendo que todos los items tienen la misma localidad, año, etc.
+
+    content.push({
+      columns: [
+        { text: `Localidad: ${firstItem.localidad}`, style: 'infoText' },
+        { text: `Tipo de Servicio: ${this.selectedTipoServicio}`, style: 'infoText', alignment: 'right' },
+      ]
+    });
+
+    content.push({
+      columns: [
+        { text: `Año: ${firstItem.anio}`, style: 'infoText' },
+        { text: `Generado: ${currentDate}`, style: 'infoText', alignment: 'right' }
+      ]
+    });
+
+    content.push(this.createContentWithData(this.carteraVA));
+  } else {
+    content.push({
+      text: 'No hay datos disponibles para el servicio o año seleccionado.',
+      style: 'noData',
+      alignment: 'center',
+      margin: [0, 20, 0, 0]
+    });
   }
+  
+    const dd: TDocumentDefinitions = {
+      content: content,
+      styles: {
+        header: {
+          bold: true,
+          fontSize: 16,
+          alignment: 'center',
+          margin: [0, 0, 0, 20]
+        },
+        infoText: {
+          fontSize: 12,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        noData: {
+          fontSize: 14,
+          bold: true
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: 'black'
+        }
+      },
+      pageSize: 'A4',
+      pageOrientation: 'landscape'
+    };
+  
+    const pdf = pdfMake.createPdf(dd);
+    pdf.getBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      this.mostrarPdf(url);
+    });
+  }
+  
+  
+  createContentWithData(data: CarteraVA[]): any {
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const tableBody = [
+      ['Mes', 'Total con Descuento', 'Total sin Descuento', 'Total Facturado', 'Total por Facturar'].map(header => ({ text: header, style: 'tableHeader' })),
+      ...data.map(item => [
+        monthNames[item.mes - 1], // Convert month number to name
+        `$${item.total_con_descuento.toFixed(2)}`,
+        `$${item.total_sin_descuento.toFixed(2)}`,
+        `$${item.total_facturado.toFixed(2)}`,
+        `$${item.total_por_facturar.toFixed(2)}`
+      ])
+    ];
+  
+    return {
+      table: {
+        headerRows: 1,
+        widths: ['*', '*', '*', '*', '*'],
+        body: tableBody
+      },
+      layout: 'lightHorizontalLines'
+    };
+  }
+  
 
   mostrarPdf(pdfUrl: string): void {
     if (this.pdfContainer) {
       const iframe = document.createElement('iframe');
+      iframe.style.width = '100%';
+      iframe.style.height = '500px';
       iframe.src = pdfUrl;
-      iframe.width = '100%';
-      iframe.height = '600px';
-      iframe.style.maxWidth = '100%';
-      iframe.style.maxHeight = '600px';
       this.pdfContainer.nativeElement.innerHTML = '';
       this.pdfContainer.nativeElement.appendChild(iframe);
-    } else {
-      console.error('pdfContainer is undefined');
     }
   }
+
+  
 }

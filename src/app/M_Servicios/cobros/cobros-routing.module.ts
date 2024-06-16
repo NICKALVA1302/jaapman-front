@@ -9,6 +9,7 @@ import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/
 import { ViewReporteCSComponent } from '../../Reportes/Clientes/clientes-suspendidos/components/view-reporte-cs/view-reporte-cs.component';
 import { ViewReporteLcComponent } from '../../Reportes/Clientes/listado-clientes/components/view-reporte-lc/view-reporte-lc.component';
 import { ViewReporteCVComponent } from '../../Reportes/cartera-vencida/components/view-reporte-cv/view-reporte-cv.component';
+import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/view-reporte-vm/view-reporte-vm.component';
 
 
 //Rutas hijas de modulo cobros
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'clientes-suspendidos', component: ViewReporteCSComponent },
       { path: 'listado-clientes', component: ViewReporteLcComponent },
       { path: 'cartera-vencida', component: ViewReporteCVComponent},
+      {path: 'valoresxmes', component: ViewReporteVmComponent},
       /* {path:'menu-operador', component: MenuOperadorComponent},*/
       {path:'**', redirectTo: 'cobros'}, 
     ]

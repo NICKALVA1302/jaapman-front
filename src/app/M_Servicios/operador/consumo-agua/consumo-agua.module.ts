@@ -23,6 +23,7 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { ClientesSuspendidosModule } from '../../../Reportes/Clientes/clientes-suspendidos/clientes-suspendidos.module';
 import { ListadoClientesModule } from '../../../Reportes/Clientes/listado-clientes/listado-clientes.module';
 import { CarteraVencidaModule } from '../../../Reportes/cartera-vencida/cartera-vencida.module';
+import { ValoresxmesModule } from '../../../Reportes/valoresxmes/valoresxmes.module';
 
 
 
@@ -33,7 +34,6 @@ import { CarteraVencidaModule } from '../../../Reportes/cartera-vencida/cartera-
         ViewOperadorComponent,
         MenuOperadorComponent,
         NavbarOperadorComponent,
-        
         ConsumoAguaPipe,
         ConsumoAgua2Pipe,
         ChangePasswordComponent
@@ -51,7 +51,8 @@ import { CarteraVencidaModule } from '../../../Reportes/cartera-vencida/cartera-
         ScrollingModule,
         ClientesSuspendidosModule,
         ListadoClientesModule,
-        CarteraVencidaModule
+        CarteraVencidaModule,
+        ValoresxmesModule
     ]
 })
 export class ConsumoAguaModule { }

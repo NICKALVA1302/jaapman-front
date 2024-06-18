@@ -1,1 +1,25 @@
-<p>view-reporte-deudas works!</p>
+<div class="container">
+  <h4 class="display-5 text-center mb-4">Deudas Acumuladas Por Pueblo</h4>
+  <div class="container d-flex justify-content-center align-items-center">
+    <label for="localidad" class="me-2">Localidad:</label>
+    <select
+      id="localidad"
+      class="form-select form-select-sm me-2"
+      [(ngModel)]="selectedLocalidadId"
+      (change)="onSelectLocalidad($event)"
+      style="width: 200px"
+    >
+      <option *ngFor="let opcion of localidades" [value]="opcion.nombre">
+        {{ opcion.nombre }}
+      </option>
+    </select>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="obtenerDatosClientes()"
+    >
+      Generar
+    </button>
+  </div>
+</div>
+<div #pdfContainer class="row justify-content-center pdf-container"></div>

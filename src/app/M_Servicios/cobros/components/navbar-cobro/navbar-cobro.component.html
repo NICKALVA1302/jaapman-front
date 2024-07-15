@@ -1,66 +1,159 @@
 <div>
-    <nav class="navbar" style="background-color: #e3f2fd;">
-        <div class="container-fluid">
-            <a class="navbar-brand" [routerLink]="['/cajero/cobros']">JaapMan</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-dismiss="offcanvas" aria-current="page" [routerLink]="['/cajero/cobros']">Menú Principal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-dismiss="offcanvas"  [routerLink]="['/cajero/cobros/cobro']" routerLinkActive="disabled">Cobros</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-dismiss="offcanvas"  [routerLink]="['/cajero/instalacion']" routerLinkActive="disabled">Derechos Instalacion</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Reportes Generales
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/cartera-vencida']">Cartera Vencida</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/valoresxmes']">Valores Generados: Mes</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/deudas-pueblo']">Deudas Pueblo</a>
-                                </li>
-                                <!-- Agrega más opciones de reportes aquí si es necesario -->
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Reportes Clientes
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/consumos-clientes']">Consumos de Clientes</a>
-                                </li>
-                                <!-- Agrega más opciones de reportes aquí si es necesario -->
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/clientes-suspendidos']">Clientes Suspendidos</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-dismiss="offcanvas" [routerLink]="['/cajero/cobros/listado-clientes']">Listado Clientes</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#">Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+  <nav class="navbar" style="background-color: #e3f2fd">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/cajero/cobros']">JaapMan</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNavbar"
+        aria-controls="offcanvasNavbar"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
         </div>
-    </nav>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-dismiss="offcanvas"
+                aria-current="page"
+                [routerLink]="['/cajero/cobros']"
+                >Menú Principal</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-dismiss="offcanvas"
+                [routerLink]="['/cajero/cobros/cobro']"
+                routerLinkActive="disabled"
+                >Cobros</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-dismiss="offcanvas"
+                [routerLink]="['/cajero/instalacion']"
+                routerLinkActive="disabled"
+                >Derechos Instalacion</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Reportes Generales
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/cartera-vencida']"
+                    >Cartera Vencida</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/valoresxmes']"
+                    >Valores Generados: Mes</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/deudas-pueblo']"
+                    >Deudas Pueblo</a
+                  >
+                </li>
+                <!-- Agrega más opciones de reportes aquí si es necesario -->
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Reportes Clientes
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/consumos-clientes']"
+                    >Consumos de Clientes</a
+                  >
+                </li>
+                <!-- Agrega más opciones de reportes aquí si es necesario -->
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/clientes-suspendidos']"
+                    >Clientes Suspendidos</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/listado-clientes']"
+                    >Listado Clientes</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    data-bs-dismiss="offcanvas"
+                    [routerLink]="['/cajero/cobros/lectura-cliente']"
+                    >Lectura Cliente</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">Cerrar Sesión</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
 </div>

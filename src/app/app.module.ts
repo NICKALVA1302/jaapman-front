@@ -7,7 +7,9 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ToastrModule } from 'ngx-toastr';
+import { ConsumosClientesModule } from './Reportes/consumos-clientes/consumos-clientes.module';
 import { DeudasPuebloModule } from './Reportes/deudas-pueblo/deudas-pueblo.module';
+import { LecturasClienteModule } from './Reportes/lecturas-cliente/lecturas-cliente.module';
 import { AuthService } from './acceso/servicios/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,10 +23,11 @@ import { ProductService } from './menu/componentes/menu-component/demo/service/p
 import { AppLayoutModule } from './menu/componentes/menu-component/layout/app.layout.module';
 import { MenuModule } from './menu/menu.module'; // Importa el módulo completo
 import { AddTokenInterceptor } from './utils/add-token-interceptor';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    ConsumosClientesModule,
+    LecturasClienteModule,
     DeudasPuebloModule,
     BrowserModule,
     FormsModule,

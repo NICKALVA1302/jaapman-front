@@ -1,0 +1,34 @@
+<div class="container">
+  <h4 class="display-5 text-center mb-4">Lecturas Del Cliente</h4>
+  <div class="container d-flex justify-content-center align-items-center">
+    <label for="anio" class="me-2">Año:</label>
+    <select
+      id="anio"
+      class="form-select form-select-sm me-2"
+      [(ngModel)]="selectedAnio"
+      (change)="onSelectAnio($event)"
+      style="width: 200px"
+    >
+      <option *ngFor="let item of anios" [value]="item.descripcion">
+        {{ item.descripcion }}
+      </option>
+    </select>
+    <label for="cedula" class="me-2">Cédula:</label>
+    <input
+      id="cedula"
+      type="text"
+      class="form-control form-control-sm me-2"
+      [(ngModel)]="cedula"
+      placeholder="Ingrese su cédula"
+      style="width: 200px"
+    />
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="obtenerDatosClientes()"
+    >
+      Generar
+    </button>
+  </div>
+</div>
+<div #pdfContainer class="row justify-content-center pdf-container"></div>

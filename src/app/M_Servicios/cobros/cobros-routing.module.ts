@@ -1,47 +1,50 @@
-import { ConsumosClientesModule } from './../../Reportes/consumos-clientes/consumos-clientes.module';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
-import { AuthGuard } from '../../utils/auth.guard';
-import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
-import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/components/view-consumos-clientes/view-consumos-clientes.component';
 import { ViewReporteCSComponent } from '../../Reportes/Clientes/clientes-suspendidos/components/view-reporte-cs/view-reporte-cs.component';
 import { ViewReporteLcComponent } from '../../Reportes/Clientes/listado-clientes/components/view-reporte-lc/view-reporte-lc.component';
 import { ViewReporteCVComponent } from '../../Reportes/cartera-vencida/components/view-reporte-cv/view-reporte-cv.component';
-import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/view-reporte-vm/view-reporte-vm.component';
+import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/components/view-consumos-clientes/view-consumos-clientes.component';
 import { ViewReporteDeudasComponent } from '../../Reportes/deudas-pueblo/components/view-reporte-deudas/view-reporte-deudas.component';
-
+import { ViewLecturaClienteComponent } from '../../Reportes/lecturas-cliente/components/view-lectura-cliente/view-lectura-cliente.component';
+import { ViewReportePagoComponent } from '../../Reportes/pago-cliente/components/view-reporte-pago/view-reporte-pago.component';
+import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/view-reporte-vm/view-reporte-vm.component';
+import { AuthGuard } from '../../utils/auth.guard';
+import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
+import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
 
 //Rutas hijas de modulo cobros
 const routes: Routes = [
   {
-    path:'cobros',component: ViewCobrosComponent, canActivate: [AuthGuard],
-    children:[
-      {path:'cobro', component: ViewCobroComponent, canActivate: [AuthGuard]},
+    path: 'cobros',
+    component: ViewCobrosComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'cobro',
+        component: ViewCobroComponent,
+        canActivate: [AuthGuard],
+      },
       {
         path: 'consumos-clientes',
-        component: ViewConsumosClientesComponent
+        component: ViewConsumosClientesComponent,
       },
       { path: 'clientes-suspendidos', component: ViewReporteCSComponent },
       { path: 'listado-clientes', component: ViewReporteLcComponent },
-      { path: 'cartera-vencida', component: ViewReporteCVComponent},
-      {path: 'valoresxmes', component: ViewReporteVmComponent},
-      {path: 'deudas-pueblo', component: ViewReporteDeudasComponent},
+      { path: 'cartera-vencida', component: ViewReporteCVComponent },
+      { path: 'valoresxmes', component: ViewReporteVmComponent },
+      { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },
+      { path: 'lectura-cliente', component: ViewLecturaClienteComponent },
+      { path: 'pago-cliente', component: ViewReportePagoComponent },
+
       /* {path:'menu-operador', component: MenuOperadorComponent},*/
-      {path:'**', redirectTo: 'cobros'}, 
-    ]
-  }
-
-  
+      { path: '**', redirectTo: 'cobros' },
+    ],
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    RouterModule.forChild(routes),
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CobrosRoutingModule { }
+export class CobrosRoutingModule {}

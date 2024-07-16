@@ -1,42 +1,28 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { Anio, LecturaUser } from '../../models/interfaces';
-import { LecturaClienteService } from '../../services/lectura-cliente.service';
-
+import { PagoCliente } from '../../models/interfaces';
+import { PagoClienteService } from '../../services/pago-cliente.service';
 @Component({
-  selector: 'app-view-lectura-cliente',
-  templateUrl: './view-lectura-cliente.component.html',
-  styleUrl: './view-lectura-cliente.component.css',
+  selector: 'app-view-reporte-pago',
+  templateUrl: './view-reporte-pago.component.html',
+  styleUrl: './view-reporte-pago.component.css',
 })
-export class ViewLecturaClienteComponent {
+export class ViewReportePagoComponent {
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
-  anios: Anio[] = [];
-
-  selectedAnio: string | '' = '';
+  datos: PagoCliente[] = [];
   cedula: string | '' = '';
-  datos: LecturaUser[] = [];
-  constructor(public servicioReportes: LecturaClienteService) {}
-  ngOnInit() {
-    this.obtenerAnios();
-  }
-
-  obtenerAnios(): void {
-    this.servicioReportes.getAnios().subscribe(
-      (Anio: Anio[]) => {
-        this.anios = Anio;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
+  constructor(public servicioReportes: PagoClienteService) {}
+  ngOnInit() {}
   getInfo(): void {
-    this.servicioReportes.getDatos(this.cedula, this.selectedAnio).subscribe(
+    this.servicioReportes.getDatos(this.cedula).subscribe(
       (response: any) => {
         if (response) {
           this.datos = response;
-          this.formatData();
+          console.log(this.datos);
+          console.log('datos' + response);
+
+          // this.formatData();
           this.generarPdf();
         }
       },
@@ -44,15 +30,6 @@ export class ViewLecturaClienteComponent {
         console.error('Error al obtener datos:', error);
       }
     );
-  }
-
-  obtenerDatosClientes() {
-    this.getInfo();
-  }
-  onSelectAnio(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const selectedNombre = selectElement.value;
-    this.selectedAnio = selectedNombre;
   }
   generarPdf() {
     let totalDeuda = 0;
@@ -105,7 +82,7 @@ export class ViewLecturaClienteComponent {
             alignment: 'center',
             stack: [
               {
-                text: 'LECTURAS DE CLIENTE',
+                text: 'PAGOS DEL CLIENTE',
               },
               {
                 canvas: [
@@ -194,14 +171,11 @@ export class ViewLecturaClienteComponent {
       let tableBody = [
         [
           { text: '#', style: 'tableHeader' },
-          { text: 'Año', style: 'tableHeader' },
-          { text: 'Mes', style: 'tableHeader' },
-          { text: 'Lectura Anterior', style: 'tableHeader' },
-          { text: 'Lectura Actual', style: 'tableHeader' },
-          { text: 'Consumo', style: 'tableHeader' },
-          { text: 'FechaAbono', style: 'tableHeader' },
+          { text: 'Tipo', style: 'tableHeader' },
+          { text: 'Descripcion', style: 'tableHeader' },
           { text: 'Deuda', style: 'tableHeader' },
-          { text: 'Valor', style: 'tableHeader' },
+          { text: 'Abono', style: 'tableHeader' },
+          { text: 'Total', style: 'tableHeader' },
           { text: 'Estado', style: 'tableHeader' },
         ],
       ];
@@ -209,14 +183,11 @@ export class ViewLecturaClienteComponent {
       this.datos.forEach((cliente, index) => {
         tableBody.push([
           { text: String(index + 1), style: 'tableContent' }, // Número de fila
-          { text: cliente.Año ?? '', style: 'tableContent' },
-          { text: cliente.Mes ?? '', style: 'tableContent' },
-          { text: cliente.Anterior ?? '', style: 'tableContent' },
-          { text: cliente.Actual ?? '', style: 'tableContent' },
-          { text: cliente.Consumo ?? '', style: 'tableContent' },
+          { text: cliente.Tipo ?? '', style: 'tableContent' },
+          { text: cliente.Descripcion ?? '', style: 'tableContent' },
+          { text: cliente.Deuda ?? '', style: 'tableContent' },
           { text: cliente.Abono ?? '', style: 'tableContent' },
-          { text: cliente.COM ?? '', style: 'tableContent' },
-          { text: cliente.Valor ?? '', style: 'tableContent' },
+          { text: cliente.Total ?? '', style: 'tableContent' },
           { text: cliente.Estado ?? '', style: 'tableContent' },
         ]);
       });

@@ -6,6 +6,7 @@ import { ViewReporteCVComponent } from '../../Reportes/cartera-vencida/component
 import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/components/view-consumos-clientes/view-consumos-clientes.component';
 import { ViewReporteDeudasComponent } from '../../Reportes/deudas-pueblo/components/view-reporte-deudas/view-reporte-deudas.component';
 import { ViewLecturaClienteComponent } from '../../Reportes/lecturas-cliente/components/view-lectura-cliente/view-lectura-cliente.component';
+import { ViewReportePagoComponent } from '../../Reportes/pago-cliente/components/view-reporte-pago/view-reporte-pago.component';
 import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/view-reporte-vm/view-reporte-vm.component';
 import { AuthGuard } from '../../utils/auth.guard';
 import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
       { path: 'valoresxmes', component: ViewReporteVmComponent },
       { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },
       { path: 'lectura-cliente', component: ViewLecturaClienteComponent },
+      { path: 'pago-cliente', component: ViewReportePagoComponent },
 
       /* {path:'menu-operador', component: MenuOperadorComponent},*/
       { path: '**', redirectTo: 'cobros' },

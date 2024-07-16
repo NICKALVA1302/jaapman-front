@@ -5,6 +5,12 @@ export interface Anio {
 }
 
 export interface LecturaUser {
+  PersonaCedula: string;
+  PersonaNombre: string;
+  PersonaApellido: string;
+  PersonaDireccion: string;
+  PersonaTelefono: string;
+
   Mes: string;
   Año: string;
   Anterior: string;

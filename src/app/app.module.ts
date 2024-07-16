@@ -10,6 +10,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ConsumosClientesModule } from './Reportes/consumos-clientes/consumos-clientes.module';
 import { DeudasPuebloModule } from './Reportes/deudas-pueblo/deudas-pueblo.module';
 import { LecturasClienteModule } from './Reportes/lecturas-cliente/lecturas-cliente.module';
+import { PagoClienteModule } from './Reportes/pago-cliente/pago-cliente.module';
 import { AuthService } from './acceso/servicios/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,9 +27,12 @@ import { AddTokenInterceptor } from './utils/add-token-interceptor';
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    //
+    PagoClienteModule,
     ConsumosClientesModule,
     LecturasClienteModule,
     DeudasPuebloModule,
+    //
     BrowserModule,
     FormsModule,
     HttpClientModule,

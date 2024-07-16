@@ -1,0 +1,18 @@
+<div class="container">
+  <h4 class="display-5 text-center mb-4">Pagos por cliente</h4>
+  <div class="container d-flex justify-content-center align-items-center">
+    <label for="cedula" class="me-2">Cédula:</label>
+    <input
+      id="cedula"
+      type="text"
+      class="form-control form-control-sm me-2"
+      [(ngModel)]="cedula"
+      placeholder="Ingrese su cédula"
+      style="width: 200px"
+    />
+    <button type="button" class="btn btn-primary btn-sm" (click)="getInfo()">
+      Generar
+    </button>
+  </div>
+</div>
+<div #pdfContainer class="row justify-content-center pdf-container"></div>

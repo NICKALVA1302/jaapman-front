@@ -24,6 +24,7 @@ import { ClientesSuspendidosModule } from '../../../Reportes/Clientes/clientes-s
 import { ListadoClientesModule } from '../../../Reportes/Clientes/listado-clientes/listado-clientes.module';
 import { CarteraVencidaModule } from '../../../Reportes/cartera-vencida/cartera-vencida.module';
 import { ValoresxmesModule } from '../../../Reportes/valoresxmes/valoresxmes.module';
+import { RecaudacionModule } from '../../../Reportes/recaudacion/recaudacion.module';
 
 
 
@@ -52,7 +53,8 @@ import { ValoresxmesModule } from '../../../Reportes/valoresxmes/valoresxmes.mod
         ClientesSuspendidosModule,
         ListadoClientesModule,
         CarteraVencidaModule,
-        ValoresxmesModule
+        ValoresxmesModule,
+        RecaudacionModule
     ]
 })
 export class ConsumoAguaModule { }

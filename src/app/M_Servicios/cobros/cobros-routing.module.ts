@@ -11,6 +11,7 @@ import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/vi
 import { AuthGuard } from '../../utils/auth.guard';
 import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
 import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
+import { ViewReporteRecaudacionComponent } from '../../Reportes/recaudacion/components/view-reporte-recaudacion/view-reporte-recaudacion.component';
 
 //Rutas hijas de modulo cobros
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },
       { path: 'lectura-cliente', component: ViewLecturaClienteComponent },
       { path: 'pago-cliente', component: ViewReportePagoComponent },
+      { path: 'recaudacion', component: ViewReporteRecaudacionComponent },
 
       /* {path:'menu-operador', component: MenuOperadorComponent},*/
       { path: '**', redirectTo: 'cobros' },

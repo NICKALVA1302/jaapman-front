@@ -11,6 +11,7 @@ import { ConsumosClientesModule } from './Reportes/consumos-clientes/consumos-cl
 import { DeudasPuebloModule } from './Reportes/deudas-pueblo/deudas-pueblo.module';
 import { LecturasClienteModule } from './Reportes/lecturas-cliente/lecturas-cliente.module';
 import { PagoClienteModule } from './Reportes/pago-cliente/pago-cliente.module';
+import { TipoIngresoModule } from './Reportes/tipo-ingreso/tipo-ingreso.module';
 import { AuthService } from './acceso/servicios/auth.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { AddTokenInterceptor } from './utils/add-token-interceptor';
   declarations: [AppComponent],
   imports: [
     //
+    TipoIngresoModule,
     PagoClienteModule,
     ConsumosClientesModule,
     LecturasClienteModule,

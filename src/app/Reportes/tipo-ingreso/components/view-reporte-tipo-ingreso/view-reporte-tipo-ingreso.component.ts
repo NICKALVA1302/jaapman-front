@@ -2,23 +2,25 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import pdfMake from 'pdfmake/build/pdfmake';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { DeudaUsuario, Localidad } from '../../models/localidades';
-import { DeudasPuebloService } from '../../services/deudas-pueblo.service';
+import { Localidad } from '../../../deudas-pueblo/models/localidades';
+import { MantenimientoInterface } from '../../models/interfaces';
+import { TipoIngresoService } from '../../services/tipo-ingreso.service';
+
 @Component({
-  selector: 'app-view-reporte-deudas',
-  templateUrl: './view-reporte-deudas.component.html',
-  styleUrl: './view-reporte-deudas.component.css',
+  selector: 'app-view-reporte-tipo-ingreso',
+  templateUrl: './view-reporte-tipo-ingreso.component.html',
+  styleUrl: './view-reporte-tipo-ingreso.component.css',
 })
-export class ViewReporteDeudasComponent {
+export class ViewReporteTipoIngresoComponent {
   localidades: Localidad[] = [];
-  selectedLocalidadId: string | '' = ''; // Cambiar el tipo de selectedLocalidadId a string | null
-  datosPorLocalidad: DeudaUsuario[] = [];
+  selectedLocalidadId: string | '' = '';
+  selectedTipo: string | null = null;
+  datosPorMantenimiento: MantenimientoInterface[] = [];
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
 
-  constructor(public servicioReportes: DeudasPuebloService) {
+  constructor(public servicioReportes: TipoIngresoService) {
     pdfDefaultOptions.assetsFolder = 'bleeding-edge';
   }
-
   ngOnInit() {
     this.obtenerLocalidades();
   }
@@ -38,27 +40,19 @@ export class ViewReporteDeudasComponent {
     const selectElement = event.target as HTMLSelectElement;
     const selectedNombre = selectElement.value;
     this.selectedLocalidadId = selectedNombre;
-    console.log(this.selectedLocalidadId);
+    // console.log(this.selectedLocalidadId);
+    // console.log(this.selectedTipo);
   }
-
-  //Obtener ID de localidad
-  obtenerIdLocalidadeleccionado(event: any): void {
-    // Obtener el valor seleccionado del evento
-    const selectedValue = event.target.value;
-    this.selectedLocalidadId = selectedValue;
-    this.obtenerDatosClientes();
-  }
-
-  //Obtener datos de los clientes x localidad
-  obtenerDatosClientes(): void {
+  //Obtener datos de los Respuestas x localidad
+  obtenerDatos(): void {
     this.servicioReportes
-      .getDatosPorLocalidad(this.selectedLocalidadId)
+      .getDatosMantenimiento(this.selectedLocalidadId)
       .subscribe(
         (response: any) => {
           if (response) {
-            this.datosPorLocalidad = response;
+            this.datosPorMantenimiento = response;
             this.generarPdf();
-            console.log(this.datosPorLocalidad);
+            console.log(this.datosPorMantenimiento);
           }
         },
         (error: any) => {
@@ -77,7 +71,7 @@ export class ViewReporteDeudasComponent {
       year: 'numeric',
     });
 
-    if (this.datosPorLocalidad.length !== 0) {
+    if (this.datosPorMantenimiento.length !== 0) {
       // Verificar si el cliente tiene planillas registradas
       content.push({
         canvas: [
@@ -118,7 +112,7 @@ export class ViewReporteDeudasComponent {
             alignment: 'center',
             stack: [
               {
-                text: 'DEUDAS ACUMULADAS POR PUEBLO',
+                text: 'Recudacion por tipo de Ingreso: MAntenimiento',
               },
               {
                 canvas: [
@@ -142,26 +136,24 @@ export class ViewReporteDeudasComponent {
       let tableBody = [
         [
           { text: '#', style: 'tableHeader' },
-          { text: 'Cedula', style: 'tableHeader' },
           { text: 'Nombre', style: 'tableHeader' },
           { text: 'Apellido', style: 'tableHeader' },
+          { text: 'Total', style: 'tableHeader' },
+          { text: 'Fecha', style: 'tableHeader' },
+          { text: 'Localidad', style: 'tableHeader' },
           { text: 'Direccion', style: 'tableHeader' },
-          { text: 'Deuda pendiente', style: 'tableHeader' },
         ],
       ];
 
-      this.datosPorLocalidad.forEach((cliente, index) => {
-        totalDeuda += cliente.deuda_pendiente ?? 0;
+      this.datosPorMantenimiento.forEach((Respuesta, index) => {
         tableBody.push([
           { text: String(index + 1), style: 'tableContent' }, // Número de fila
-          { text: cliente.cedula ?? '', style: 'tableContent' },
-          { text: cliente.nombre ?? '', style: 'tableContent' },
-          { text: cliente.apellido ?? '', style: 'tableContent' },
-          { text: cliente.direccion ?? '', style: 'tableContent' },
-          {
-            text: String(cliente.deuda_pendiente ?? ''),
-            style: 'tableContent',
-          },
+          { text: Respuesta.nombre ?? '', style: 'tableContent' },
+          { text: Respuesta.apellido ?? '', style: 'tableContent' },
+          { text: Respuesta.total ?? '', style: 'tableContent' },
+          { text: Respuesta.createdAt ?? '', style: 'tableContent' },
+          { text: Respuesta.localidad ?? '', style: 'tableContent' },
+          { text: Respuesta.direccion ?? '', style: 'tableContent' },
         ]);
       });
 
@@ -173,80 +165,50 @@ export class ViewReporteDeudasComponent {
           body: tableBody,
         },
       });
-      content.push({
-        alignment: 'right', // Alinea el contenedor a la derecha
-        columns: [
-          {
-            stack: [
-              {
-                style: 'tableExampleResumen', // Estilo específico para la tabla de RESUMEN
-                table: {
-                  headerRows: 1,
-                  widths: ['auto', 'auto'], // Ajusta el ancho de las columnas aquí (puedes usar 'auto' o un valor específico en porcentaje)
-                  body: [
-                    [
-                      {
-                        text: 'Total Deuda Por Pueblo',
-                        style: 'tableHeader',
-                        alignment: 'center',
-                      },
-                      {
-                        text: totalDeuda ?? '',
-                        style: 'tableHeader',
-                        border: [true, true, true, true],
-                      },
-                    ],
-                  ],
-                },
-              },
-            ],
+
+      // });
+
+      // Definir el documento PDF
+      const dd: TDocumentDefinitions = {
+        content: content,
+        styles: {
+          header: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5], // Definir margen como un array de números
           },
-        ],
+          subheader: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 5, 0, 2], // Definir margen como un array de números
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15], // Definir margen como un array de números,
+            alignment: 'center',
+          },
+          tableExampleResumen: {
+            // Estilo específico para la tabla de RESUMEN
+            margin: [0, 0, 0, 0], // Definir margen como un array de números
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 12,
+            color: 'black',
+          },
+          tableRow: {
+            fontSize: 10,
+            margin: [0, 0, 0, 0], // Eliminar el margen inferior
+          },
+        },
+      };
+
+      const pdf = pdfMake.createPdf(dd);
+      pdf.getBlob((blob: Blob) => {
+        const url = URL.createObjectURL(blob);
+        this.mostrarPdf(url);
       });
     }
-    // });
-
-    // Definir el documento PDF
-    const dd: TDocumentDefinitions = {
-      content: content,
-      styles: {
-        header: {
-          fontSize: 16,
-          bold: true,
-          margin: [0, 10, 0, 5], // Definir margen como un array de números
-        },
-        subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 5, 0, 2], // Definir margen como un array de números
-        },
-        tableExample: {
-          margin: [0, 5, 0, 15], // Definir margen como un array de números,
-          alignment: 'center',
-        },
-        tableExampleResumen: {
-          // Estilo específico para la tabla de RESUMEN
-          margin: [0, 0, 0, 0], // Definir margen como un array de números
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 12,
-          color: 'black',
-        },
-        tableRow: {
-          fontSize: 10,
-          margin: [0, 0, 0, 0], // Eliminar el margen inferior
-        },
-      },
-    };
-
-    const pdf = pdfMake.createPdf(dd);
-    pdf.getBlob((blob: Blob) => {
-      const url = URL.createObjectURL(blob);
-      this.mostrarPdf(url);
-    });
   }
-
   mostrarPdf(pdfUrl: string) {
     if (this.pdfContainer) {
       const iframe = document.createElement('iframe');

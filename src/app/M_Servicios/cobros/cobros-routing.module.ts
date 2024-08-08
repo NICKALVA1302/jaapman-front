@@ -7,12 +7,12 @@ import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/
 import { ViewReporteDeudasComponent } from '../../Reportes/deudas-pueblo/components/view-reporte-deudas/view-reporte-deudas.component';
 import { ViewLecturaClienteComponent } from '../../Reportes/lecturas-cliente/components/view-lectura-cliente/view-lectura-cliente.component';
 import { ViewReportePagoComponent } from '../../Reportes/pago-cliente/components/view-reporte-pago/view-reporte-pago.component';
+import { ViewReporteRecaudacionComponent } from '../../Reportes/recaudacion/components/view-reporte-recaudacion/view-reporte-recaudacion.component';
+import { ViewReporteTipoIngresoComponent } from '../../Reportes/tipo-ingreso/components/view-reporte-tipo-ingreso/view-reporte-tipo-ingreso.component';
 import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/view-reporte-vm/view-reporte-vm.component';
 import { AuthGuard } from '../../utils/auth.guard';
 import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
 import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
-import { ViewReporteRecaudacionComponent } from '../../Reportes/recaudacion/components/view-reporte-recaudacion/view-reporte-recaudacion.component';
-
 //Rutas hijas de modulo cobros
 const routes: Routes = [
   {
@@ -37,6 +37,7 @@ const routes: Routes = [
       { path: 'lectura-cliente', component: ViewLecturaClienteComponent },
       { path: 'pago-cliente', component: ViewReportePagoComponent },
       { path: 'recaudacion', component: ViewReporteRecaudacionComponent },
+      { path: 'tipoxingreso', component: ViewReporteTipoIngresoComponent },
 
       /* {path:'menu-operador', component: MenuOperadorComponent},*/
       { path: '**', redirectTo: 'cobros' },

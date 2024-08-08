@@ -161,7 +161,7 @@ export class ViewLecturaClienteComponent {
             text: '',
           },
           {
-            text: 'Direccion:' + this.datos[0].PersonaDireccion,
+            text: 'Direccion: ' + this.datos[0].PersonaDireccion,
           },
         ],
       });

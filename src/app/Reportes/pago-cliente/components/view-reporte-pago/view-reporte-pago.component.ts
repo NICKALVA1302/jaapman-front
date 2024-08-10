@@ -138,7 +138,7 @@ export class ViewReportePagoComponent {
             text: '',
           },
           {
-            text: 'Direccion:' + this.datos[0].PersonaDireccion,
+            text: 'Direccion: ' + this.datos[0].PersonaDireccion,
           },
         ],
       });
@@ -173,9 +173,10 @@ export class ViewReportePagoComponent {
           { text: '#', style: 'tableHeader' },
           { text: 'Tipo', style: 'tableHeader' },
           { text: 'Descripcion', style: 'tableHeader' },
-          { text: 'Deuda', style: 'tableHeader' },
+          { text: 'Total A Pagar', style: 'tableHeader' },
+
           { text: 'Abono', style: 'tableHeader' },
-          { text: 'Total', style: 'tableHeader' },
+          { text: 'Deuda', style: 'tableHeader' },
           { text: 'Estado', style: 'tableHeader' },
         ],
       ];
@@ -184,10 +185,13 @@ export class ViewReportePagoComponent {
         tableBody.push([
           { text: String(index + 1), style: 'tableContent' }, // Número de fila
           { text: cliente.Tipo ?? '', style: 'tableContent' },
-          { text: cliente.Descripcion ?? '', style: 'tableContent' },
-          { text: cliente.Deuda ?? '', style: 'tableContent' },
-          { text: cliente.Abono ?? '', style: 'tableContent' },
+          {
+            text: cliente.Descripcion ?? 'Sin Descripcion',
+            style: 'tableContent',
+          },
           { text: cliente.Total ?? '', style: 'tableContent' },
+          { text: cliente.Abono ?? '', style: 'tableContent' },
+          { text: cliente.Deuda ?? '', style: 'tableContent' },
           { text: cliente.Estado ?? '', style: 'tableContent' },
         ]);
       });

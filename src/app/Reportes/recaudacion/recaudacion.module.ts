@@ -7,6 +7,7 @@ import { AccesoModule } from '../../acceso/acceso.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { AppRoutingConsumoModule } from '../../M_Servicios/operador/consumo-agua/app-routing-consumo.module';
 import { ViewReporteRecaudacionComponent } from './components/view-reporte-recaudacion/view-reporte-recaudacion.component';
+import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ViewReporteRecaudacionComponent],
@@ -18,6 +19,8 @@ import { ViewReporteRecaudacionComponent } from './components/view-reporte-recau
     FormsModule,
     AccesoModule,
     NgxExtendedPdfViewerModule,
+    NgbModule,
+    NgbDatepickerModule
   ]
 })
 export class RecaudacionModule { }

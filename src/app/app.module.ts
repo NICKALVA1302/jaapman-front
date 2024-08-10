@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ToastrModule } from 'ngx-toastr';
 import { ConsumosClientesModule } from './Reportes/consumos-clientes/consumos-clientes.module';
@@ -28,10 +28,10 @@ import { AddTokenInterceptor } from './utils/add-token-interceptor';
   declarations: [AppComponent],
   imports: [
     //
-    PagoClienteModule,
-    ConsumosClientesModule,
-    LecturasClienteModule,
-    DeudasPuebloModule,
+    //PagoClienteModule,
+    //ConsumosClientesModule,
+    //LecturasClienteModule,s
+    //DeudasPuebloModule,
     //
     BrowserModule,
     FormsModule,
@@ -48,6 +48,7 @@ import { AddTokenInterceptor } from './utils/add-token-interceptor';
     MenuModule,
     RouterModule,
     AppLayoutModule,
+    NgbDatepickerModule
   ],
 
   providers: [

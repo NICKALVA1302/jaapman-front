@@ -17,6 +17,7 @@ type MonthKey = 'Enero' | 'Febrero' | 'Marzo' | 'Abril' | 'Mayo' | 'Junio' |
   styleUrl: './view-reporte-recaudacion.component.css'
 })
 export class ViewReporteRecaudacionComponent {
+  model: Date = new Date();
   localidades: Localidad[] = [];
   selectedLocalidadId: number | null = null;
   selectedTipoServicio: string | null = null;
@@ -33,26 +34,6 @@ export class ViewReporteRecaudacionComponent {
 
   ngOnInit(): void {
     this.obtenerLocalidades();
-    this.generateYears();
-  }
-
-  generateYears(): void {
-    const currentYear = new Date().getFullYear();
-    const maxYear = this.startYear + 10;  // Establece el máximo año 10 años después del año inicial
-
-    // Genera años desde el año inicial hasta el máximo año
-    if (this.years.length === 0) {  // Si la lista está vacía, inicializa la lista
-      for (let year = this.startYear; year <= maxYear; year++) {
-        this.years.push(year);
-      }
-    } else {  // Si no, simplemente añade el nuevo año al final si es necesario
-      const lastYear = this.years[this.years.length - 1];
-      if (lastYear < currentYear + 5) {
-        for (let year = lastYear + 1; year <= currentYear + 5; year++) {
-          this.years.push(year);
-        }
-      }
-    }
   }
 
   obtenerLocalidades(): void {

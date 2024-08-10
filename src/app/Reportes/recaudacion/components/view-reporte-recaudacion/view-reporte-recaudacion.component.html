@@ -1,41 +1,43 @@
 <div class="container">
     <h4 class="display-5 text-center mb-4">RECAUDACION CONSUMO DE AGUA</h4>
     <div class="container d-flex justify-content-center align-items-center mb-3">
-        <label for="localidad" class="me-2">Localidad:</label>
-        <select class="form-select form-select-sm me-2" [(ngModel)]="selectedLocalidadId">
-            <option value="" disabled selected>Seleccione una localidad</option>
-            <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{opcion.nombre}}</option>
-        </select>
-        <label for="tipoServicio" class="me-2">Tipo de Servicio:</label>
-        <select class="form-select form-select-sm me-2" [(ngModel)]="selectedTipoServicio">
-            <option value="" disabled selected>Seleccione un servicio</option>
-            <option value="Agua">Agua</option>
-            <option value="Alcantarillado">Alcantarillado</option>
-            <option value="Instalación">Instalación</option>
-            <option value="Mantenimiento">Mantenimiento</option>
-        </select>
-        <label for="mes" class="me-2">Mes:</label>
-        <select class="form-select form-select-sm me-2" [(ngModel)]="selectedMes">
-            <option value="" disabled selected>Seleccione un mes</option>
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-        </select>
-        <label for="anio" class="me-2">Año:</label>
-        <select class="form-select form-select-sm me-2" [(ngModel)]="selectedAnio">
-            <option value="" disabled selected>Seleccione un año</option>
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-        <button type="button" class="btn btn-primary btn-sm mr-2">Generar</button>
+        
+        <!-- Selector de Localidad -->
+        <div class="me-2">
+            <label for="localidad" class="form-label">Localidad:</label>
+            <select class="form-select form-select-sm"
+                    [(ngModel)]="selectedLocalidadId">
+                <option value="" disabled selected>Seleccione una localidad</option>
+                <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{opcion.nombre}}</option>
+            </select>
+        </div>
+        
+        <!-- DatePicker -->
+        <div class="me-2">
+            <label for="date" class="form-label">Selecciona una fecha:</label>
+            <div class="input-group">
+                <input class="form-control"
+                       placeholder="yyyy-mm-dd"
+                       name="dp"
+                       ngbDatepicker
+                       #d="ngbDatepicker"
+                       [(ngModel)]="model"
+                       required>
+                <button class="btn btn-outline-secondary"
+                        (click)="d.toggle()"
+                        type="button">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Botones -->
+        <div>
+            <button type="button" class="btn btn-primary btn-sm me-2">Diario</button>
+            <button type="button" class="btn btn-primary btn-sm me-2">Mensual</button>
+            <button type="button" class="btn btn-primary btn-sm">Anual</button>
+        </div>
+        
     </div>
 </div>
 <div #pdfContainer class="row justify-content-center pdf-container"></div>

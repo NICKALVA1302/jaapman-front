@@ -25,12 +25,30 @@ export class GraficoComponent implements OnChanges {
   generarGrafico(): void {
     const canvas = this.hiddenChart.nativeElement;
     const ctx = canvas.getContext('2d');
-  
+
     if (ctx && this.data.length > 0) {
       if (this.chart) {
         this.chart.destroy();
       }
-  
+
+      // Array de colores, uno para cada mes
+      const backgroundColors = [
+        'rgba(255, 99, 132, 0.2)', // Enero
+        'rgba(54, 162, 235, 0.2)', // Febrero
+        'rgba(255, 206, 86, 0.2)', // Marzo
+        'rgba(75, 192, 192, 0.2)', // Abril
+        'rgba(153, 102, 255, 0.2)', // Mayo
+        'rgba(255, 159, 64, 0.2)', // Junio
+        'rgba(255, 99, 132, 0.2)', // Julio
+        'rgba(54, 162, 235, 0.2)', // Agosto
+        'rgba(255, 206, 86, 0.2)', // Septiembre
+        'rgba(75, 192, 192, 0.2)', // Octubre
+        'rgba(153, 102, 255, 0.2)', // Noviembre
+        'rgba(255, 159, 64, 0.2)'  // Diciembre
+      ];
+
+      const borderColors = backgroundColors.map(color => color.replace('0.2', '1'));
+
       this.chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -38,25 +56,36 @@ export class GraficoComponent implements OnChanges {
           datasets: [{
             label: 'Total Facturado',
             data: this.data,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: backgroundColors.slice(0, this.data.length), // Solo usa tantos colores como datos
+            borderColor: borderColors.slice(0, this.data.length),
             borderWidth: 1
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false, // Para que el tamaño se respete según el canvas
           scales: {
             y: {
               type: 'linear',
               beginAtZero: true
             }
+          },
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context: any) {
+                  const value = context.raw as number;
+                  return `Total Facturado: $${value.toFixed(2)}`;
+                }
+              }
+            }
           }
         }
       });
-  
-      //console.log('Gráfico generado:', this.chart);
-    } else {
-      console.error('Error: el contexto del canvas no es válido o no hay datos para mostrar');
     }
   }
   

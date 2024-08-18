@@ -14,6 +14,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   templateUrl: './view-reporte-cv.component.html',
   styleUrls: ['./view-reporte-cv.component.css']
 })
+
+//ESTO ES VIEJO Y MUY EXTENSO YA ME ESTABA MAREANDO HACERLO ASI
 export class ViewReporteCVComponent implements OnInit {
   localidades: Localidad[] = [];
   selectedLocalidadId: number | null = null;
@@ -464,3 +466,4 @@ export class ViewReporteCVComponent implements OnInit {
     }
   }
 }
+//ESTO ES VIEJO Y MUY EXTENSO YA ME ESTABA MAREANDO HACERLO ASI

@@ -7,6 +7,6 @@ import { CarteraVA, GeneralCarteraVA } from '../../services/cartera-vencida.serv
   styleUrl: './tabla-resultados.component.css'
 })
 export class TablaResultadosComponent {
-  @Input() data: GeneralCarteraVA[] = [];
+  @Input() data: CarteraVA[] = [];
   headers = ['Mes', 'Total con Descuento', 'Total sin Descuento', 'Total Facturado', 'Total por Facturar'];
 }

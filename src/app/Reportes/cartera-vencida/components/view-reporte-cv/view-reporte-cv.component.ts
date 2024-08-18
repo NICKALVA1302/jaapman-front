@@ -5,6 +5,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { Localidad } from '../../../../interfaces/localidad';
+import { Chart, registerables } from 'chart.js';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -24,8 +25,15 @@ export class ViewReporteCVComponent implements OnInit {
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
   carteraVA: CarteraVA[] = [];
   GeneralCarteraVA: GeneralCarteraVA[] = [];
+  chart: any;
+
+  // Variables de estado para el loader y el mensaje de error
+  isLoading = false;
+  errorMessage = '';
+
   constructor(private carteraVencidaService: CarteraVencidaService) {
     pdfDefaultOptions.assetsFolder = 'bleeding-edge';
+    Chart.register(...registerables);
   }
 
   ngOnInit(): void {
@@ -97,111 +105,6 @@ export class ViewReporteCVComponent implements OnInit {
     } else {
       alert('Por favor, seleccione un tipo de servicio y un año para generar el reporte General.');
     }
-  }
-
-  generarPdf(): void {
-    const content: any[] = [];
-    const currentDate = new Date().toLocaleDateString('es-ES');
-  
-    function createLine(x1: number, y1: number, x2: number): object {
-      return {
-        type: 'line',
-        x1: x1,
-        y1: y1,
-        x2: x2,
-        y2: y1,
-        lineWidth: 1,
-        lineColor: 'black'
-      };
-    }
-  
-    // Encabezado con diseño específico
-    content.push({
-      alignment: 'center',
-      style: 'header',
-      columns: [
-        {
-          width: '*',
-          text: ''
-        },
-        {
-          width: 'auto',
-          stack: [
-            { text: 'CARTERA VENCIDA ANUAL', fontSize: 15, characterSpacing: 10, alignment: 'center' },
-            { canvas: [createLine(0, 5, 515), createLine(0, 10, 515)] },
-            { text: 'JUNTA ADMINISTRADORA DE AGUA POTABLE REGIONAL MANGLARALTO', fontSize: 12, margin: [0, 10, 0, 0] },
-            { text: '24900013639001 Calle 5 de junio vía a Montañita junto al Colegio Fiscal Manglaralto', fontSize: 12 }
-          ]
-        },
-        {
-          width: '*',
-          text: ''
-        }
-      ],
-      columnGap: 10
-    });
-  
-
-  if (this.carteraVA.length > 0) {
-    const firstItem = this.carteraVA[0];  // Asumiendo que todos los items tienen la misma localidad, año, etc.
-
-    content.push({
-      columns: [
-        { text: `Localidad: ${firstItem.localidad}`, style: 'infoText' },
-        { text: `Tipo de Servicio: ${this.selectedTipoServicio}`, style: 'infoText', alignment: 'right' },
-      ]
-    });
-
-    content.push({
-      columns: [
-        { text: `Año: ${firstItem.anio}`, style: 'infoText' },
-        { text: `Generado: ${currentDate}`, style: 'infoText', alignment: 'right' }
-      ]
-    });
-
-    content.push(this.createContentWithData(this.carteraVA));
-  } else {
-    content.push({
-      text: 'No hay datos disponibles para el servicio o año seleccionado.',
-      style: 'noData',
-      alignment: 'center',
-      margin: [0, 20, 0, 0]
-    });
-  }
-  
-    const dd: TDocumentDefinitions = {
-      content: content,
-      styles: {
-        header: {
-          bold: true,
-          fontSize: 16,
-          alignment: 'center',
-          margin: [0, 0, 0, 20]
-        },
-        infoText: {
-          fontSize: 12,
-          bold: true,
-          margin: [0, 0, 0, 10]
-        },
-        noData: {
-          fontSize: 14,
-          bold: true
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 12,
-          color: 'black'
-        }
-      },
-      pageSize: 'A4',
-      pageOrientation: 'landscape'
-    };
-  
-    const pdf = pdfMake.createPdf(dd);
-    pdf.getBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      this.mostrarPdf(url);
-    });
   }
   
   generarPdfGeneral(): void {
@@ -344,5 +247,220 @@ export class ViewReporteCVComponent implements OnInit {
     }
   }
 
+  obtenerNombreMes(mes: number): string {
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    return meses[mes - 1];
+  }
+
+  generarGrafico(data: GeneralCarteraVA[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const labels = data.map(item => this.obtenerNombreMes(item.mes));
+      const totalFacturado = data.map(item => item.total_facturado);
   
+      // Usar el canvas oculto
+      const canvas = document.getElementById('hiddenChart') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d');
+  
+      if (!ctx) {
+        reject('No se pudo obtener el contexto 2D del canvas');
+        return;
+      }
+  
+      // Destruir el gráfico anterior si existe
+      if (this.chart) {
+        this.chart.destroy();
+      }
+  
+      try {
+        this.chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Total Facturado',
+                data: totalFacturado,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+  
+        setTimeout(() => {
+          const chartImage = canvas.toDataURL('image/png');
+          if (chartImage && chartImage.startsWith('data:image/png')) {
+            resolve(chartImage);
+          } else {
+            reject('El dataURL generado es inválido');
+          }
+        }, 500);
+  
+      } catch (error) {
+        reject(`Error al configurar el gráfico: ${error}`);
+      }
+    });
+  }
+  
+  generarPdf(): void {
+    this.isLoading = true;
+    const content: any[] = [];
+    const currentDate = new Date().toLocaleDateString('es-ES');
+  
+    function createLine(x1: number, y1: number, x2: number): object {
+      return {
+        type: 'line',
+        x1: x1,
+        y1: y1,
+        x2: x2,
+        y2: y1,
+        lineWidth: 1,
+        lineColor: 'black'
+      };
+    }
+  
+    content.push({
+      alignment: 'center',
+      style: 'header',
+      columns: [
+        {
+          width: '*',
+          text: ''
+        },
+        {
+          width: 'auto',
+          stack: [
+            { text: 'CARTERA VENCIDA ANUAL', fontSize: 15, characterSpacing: 10, alignment: 'center' },
+            { canvas: [createLine(0, 5, 515), createLine(0, 10, 515)] },
+            { text: 'JUNTA ADMINISTRADORA DE AGUA POTABLE REGIONAL MANGLARALTO', fontSize: 12, margin: [0, 10, 0, 0] },
+            { text: '24900013639001 Calle 5 de junio vía a Montañita junto al Colegio Fiscal Manglaralto', fontSize: 12 }
+          ]
+        },
+        {
+          width: '*',
+          text: ''
+        }
+      ],
+      columnGap: 10
+    });
+  
+    if (this.carteraVA.length > 0) {
+      const firstItem = this.carteraVA[0];
+  
+      content.push({
+        columns: [
+          { text: `Localidad: ${firstItem.localidad}`, style: 'infoText' },
+          { text: `Tipo de Servicio: ${this.selectedTipoServicio}`, style: 'infoText', alignment: 'right' },
+        ]
+      });
+  
+      content.push({
+        columns: [
+          { text: `Año: ${firstItem.anio}`, style: 'infoText' },
+          { text: `Generado: ${currentDate}`, style: 'infoText', alignment: 'right' }
+        ]
+      });
+  
+      content.push(this.createContentWithData(this.carteraVA));
+  
+      this.generarGrafico(this.carteraVA).then((chartImage) => {
+        content.push({
+          image: chartImage,
+          width: 500,
+          alignment: 'center',
+          margin: [0, 20, 0, 0]
+        });
+  
+        const dd: TDocumentDefinitions = {
+          content: content,
+          styles: {
+            header: {
+              bold: true,
+              fontSize: 16,
+              alignment: 'center',
+              margin: [0, 0, 0, 20]
+            },
+            infoText: {
+              fontSize: 12,
+              bold: true,
+              margin: [0, 0, 0, 10]
+            },
+            noData: {
+              fontSize: 14,
+              bold: true
+            },
+            tableHeader: {
+              bold: true,
+              fontSize: 12,
+              color: 'black'
+            }
+          },
+          pageSize: 'A4',
+          pageOrientation: 'landscape'
+        };
+  
+        const pdf = pdfMake.createPdf(dd);
+        pdf.getBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          this.mostrarPdf(url);
+          this.isLoading = false;
+        });
+      }).catch(error => {
+        this.isLoading = false;
+        this.errorMessage = `Error al generar el gráfico: ${error}`;
+        console.error('Error al generar el gráfico:', error);
+      });
+    } else {
+      this.isLoading = false;
+      content.push({
+        text: 'No hay datos disponibles para el servicio o año seleccionado.',
+        style: 'noData',
+        alignment: 'center',
+        margin: [0, 20, 0, 0]
+      });
+  
+      const dd: TDocumentDefinitions = {
+        content: content,
+        styles: {
+          header: {
+            bold: true,
+            fontSize: 16,
+            alignment: 'center',
+            margin: [0, 0, 0, 20]
+          },
+          infoText: {
+            fontSize: 12,
+            bold: true,
+            margin: [0, 0, 0, 10]
+          },
+          noData: {
+            fontSize: 14,
+            bold: true
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 12,
+            color: 'black'
+          }
+        },
+        pageSize: 'A4',
+        pageOrientation: 'landscape'
+      };
+  
+      const pdf = pdfMake.createPdf(dd);
+      pdf.getBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        this.mostrarPdf(url);
+      });
+    }
+  }
 }

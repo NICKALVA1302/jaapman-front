@@ -13,6 +13,7 @@ import { ViewReporteVmComponent } from '../../Reportes/valoresxmes/components/vi
 import { AuthGuard } from '../../utils/auth.guard';
 import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
 import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
+import { ReporteCarteraComponent } from '../../Reportes/cartera-vencida/pages/reporte-cartera/reporte-cartera.component';
 //Rutas hijas de modulo cobros
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'clientes-suspendidos', component: ViewReporteCSComponent },
       { path: 'listado-clientes', component: ViewReporteLcComponent },
       { path: 'cartera-vencida', component: ViewReporteCVComponent },
+      { path: 'reporte-cartera', component: ReporteCarteraComponent},
       { path: 'valoresxmes', component: ViewReporteVmComponent },
       { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },
       { path: 'lectura-cliente', component: ViewLecturaClienteComponent },

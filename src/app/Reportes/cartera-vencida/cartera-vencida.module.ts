@@ -6,16 +6,21 @@ import { FormsModule } from '@angular/forms';
 import { AccesoModule } from '../../acceso/acceso.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ViewReporteCVComponent } from './components/view-reporte-cv/view-reporte-cv.component';
-import { ViewRepCarteraComponent } from './pages/view-rep-cartera/view-rep-cartera.component';
 import { CarteraRoutingModule } from './cartera-routing.module';
 import { AppRoutingConsumoModule } from '../../M_Servicios/operador/consumo-agua/app-routing-consumo.module';
-
+import { FormSeleccionComponent } from './components/form-seleccion/form-seleccion.component';
+import { ReporteCarteraComponent } from './pages/reporte-cartera/reporte-cartera.component';
+import { TablaResultadosComponent } from './components/tabla-resultados/tabla-resultados.component';
+import { GraficoComponent } from './components/grafico/grafico.component';
 
 
 @NgModule({
   declarations: [
     ViewReporteCVComponent,
-    ViewRepCarteraComponent
+    FormSeleccionComponent,
+    ReporteCarteraComponent,
+    TablaResultadosComponent,
+    GraficoComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +30,7 @@ import { AppRoutingConsumoModule } from '../../M_Servicios/operador/consumo-agua
     FormsModule,
     AccesoModule,
     NgxExtendedPdfViewerModule,
+    CarteraRoutingModule,  // Asegúrate de que el módulo de enrutamiento esté importado
   ]
 })
 export class CarteraVencidaModule { }

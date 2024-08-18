@@ -1,0 +1,21 @@
+<div *ngIf="data.length > 0; else noData">
+  <table class="table">
+    <thead>
+      <tr>
+        <th *ngFor="let header of headers">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.mes }}</td>
+        <td>{{ item.total_con_descuento | currency }}</td>
+        <td>{{ item.total_sin_descuento | currency }}</td>
+        <td>{{ item.total_facturado | currency }}</td>
+        <td>{{ item.total_por_facturar | currency }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noData>
+  <p>No hay datos disponibles para el servicio o año seleccionado.</p>
+</ng-template>

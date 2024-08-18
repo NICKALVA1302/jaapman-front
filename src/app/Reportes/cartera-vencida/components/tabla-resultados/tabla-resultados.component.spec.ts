@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewRepCarteraComponent } from './view-rep-cartera.component';
+import { TablaResultadosComponent } from './tabla-resultados.component';
 
-describe('ViewRepCarteraComponent', () => {
-  let component: ViewRepCarteraComponent;
-  let fixture: ComponentFixture<ViewRepCarteraComponent>;
+describe('TablaResultadosComponent', () => {
+  let component: TablaResultadosComponent;
+  let fixture: ComponentFixture<TablaResultadosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ViewRepCarteraComponent]
+      declarations: [TablaResultadosComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ViewRepCarteraComponent);
+    fixture = TestBed.createComponent(TablaResultadosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -17,5 +17,5 @@
   </table>
 </div>
 <ng-template #noData>
-  <p>No hay datos disponibles para el servicio o año seleccionado.</p>
+  <p *ngIf="dataLoaded">No hay datos disponibles para el servicio o año seleccionado.</p>
 </ng-template>

@@ -22,6 +22,7 @@ export class ReporteCarteraComponent {
   isLoading = false;
   errorMessage = '';
   selectedTipoServicio: string | null = null;
+  private loadingTimeout: any;
 
   @ViewChild('pdfContainer') pdfContainer!: ElementRef;
   @ViewChild(GraficoComponent) graficoComponent!: GraficoComponent; // Referencia al componente del gráfico
@@ -33,6 +34,10 @@ export class ReporteCarteraComponent {
   ngOnInit(): void {
     this.obtenerLocalidades();
     this.generateYears();
+  }
+
+  ngAfterViewInit() {
+    // Ahora `graficoComponent` y otros `ViewChild` están disponibles
   }
 
   obtenerLocalidades(): void {
@@ -53,7 +58,9 @@ export class ReporteCarteraComponent {
   handleGenerate(event: { localidadId: number | null, tipoServicio: string | null, anio: string | null }): void {
     if (event.localidadId && event.tipoServicio && event.anio) {
       this.selectedTipoServicio = event.tipoServicio;
-      this.isLoading = true;
+      this.loadingTimeout = setTimeout(() => {
+        this.isLoading = true;
+      }, 2000);
       const fechaInicio = new Date(`${event.anio}-01-01`);
       const fechaFin = new Date(`${event.anio}-12-31`);
       this.carteraVencidaService.obtenerCarteraVA(event.tipoServicio, fechaInicio, fechaFin, event.localidadId).subscribe(
@@ -62,9 +69,11 @@ export class ReporteCarteraComponent {
           this.labels = data.map(item => this.obtenerNombreMes(item.mes));
           this.chartData = data.map(item => item.total_facturado);
           this.generarPdf(); // Genera el PDF después de obtener los datos
+          clearTimeout(this.loadingTimeout); // Limpia el timeout
           this.isLoading = false;
         },
         error => {
+          clearTimeout(this.loadingTimeout); // Limpia el timeout
           this.isLoading = false;
           this.errorMessage = `Error al obtener datos: ${error.message}`;
         }
@@ -77,7 +86,9 @@ export class ReporteCarteraComponent {
   handleGenerateGeneral(event: { tipoServicio: string | null, anio: string | null }): void {
     if (event.tipoServicio && event.anio) {
       this.selectedTipoServicio = event.tipoServicio;
-      this.isLoading = true;
+      this.loadingTimeout = setTimeout(() => {
+        this.isLoading = true;
+      }, 2000);
       const fechaInicio = new Date(`${event.anio}-01-01`);
       const fechaFin = new Date(`${event.anio}-12-31`);
       this.carteraVencidaService.obtenerGeneralCarteraVA(event.tipoServicio, fechaInicio, fechaFin).subscribe(
@@ -89,9 +100,11 @@ export class ReporteCarteraComponent {
           this.labels = data.map(item => this.obtenerNombreMes(item.mes));
           this.chartData = data.map(item => item.total_facturado);
           this.generarPdfGeneral(); // Genera el PDF después de obtener los datos generales
+          clearTimeout(this.loadingTimeout); // Limpia el timeout
           this.isLoading = false;
         },
         error => {
+          clearTimeout(this.loadingTimeout); // Limpia el timeout
           this.isLoading = false;
           this.errorMessage = `Error al obtener datos: ${error.message}`;
         }

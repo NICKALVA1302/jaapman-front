@@ -10,13 +10,13 @@
   <div *ngIf="isLoading" class="loader">
     <p>Generando reporte, por favor espera...</p>
   </div>
-
+  
   <div *ngIf="errorMessage" class="alert alert-danger">
     {{ errorMessage }}
   </div>
-
-  <app-tabla-resultados [data]="generalData"></app-tabla-resultados>
-  <app-grafico [data]="chartData" [labels]="labels"></app-grafico>
-
   <div #pdfContainer class="row justify-content-center pdf-container"></div>
+  <div>
+    <!-- <app-tabla-resultados [data]="generalData"></app-tabla-resultados> -->
+    <app-grafico [data]="chartData" [labels]="labels"></app-grafico>
+    </div>
 </div>

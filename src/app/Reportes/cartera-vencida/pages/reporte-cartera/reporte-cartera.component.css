@@ -1,0 +1,5 @@
+.hidden-chart {
+    display: none; /* Oculta completamente el elemento */
+    visibility: hidden; /* También puedes usar visibility: hidden si deseas que el espacio quede reservado */
+  }
+  

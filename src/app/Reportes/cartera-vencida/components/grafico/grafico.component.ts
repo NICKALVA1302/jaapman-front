@@ -63,7 +63,7 @@ export class GraficoComponent implements OnChanges {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false, // Para que el tamaño se respete según el canvas
+          maintainAspectRatio: false,
           scales: {
             y: {
               type: 'linear',
@@ -88,23 +88,22 @@ export class GraficoComponent implements OnChanges {
       });
     }
   }
-  
+
   generarDataURL(): Promise<string> {
     return new Promise((resolve, reject) => {
+      if (!this.hiddenChart || !this.hiddenChart.nativeElement) {
+        reject('El gráfico no se ha generado correctamente o no está disponible.');
+        return;
+      }
+      
       setTimeout(() => {
-        if (this.chart) {
-          const dataURL = this.hiddenChart.nativeElement.toDataURL('image/png');
-          //console.log('Generated dataURL:', dataURL);
-          if (dataURL && dataURL.startsWith('data:image/png')) {
-            resolve(dataURL);
-          } else {
-            reject('El dataURL generado es inválido o vacío.');
-          }
+        const dataURL = this.hiddenChart.nativeElement.toDataURL('image/png');
+        if (dataURL && dataURL.startsWith('data:image/png')) {
+          resolve(dataURL);
         } else {
-          reject('El gráfico no se ha generado correctamente.');
+          reject('El dataURL generado es inválido o vacío.');
         }
-      }, 1000);
+      }, 1000); // Aumenta el tiempo de espera a 1500 ms para asegurar que el gráfico esté listo
     });
   }
-  
 }

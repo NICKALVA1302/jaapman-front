@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ViewReporteCSComponent } from '../../Reportes/Clientes/clientes-suspendidos/components/view-reporte-cs/view-reporte-cs.component';
 import { ViewReporteLcComponent } from '../../Reportes/Clientes/listado-clientes/components/view-reporte-lc/view-reporte-lc.component';
-import { ViewReporteCVComponent } from '../../Reportes/cartera-vencida/components/view-reporte-cv/view-reporte-cv.component';
 import { ViewConsumosClientesComponent } from '../../Reportes/consumos-clientes/components/view-consumos-clientes/view-consumos-clientes.component';
 import { ViewReporteDeudasComponent } from '../../Reportes/deudas-pueblo/components/view-reporte-deudas/view-reporte-deudas.component';
 import { ViewLecturaClienteComponent } from '../../Reportes/lecturas-cliente/components/view-lectura-cliente/view-lectura-cliente.component';
@@ -14,6 +13,7 @@ import { AuthGuard } from '../../utils/auth.guard';
 import { ViewCobroComponent } from './components/view-cobro/view-cobro.component';
 import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
 import { ReporteCarteraComponent } from '../../Reportes/cartera-vencida/pages/reporte-cartera/reporte-cartera.component';
+import { ReporteValoresxmesComponent } from '../../Reportes/valoresxmes/pages/reporte-valoresxmes/reporte-valoresxmes.component';
 //Rutas hijas de modulo cobros
 const routes: Routes = [
   {
@@ -32,9 +32,8 @@ const routes: Routes = [
       },
       { path: 'clientes-suspendidos', component: ViewReporteCSComponent },
       { path: 'listado-clientes', component: ViewReporteLcComponent },
-      { path: 'cartera-vencida', component: ViewReporteCVComponent },
       { path: 'reporte-cartera', component: ReporteCarteraComponent},
-      { path: 'valoresxmes', component: ViewReporteVmComponent },
+      { path: 'reporte-valoresxmes', component: ReporteValoresxmesComponent },
       { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },
       { path: 'lectura-cliente', component: ViewLecturaClienteComponent },
       { path: 'pago-cliente', component: ViewReportePagoComponent },

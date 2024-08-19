@@ -1,0 +1,12 @@
+/* reporte-valoresxmes.component.css */
+.loader {
+    text-align: center;
+    font-size: 1.2em;
+    color: #007bff;
+    margin-top: 20px;
+  }
+  
+  .alert-danger {
+    margin-top: 20px;
+  }
+  

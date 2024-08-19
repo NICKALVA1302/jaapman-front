@@ -9,7 +9,11 @@ export interface ValoresMes {
   anio: number;
   mes: number;
   fecha: Date;
+  cedula: string;
   cliente: string;
+  direccion: string;
+  telefono: string;
+  correo: string;
   total: string;
   tipo_de_servicio: string;
 }

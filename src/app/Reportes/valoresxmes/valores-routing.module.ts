@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../../utils/auth.guard';
 import { CommonModule } from '@angular/common';
 import { ViewReporteVmComponent } from './components/view-reporte-vm/view-reporte-vm.component';
+import { ReporteValoresxmesComponent } from './pages/reporte-valoresxmes/reporte-valoresxmes.component';
 
 
 
 //Rutas hijas de modulo cobros
 const routes: Routes = [
-  { path: '', component: ViewReporteVmComponent },
+  { path: '', component: ReporteValoresxmesComponent },
   // Otras rutas si las hay...
 ];
 

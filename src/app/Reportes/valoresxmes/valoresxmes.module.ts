@@ -7,11 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { AccesoModule } from '../../acceso/acceso.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { ViewReporteVmComponent } from './components/view-reporte-vm/view-reporte-vm.component';
+import { FormSeleccionComponent } from './components/form-seleccion/form-seleccion.component';
+import { ReporteValoresxmesComponent } from './pages/reporte-valoresxmes/reporte-valoresxmes.component';
 
 
 @NgModule({
   declarations: [
-    ViewReporteVmComponent
+    ViewReporteVmComponent,
+    FormSeleccionComponent,
+    ReporteValoresxmesComponent
   ],
   imports: [
     CommonModule,

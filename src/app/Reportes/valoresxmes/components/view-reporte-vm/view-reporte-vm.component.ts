@@ -5,6 +5,7 @@ import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { style } from '@angular/animations';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 type MonthKey = 'Enero' | 'Febrero' | 'Marzo' | 'Abril' | 'Mayo' | 'Junio' |
@@ -199,37 +200,39 @@ export class ViewReporteVmComponent {
   }
 
   createContentWithData(data: ValoresMes[]): any {
-    // Preparar los encabezados de la tabla
     const headers = [
-      { text: 'Fecha', style: 'tableHeader' },
-      { text: 'Cliente', style: 'tableHeader' },
-      { text: 'Tipo de Servicio', style: 'tableHeader' },
-      { text: 'Total', style: 'tableHeader' }
+        { text: 'Fecha', style: 'tableHeader' },
+        { text: 'Cedula', style: 'tableHeader'},
+        { text: 'Cliente', style: 'tableHeader' },
+        { text: 'Direccion', style: 'tableHeader'},
+        { text: 'Telefono', style: 'tableHeader'},
+        { text: 'Email', style: 'tableHeader'},
+        { text: 'Total', style: 'tableHeader' }
     ];
-  
-    // Preparar los cuerpos de la tabla
+
     const body = data.map(item => {
-      // Asegurar que la fecha es un objeto Date
-      const fechaObj = new Date(item.fecha);
-      return [
-        { text: fechaObj.toLocaleDateString(), style: 'tableData' }, // Usar toLocaleDateString() correctamente
-        { text: item.cliente, style: 'tableData' },
-        { text: item.tipo_de_servicio, style: 'tableData' },
-        { text: `$${item.total}`, style: 'tableData' }
-      ];
+        const fechaObj = new Date(item.fecha);
+        return [
+            { text: fechaObj.toLocaleDateString(), style: 'tableData' },
+            { text: item.cedula, style: 'tableData' },
+            { text: item.cliente, style: 'tableData' },
+            { text: item.direccion, style: 'tableData' },
+            { text: item.telefono, style: 'tableData' },
+            { text: item.correo, style: 'tableData' },
+            { text: `$${item.total}`, style: 'tableData' }
+        ];
     });
-  
-    // Construir la tabla para el PDF
+
     return {
-      table: {
-        headerRows: 1,
-        widths: ['auto', '*', 'auto', 'auto'],
-        body: [headers, ...body]
-      },
-      layout: 'lightHorizontalLines' // Estilo del diseño de la tabla
+        table: {
+            headerRows: 1,
+            widths: ['auto', '*', '*', 'auto', 'auto', 'auto', 'auto'],
+            body: [headers, ...body]
+        },
+        layout: 'lightHorizontalLines'
     };
-  }
-  
+}
+
   mostrarPdf(pdfUrl: string): void {
     if (this.pdfContainer) {
       const iframe = document.createElement('iframe');

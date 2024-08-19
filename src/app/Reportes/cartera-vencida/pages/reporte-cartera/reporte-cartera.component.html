@@ -1,19 +1,20 @@
 <div class="container">
   <h4 class="display-5 text-center mb-4">CARTERA VENCIDA ANUAL 2.0</h4>
   <app-form-seleccion 
-    [localidades]="localidades" 
-    [years]="years" 
     (generar)="handleGenerate($event)" 
     (generarGeneral)="handleGenerateGeneral($event)">
   </app-form-seleccion>
 
-  <div *ngIf="isLoading" class="loader">
+   <!-- Indicador de carga -->
+   <div *ngIf="isLoading" class="loader">
     <p>Generando reporte, por favor espera...</p>
   </div>
   
+  <!-- Mensaje de error -->
   <div *ngIf="errorMessage" class="alert alert-danger">
     {{ errorMessage }}
   </div>
+  
   <div #pdfContainer class="row justify-content-center pdf-container"></div>
   <div>
     <!-- <app-tabla-resultados [data]="generalData"></app-tabla-resultados> -->

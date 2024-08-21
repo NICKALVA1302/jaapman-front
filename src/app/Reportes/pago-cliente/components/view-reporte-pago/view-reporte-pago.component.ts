@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { PagoCliente } from '../../models/interfaces';
 import { PagoClienteService } from '../../services/pago-cliente.service';
 @Component({
@@ -12,27 +12,31 @@ export class ViewReportePagoComponent {
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
   datos: PagoCliente[] = [];
   cedula: string | '' = '';
+  fechaInicio: string = '';
+  fechaFin: string = '';
   constructor(public servicioReportes: PagoClienteService) {}
   ngOnInit() {}
   getInfo(): void {
-    this.servicioReportes.getDatos(this.cedula).subscribe(
-      (response: any) => {
-        if (response) {
-          this.datos = response;
-          console.log(this.datos);
-          console.log('datos' + response);
+    this.servicioReportes
+      .getDatos(this.cedula, this.fechaInicio, this.fechaFin)
+      .subscribe(
+        (response: any) => {
+          if (response) {
+            this.datos = response;
+            console.log(this.fechaInicio);
+            console.log(this.fechaFin);
 
-          // this.formatData();
-          this.generarPdf();
+            // this.formatData();
+            this.generarPdf();
+          }
+        },
+        (error: any) => {
+          console.error('Error al obtener datos:', error);
         }
-      },
-      (error: any) => {
-        console.error('Error al obtener datos:', error);
-      }
-    );
+      );
   }
   generarPdf() {
-    let totalDeuda = 0;
+    let total = 0;
     const content: any[] = [];
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES', {
@@ -151,7 +155,7 @@ export class ViewReportePagoComponent {
             text: ' ',
           },
           {
-            text: 'Fecha: ' + fechaFormateada,
+            text: 'Fecha de emisión: ' + fechaFormateada,
           },
         ],
       });
@@ -168,31 +172,79 @@ export class ViewReportePagoComponent {
           },
         ],
       });
-      let tableBody = [
+      let tableBody: any[] = [
         [
-          { text: '#', style: 'tableHeader' },
-          { text: 'Tipo', style: 'tableHeader' },
-          { text: 'Descripcion', style: 'tableHeader' },
-          { text: 'Total A Pagar', style: 'tableHeader' },
-
-          { text: 'Abono', style: 'tableHeader' },
-          { text: 'Deuda', style: 'tableHeader' },
-          { text: 'Estado', style: 'tableHeader' },
+          { text: '#', style: 'tableHeader', alignment: 'center' },
+          { text: 'Tipo', style: 'tableHeader', alignment: 'center' },
+          { text: 'Descripcion', style: 'tableHeader', alignment: 'center' },
+          { text: 'Fecha Del Pago', style: 'tableHeader', alignment: 'center' },
+          { text: 'Total A Pagar', style: 'tableHeader', alignment: 'center' },
+          { text: 'Abono', style: 'tableHeader', alignment: 'center' },
+          { text: 'Deuda', style: 'tableHeader', alignment: 'center' },
+          { text: 'Estado', style: 'tableHeader', alignment: 'center' },
         ],
       ];
 
       this.datos.forEach((cliente, index) => {
+        total += cliente.Deuda ?? 0;
+        const formattedDate = this.formatDate(cliente.Fecha);
+
         tableBody.push([
-          { text: String(index + 1), style: 'tableContent' }, // Número de fila
-          { text: cliente.Tipo ?? '', style: 'tableContent' },
+          {
+            text: String(index + 1),
+            style: 'tableContent',
+            alignment: 'center',
+          }, // Número de fila
+          {
+            text: cliente.Tipo ?? '',
+            style: 'tableContent',
+            alignment: 'center',
+          },
           {
             text: cliente.Descripcion ?? 'Sin Descripcion',
             style: 'tableContent',
+            alignment: 'center',
           },
-          { text: cliente.Total ?? '', style: 'tableContent' },
-          { text: cliente.Abono ?? '', style: 'tableContent' },
-          { text: cliente.Deuda ?? '', style: 'tableContent' },
-          { text: cliente.Estado ?? '', style: 'tableContent' },
+          {
+            text: formattedDate ?? '',
+            style: 'tableContent',
+            alignment: 'center',
+          },
+          {
+            text:
+              '$' +
+              (cliente.Total ?? 0).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+            style: 'tableContent',
+            alignment: 'right' as any,
+          } as Content,
+          {
+            text:
+              '$' +
+              (cliente.Abono ?? 0).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+            style: 'tableContent',
+            alignment: 'right' as any,
+          } as Content,
+          {
+            text:
+              '$' +
+              (cliente.Deuda ?? 0).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+            style: 'tableContent',
+            alignment: 'right' as any,
+          } as Content,
+          {
+            text: cliente.Estado ?? '',
+            style: 'tableContent',
+            alignment: 'center',
+          },
         ]);
       });
 
@@ -202,6 +254,41 @@ export class ViewReportePagoComponent {
           headerRows: 1,
           body: tableBody,
         },
+      });
+      content.push({
+        alignment: 'right', // Alinea el contenedor a la derecha
+        columns: [
+          {
+            stack: [
+              {
+                style: 'tableExampleResumen', // Estilo específico para la tabla de RESUMEN
+                table: {
+                  headerRows: 1,
+                  widths: ['auto', 'auto'], // Ajusta el ancho de las columnas aquí (puedes usar 'auto' o un valor específico en porcentaje)
+                  body: [
+                    [
+                      {
+                        text: 'Total De La Deuda En El Rango De Fechas',
+                        style: 'tableHeader',
+                        alignment: 'center',
+                      },
+                      {
+                        text:
+                          '$' +
+                          (total ?? 0).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }),
+                        style: 'tableHeader',
+                        border: [true, true, true, true],
+                      },
+                    ],
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       });
     }
 
@@ -247,7 +334,7 @@ export class ViewReportePagoComponent {
   }
   formatData() {
     this.datos.forEach((data) => {
-      data.Abono = this.formatDate(data.Abono);
+      data.Fecha = this.formatDate(data.Fecha);
     });
   }
   formatDate(isoDate: any): string {

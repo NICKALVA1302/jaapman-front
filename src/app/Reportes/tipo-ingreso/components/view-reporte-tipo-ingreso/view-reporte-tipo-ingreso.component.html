@@ -1,5 +1,5 @@
 <div class="container">
-  <h4 class="display-5 text-center mb-4">Ingreso por tipo de recaudación</h4>
+  <h4 class="display-5 text-center mb-4">Ingreso Por Tipo De Recaudación</h4>
   <div class="container d-flex justify-content-center align-items-center">
     <label for="localidad" class="me-2">Tipo de ingreso: </label>
     <select
@@ -27,6 +27,7 @@
       type="button"
       class="btn btn-primary btn-sm"
       (click)="obtenerDatos()"
+      [disabled]="!selectedLocalidadId || !selectedTipo"
     >
       Generar
     </button>

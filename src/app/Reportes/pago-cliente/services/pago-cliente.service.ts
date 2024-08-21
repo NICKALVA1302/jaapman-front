@@ -15,10 +15,14 @@ export class PagoClienteService {
     this.myAppUrl = enviroment.endpoint;
     (this.myApiURL = 'api/login'), (this.myApiURLCajero = 'api/cajero');
   }
-  getDatos(cedula: string): Observable<PagoCliente[]> {
+  getDatos(
+    cedula: string,
+    fechaInicio: string,
+    fechaFin: string
+  ): Observable<PagoCliente[]> {
     return this.http.post<PagoCliente[]>(
       `${this.myAppUrl}${this.myApiURLCajero}/getPagoCliente`,
-      { cedula }
+      { cedula, fechaInicio, fechaFin }
     );
   }
 }

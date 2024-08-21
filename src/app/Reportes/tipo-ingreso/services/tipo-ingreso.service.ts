@@ -28,4 +28,10 @@ export class TipoIngresoService {
       { localidad }
     );
   }
+  getDatosAlcantarillado(localidad: string): Observable<Mantenimeinto[]> {
+    return this.http.post<Mantenimeinto[]>(
+      `${this.myAppUrl}${this.myApiURLCajero}/getrecudacionAlca`,
+      { localidad }
+    );
+  }
 }

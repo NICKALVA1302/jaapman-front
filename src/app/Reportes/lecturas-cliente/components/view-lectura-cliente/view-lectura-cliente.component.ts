@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { Anio, LecturaUser } from '../../models/interfaces';
 import { LecturaClienteService } from '../../services/lectura-cliente.service';
 
@@ -14,7 +14,7 @@ export class ViewLecturaClienteComponent {
   anios: Anio[] = [];
 
   selectedAnio: string | '' = '';
-  cedula: string | '' = '';
+  cedula: string = '';
   datos: LecturaUser[] = [];
   constructor(public servicioReportes: LecturaClienteService) {}
   ngOnInit() {
@@ -36,8 +36,11 @@ export class ViewLecturaClienteComponent {
       (response: any) => {
         if (response) {
           this.datos = response;
-          this.formatData();
-          this.generarPdf();
+          if (this.datos.length === 0) {
+            console.log('no hay datos');
+          } else {
+            this.generarPdf();
+          }
         }
       },
       (error: any) => {
@@ -47,7 +50,11 @@ export class ViewLecturaClienteComponent {
   }
 
   obtenerDatosClientes() {
-    this.getInfo();
+    if (this.cedula.length === 0 || this.selectedAnio.length === 0) {
+      console.log('Seleccioen las cosas');
+    } else {
+      this.getInfo();
+    }
   }
   onSelectAnio(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -55,7 +62,7 @@ export class ViewLecturaClienteComponent {
     this.selectedAnio = selectedNombre;
   }
   generarPdf() {
-    let totalDeuda = 0;
+    let total = 0;
     const content: any[] = [];
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES', {
@@ -174,7 +181,7 @@ export class ViewLecturaClienteComponent {
             text: ' ',
           },
           {
-            text: 'Fecha: ' + fechaFormateada,
+            text: 'Fecha de emisión: ' + fechaFormateada,
           },
         ],
       });
@@ -191,7 +198,7 @@ export class ViewLecturaClienteComponent {
           },
         ],
       });
-      let tableBody = [
+      let tableBody: any[] = [
         [
           { text: '#', style: 'tableHeader' },
           { text: 'Año', style: 'tableHeader' },
@@ -199,14 +206,13 @@ export class ViewLecturaClienteComponent {
           { text: 'Lectura Anterior', style: 'tableHeader' },
           { text: 'Lectura Actual', style: 'tableHeader' },
           { text: 'Consumo', style: 'tableHeader' },
-          { text: 'FechaAbono', style: 'tableHeader' },
-          { text: 'Deuda', style: 'tableHeader' },
-          { text: 'Valor', style: 'tableHeader' },
+          { text: 'Total', style: 'tableHeader' },
           { text: 'Estado', style: 'tableHeader' },
         ],
       ];
 
       this.datos.forEach((cliente, index) => {
+        total += cliente.Saldo ?? 0;
         tableBody.push([
           { text: String(index + 1), style: 'tableContent' }, // Número de fila
           { text: cliente.Año ?? '', style: 'tableContent' },
@@ -214,9 +220,16 @@ export class ViewLecturaClienteComponent {
           { text: cliente.Anterior ?? '', style: 'tableContent' },
           { text: cliente.Actual ?? '', style: 'tableContent' },
           { text: cliente.Consumo ?? '', style: 'tableContent' },
-          { text: cliente.Abono ?? '', style: 'tableContent' },
-          { text: cliente.COM ?? '', style: 'tableContent' },
-          { text: cliente.Valor ?? '', style: 'tableContent' },
+          {
+            text:
+              '$' +
+              (cliente.Saldo ?? 0).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
+            style: 'tableContent',
+            alignment: 'right' as any,
+          } as Content,
           { text: cliente.Estado ?? '', style: 'tableContent' },
         ]);
       });
@@ -227,6 +240,42 @@ export class ViewLecturaClienteComponent {
           headerRows: 1,
           body: tableBody,
         },
+      });
+
+      content.push({
+        alignment: 'right', // Alinea el contenedor a la derecha
+        columns: [
+          {
+            stack: [
+              {
+                style: 'tableExampleResumen', // Estilo específico para la tabla de RESUMEN
+                table: {
+                  headerRows: 1,
+                  widths: ['auto', 'auto'], // Ajusta el ancho de las columnas aquí (puedes usar 'auto' o un valor específico en porcentaje)
+                  body: [
+                    [
+                      {
+                        text: 'Total Del Consumo Anual ',
+                        style: 'tableHeader',
+                        alignment: 'center',
+                      },
+                      {
+                        text:
+                          '$' +
+                          (total ?? 0).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }),
+                        style: 'tableHeader',
+                        border: [true, true, true, true],
+                      },
+                    ],
+                  ],
+                },
+              },
+            ],
+          },
+        ],
       });
     }
 
@@ -270,18 +319,18 @@ export class ViewLecturaClienteComponent {
       this.mostrarPdf(url);
     });
   }
-  formatData() {
-    this.datos.forEach((data) => {
-      data.Abono = this.formatDate(data.Abono);
-    });
-  }
-  formatDate(isoDate: any): string {
-    if (typeof isoDate === 'string' && isoDate.includes('T')) {
-      return isoDate.split('T')[0];
-    } else {
-      return isoDate;
-    }
-  }
+  // formatData() {
+  //   this.datos.forEach((data) => {
+  //     data.Abono = this.formatDate(data.Abono);
+  //   });
+  // }
+  // formatDate(isoDate: any): string {
+  //   if (typeof isoDate === 'string' && isoDate.includes('T')) {
+  //     return isoDate.split('T')[0];
+  //   } else {
+  //     return isoDate;
+  //   }
+  // }
 
   mostrarPdf(pdfUrl: string) {
     if (this.pdfContainer) {

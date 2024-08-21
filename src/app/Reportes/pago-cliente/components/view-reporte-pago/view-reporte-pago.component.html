@@ -1,5 +1,5 @@
 <div class="container">
-  <h4 class="display-5 text-center mb-4">Pagos por cliente</h4>
+  <h4 class="display-5 text-center mb-4">Pagos Por Cliente</h4>
   <div class="container d-flex justify-content-center align-items-center">
     <label for="cedula" class="me-2">Cédula:</label>
     <input
@@ -10,7 +10,31 @@
       placeholder="Ingrese su cédula"
       style="width: 200px"
     />
-    <button type="button" class="btn btn-primary btn-sm" (click)="getInfo()">
+    <!-- Campo de fecha de inicio -->
+    <label for="fechaInicio" class="me-2">Fecha Inicio:</label>
+    <input
+      id="fechaInicio"
+      type="date"
+      class="form-control form-control-sm me-2"
+      [(ngModel)]="fechaInicio"
+      style="width: 200px"
+    />
+
+    <!-- Campo de fecha de fin -->
+    <label for="fechaFin" class="me-2">Fecha Fin:</label>
+    <input
+      id="fechaFin"
+      type="date"
+      class="form-control form-control-sm me-2"
+      [(ngModel)]="fechaFin"
+      style="width: 200px"
+    />
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="getInfo()"
+      [disabled]="!cedula || !fechaInicio || !fechaFin"
+    >
       Generar
     </button>
   </div>

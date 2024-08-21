@@ -17,8 +17,5 @@ export interface LecturaUser {
   Actual: string;
   Consumo: string;
   Estado: string;
-  Abono: string;
-  COM: string;
-  Valor: string;
-  Saldo: string;
+  Saldo: number;
 }

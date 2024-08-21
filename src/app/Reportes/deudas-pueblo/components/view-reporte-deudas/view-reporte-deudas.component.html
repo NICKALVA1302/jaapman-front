@@ -1,5 +1,5 @@
 <div class="container">
-  <h4 class="display-5 text-center mb-4">Deudas Acumuladas Por Pueblo</h4>
+  <h4 class="display-5 text-center mb-4">Deudas Acumuladas Por Localidad</h4>
   <div class="container d-flex justify-content-center align-items-center">
     <label for="localidad" class="me-2">Localidad:</label>
     <select
@@ -17,6 +17,7 @@
       type="button"
       class="btn btn-primary btn-sm"
       (click)="obtenerDatosClientes()"
+      [disabled]="!selectedLocalidadId"
     >
       Generar
     </button>

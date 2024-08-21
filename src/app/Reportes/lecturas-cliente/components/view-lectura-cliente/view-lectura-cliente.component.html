@@ -16,7 +16,7 @@
     <label for="cedula" class="me-2">Cédula:</label>
     <input
       id="cedula"
-      type="text"
+      type="number"
       class="form-control form-control-sm me-2"
       [(ngModel)]="cedula"
       placeholder="Ingrese su cédula"
@@ -26,6 +26,7 @@
       type="button"
       class="btn btn-primary btn-sm"
       (click)="obtenerDatosClientes()"
+      [disabled]="!cedula || !selectedAnio"
     >
       Generar
     </button>

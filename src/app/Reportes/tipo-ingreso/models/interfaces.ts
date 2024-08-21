@@ -1,16 +1,18 @@
 export interface AlcantarilladoInterface {
+  cedula: string;
   nombre: string;
   apellido: string;
-  fecha: string;
-  inscrito: string;
-  rango: string;
-  valor: string;
+  direccion: string;
+  createdAt: string;
+  inscrito: number;
+  Estado: string;
 }
 
 export interface MantenimientoInterface {
+  cedula: string;
   nombre: string;
   apellido: string;
-  total: string;
+  total: number;
   createdAt: string;
   localidad: string;
   direccion: string;

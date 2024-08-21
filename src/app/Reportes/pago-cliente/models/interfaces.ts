@@ -5,10 +5,11 @@ export interface PagoCliente {
   PersonaDireccion: string;
   PersonaTelefono: string;
 
-  Total: string;
+  Fecha: string;
+  Total: number;
   Tipo: string;
-  Abono: string;
-  Deuda: string;
+  Abono: number;
+  Deuda: number;
   Descripcion: string;
   Estado: string;
 }

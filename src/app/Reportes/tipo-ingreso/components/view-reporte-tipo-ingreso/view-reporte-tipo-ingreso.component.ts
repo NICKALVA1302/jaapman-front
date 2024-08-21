@@ -1,9 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { Localidad } from '../../../deudas-pueblo/models/localidades';
-import { MantenimientoInterface } from '../../models/interfaces';
+import {
+  AlcantarilladoInterface,
+  MantenimientoInterface,
+} from '../../models/interfaces';
 import { TipoIngresoService } from '../../services/tipo-ingreso.service';
 
 @Component({
@@ -16,6 +19,8 @@ export class ViewReporteTipoIngresoComponent {
   selectedLocalidadId: string | '' = '';
   selectedTipo: string | null = null;
   datosPorMantenimiento: MantenimientoInterface[] = [];
+  datosPorAlcantarillado: AlcantarilladoInterface[] = [];
+
   @ViewChild('pdfContainer') pdfContainer: ElementRef | undefined;
 
   constructor(public servicioReportes: TipoIngresoService) {
@@ -29,7 +34,6 @@ export class ViewReporteTipoIngresoComponent {
     this.servicioReportes.obtenerLocalidades().subscribe(
       (Localidad: Localidad[]) => {
         this.localidades = Localidad; //lista de localidades guardada en localidades
-        console.log(this.localidades);
       },
       (error) => {
         console.error(error);
@@ -45,6 +49,14 @@ export class ViewReporteTipoIngresoComponent {
   }
   //Obtener datos de los Respuestas x localidad
   obtenerDatos(): void {
+    if (this.selectedTipo === 'Mantenimiento') {
+      this.getInfoMantenimiento();
+    } else {
+      this.getInfoAlcantarillado();
+    }
+    console.log(this.selectedTipo);
+  }
+  getInfoMantenimiento() {
     this.servicioReportes
       .getDatosMantenimiento(this.selectedLocalidadId)
       .subscribe(
@@ -60,9 +72,25 @@ export class ViewReporteTipoIngresoComponent {
         }
       );
   }
+  getInfoAlcantarillado() {
+    this.servicioReportes
+      .getDatosAlcantarillado(this.selectedLocalidadId)
+      .subscribe(
+        (response: any) => {
+          if (response) {
+            this.datosPorAlcantarillado = response;
+            this.generarPdf();
+            console.log(this.datosPorAlcantarillado);
+          }
+        },
+        (error: any) => {
+          console.error('Error al obtener datos por localidad:', error);
+        }
+      );
+  }
 
   generarPdf() {
-    let totalDeuda = 0;
+    let total = 0;
     const content: any[] = [];
     const fechaActual = new Date();
     const fechaFormateada = fechaActual.toLocaleDateString('es-ES', {
@@ -71,7 +99,8 @@ export class ViewReporteTipoIngresoComponent {
       year: 'numeric',
     });
 
-    if (this.datosPorMantenimiento.length !== 0) {
+    //this.datosPorMantenimiento.length !== 0
+    if (true) {
       // Verificar si el cliente tiene planillas registradas
       content.push({
         canvas: [
@@ -112,7 +141,10 @@ export class ViewReporteTipoIngresoComponent {
             alignment: 'center',
             stack: [
               {
-                text: 'Recudacion por tipo de Ingreso: MAntenimiento',
+                text:
+                  this.selectedTipo === 'Alcantarillado'
+                    ? 'RECUDACIÓN POR TIPO DE INGRESO: ALCANTARILLADO'
+                    : 'RECUDACIÓN POR TIPO DE INGRESO: MANTENIMIENTO',
               },
               {
                 canvas: [
@@ -133,40 +165,167 @@ export class ViewReporteTipoIngresoComponent {
           },
         },
       });
-      let tableBody = [
-        [
-          { text: '#', style: 'tableHeader' },
-          { text: 'Nombre', style: 'tableHeader' },
-          { text: 'Apellido', style: 'tableHeader' },
-          { text: 'Total', style: 'tableHeader' },
-          { text: 'Fecha', style: 'tableHeader' },
-          { text: 'Localidad', style: 'tableHeader' },
-          { text: 'Direccion', style: 'tableHeader' },
-        ],
-      ];
-
-      this.datosPorMantenimiento.forEach((Respuesta, index) => {
-        tableBody.push([
-          { text: String(index + 1), style: 'tableContent' }, // Número de fila
-          { text: Respuesta.nombre ?? '', style: 'tableContent' },
-          { text: Respuesta.apellido ?? '', style: 'tableContent' },
-          { text: Respuesta.total ?? '', style: 'tableContent' },
-          { text: Respuesta.createdAt ?? '', style: 'tableContent' },
-          { text: Respuesta.localidad ?? '', style: 'tableContent' },
-          { text: Respuesta.direccion ?? '', style: 'tableContent' },
-        ]);
-      });
-
-      // Add the table to the content
       content.push({
-        style: 'tableExample',
-        table: {
-          headerRows: 1,
-          body: tableBody,
-        },
+        columns: [
+          {
+            text: '',
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: '',
+          },
+        ],
+      });
+      content.push({
+        columns: [
+          {
+            text: 'Localidad: ' + this.selectedLocalidadId.toUpperCase(),
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: 'Fecha de emisión: ' + fechaFormateada,
+          },
+        ],
+      });
+      content.push({
+        columns: [
+          {
+            text: '',
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: '',
+          },
+        ],
       });
 
-      // });
+      if (this.selectedTipo === 'Alcantarillado') {
+        let tableBody: any[] = [
+          [
+            { text: '#', style: 'tableHeader' },
+            { text: 'Cedula', style: 'tableHeader' },
+            { text: 'Nombre', style: 'tableHeader' },
+            { text: 'Apellido', style: 'tableHeader' },
+            { text: 'Direccion', style: 'tableHeader' },
+            { text: 'Fecha', style: 'tableHeader' },
+            { text: 'Inscrito', style: 'tableHeader' },
+            { text: 'Estado', style: 'tableHeader' },
+          ],
+        ];
+
+        this.datosPorAlcantarillado.forEach((Respuesta, index) => {
+          const formattedDate = this.formatDate(Respuesta.createdAt);
+          tableBody.push([
+            { text: String(index + 1), style: 'tableContent' }, // Número de fila
+            { text: Respuesta.cedula ?? '', style: 'tableContent' },
+            { text: Respuesta.nombre ?? '', style: 'tableContent' },
+            { text: Respuesta.apellido ?? '', style: 'tableContent' },
+            { text: Respuesta.direccion ?? '', style: 'tableContent' },
+            { text: formattedDate ?? '', style: 'tableContent' },
+            {
+              text: Respuesta.inscrito === 1 ? 'SI' : 'NO' ?? '',
+              style: 'tableContent',
+            },
+
+            { text: Respuesta.Estado ?? '', style: 'tableContent' },
+          ]);
+        });
+
+        // Add the table to the content
+        content.push({
+          style: 'tableExample',
+          table: {
+            headerRows: 1,
+            body: tableBody,
+          },
+        });
+      } else {
+        let tableBody: any[] = [
+          [
+            { text: '#', style: 'tableHeader' },
+            { text: 'Cedula', style: 'tableHeader' },
+            { text: 'Nombre', style: 'tableHeader' },
+            { text: 'Apellido', style: 'tableHeader' },
+            { text: 'Fecha', style: 'tableHeader' },
+            { text: 'Direccion', style: 'tableHeader' },
+            { text: 'Total', style: 'tableHeader' },
+          ],
+        ];
+
+        this.datosPorMantenimiento.forEach((Respuesta, index) => {
+          total += Respuesta.total ?? 0;
+          const formattedDate = this.formatDate(Respuesta.createdAt);
+          tableBody.push([
+            { text: String(index + 1), style: 'tableContent' }, // Número de fila
+            { text: Respuesta.cedula ?? '', style: 'tableContent' },
+            { text: Respuesta.nombre ?? '', style: 'tableContent' },
+            { text: Respuesta.apellido ?? '', style: 'tableContent' },
+            { text: formattedDate ?? '', style: 'tableContent' },
+            { text: Respuesta.direccion ?? '', style: 'tableContent' },
+            {
+              text:
+                '$' +
+                (Respuesta.total ?? 0).toLocaleString('en-US', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }),
+              style: 'tableContent',
+              alignment: 'right' as any,
+            } as Content,
+          ]);
+        });
+
+        // Add the table to the content
+        content.push({
+          style: 'tableExample',
+          table: {
+            headerRows: 1,
+            body: tableBody,
+          },
+        });
+        content.push({
+          alignment: 'right', // Alinea el contenedor a la derecha
+          columns: [
+            {
+              width: 'auto',
+              stack: [
+                {
+                  style: 'tableExampleResumen', // Estilo específico para la tabla de RESUMEN
+                  table: {
+                    headerRows: 1,
+                    widths: ['auto', 'auto'], // Ajusta el ancho de las columnas aquí (puedes usar 'auto' o un valor específico en porcentaje)
+                    body: [
+                      [
+                        {
+                          text: 'Total Por Localidad',
+                          style: 'tableHeader',
+                          alignment: 'center',
+                        },
+                        {
+                          text:
+                            '$' +
+                            (total ?? 0).toLocaleString('en-US', {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }),
+                          style: 'tableHeader',
+                          border: [true, true, true, true],
+                        },
+                      ],
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        });
+      }
 
       // Definir el documento PDF
       const dd: TDocumentDefinitions = {
@@ -207,6 +366,18 @@ export class ViewReporteTipoIngresoComponent {
         const url = URL.createObjectURL(blob);
         this.mostrarPdf(url);
       });
+    }
+  }
+  formatData() {
+    this.datosPorMantenimiento.forEach((data) => {
+      data.createdAt = this.formatDate(data.createdAt);
+    });
+  }
+  formatDate(isoDate: any): string {
+    if (typeof isoDate === 'string' && isoDate.includes('T')) {
+      return isoDate.split('T')[0];
+    } else {
+      return isoDate;
     }
   }
   mostrarPdf(pdfUrl: string) {

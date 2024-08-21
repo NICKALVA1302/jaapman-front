@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { DeudaUsuario, Localidad } from '../../models/localidades';
 import { DeudasPuebloService } from '../../services/deudas-pueblo.service';
 @Component({
@@ -26,8 +26,7 @@ export class ViewReporteDeudasComponent {
   obtenerLocalidades(): void {
     this.servicioReportes.obtenerLocalidades().subscribe(
       (Localidad: Localidad[]) => {
-        this.localidades = Localidad; //lista de localidades guardada en localidades
-        console.log(this.localidades);
+        this.localidades = Localidad;
       },
       (error) => {
         console.error(error);
@@ -38,7 +37,6 @@ export class ViewReporteDeudasComponent {
     const selectElement = event.target as HTMLSelectElement;
     const selectedNombre = selectElement.value;
     this.selectedLocalidadId = selectedNombre;
-    console.log(this.selectedLocalidadId);
   }
 
   //Obtener ID de localidad
@@ -48,23 +46,32 @@ export class ViewReporteDeudasComponent {
     this.selectedLocalidadId = selectedValue;
     this.obtenerDatosClientes();
   }
-
-  //Obtener datos de los clientes x localidad
-  obtenerDatosClientes(): void {
+  getInfo() {
     this.servicioReportes
       .getDatosPorLocalidad(this.selectedLocalidadId)
       .subscribe(
         (response: any) => {
           if (response) {
             this.datosPorLocalidad = response;
-            this.generarPdf();
-            console.log(this.datosPorLocalidad);
+            if (this.datosPorLocalidad.length === 0) {
+              console.log('no hay datos');
+            } else {
+              this.generarPdf();
+            }
           }
         },
         (error: any) => {
           console.error('Error al obtener datos por localidad:', error);
         }
       );
+  }
+  //Obtener datos de los clientes x localidad
+  obtenerDatosClientes(): void {
+    if (this.selectedLocalidadId.length === 0) {
+      console.log('Seleccioen las cosas');
+    } else {
+      this.getInfo();
+    }
   }
 
   generarPdf() {
@@ -118,7 +125,7 @@ export class ViewReporteDeudasComponent {
             alignment: 'center',
             stack: [
               {
-                text: 'DEUDAS ACUMULADAS POR PUEBLO',
+                text: 'DEUDAS ACUMULADAS POR LOCALIDAD',
               },
               {
                 canvas: [
@@ -139,14 +146,53 @@ export class ViewReporteDeudasComponent {
           },
         },
       });
-      let tableBody = [
+      content.push({
+        columns: [
+          {
+            text: '',
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: '',
+          },
+        ],
+      });
+      content.push({
+        columns: [
+          {
+            text: 'Localidad: ' + this.selectedLocalidadId.toUpperCase(),
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: 'Fecha de emisión: ' + fechaFormateada,
+          },
+        ],
+      });
+      content.push({
+        columns: [
+          {
+            text: '',
+          },
+          {
+            text: ' ',
+          },
+          {
+            text: '',
+          },
+        ],
+      });
+      let tableBody: any[] = [
         [
           { text: '#', style: 'tableHeader' },
           { text: 'Cedula', style: 'tableHeader' },
           { text: 'Nombre', style: 'tableHeader' },
           { text: 'Apellido', style: 'tableHeader' },
           { text: 'Direccion', style: 'tableHeader' },
-          { text: 'Deuda pendiente', style: 'tableHeader' },
+          { text: 'Deuda Pendiente', style: 'tableHeader' },
         ],
       ];
 
@@ -159,9 +205,15 @@ export class ViewReporteDeudasComponent {
           { text: cliente.apellido ?? '', style: 'tableContent' },
           { text: cliente.direccion ?? '', style: 'tableContent' },
           {
-            text: String(cliente.deuda_pendiente ?? ''),
+            text:
+              '$' +
+              (cliente.deuda_pendiente ?? 0).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }),
             style: 'tableContent',
-          },
+            alignment: 'right' as any,
+          } as Content,
         ]);
       });
 
@@ -186,12 +238,17 @@ export class ViewReporteDeudasComponent {
                   body: [
                     [
                       {
-                        text: 'Total Deuda Por Pueblo',
+                        text: 'Total Deuda Por Localidad',
                         style: 'tableHeader',
                         alignment: 'center',
                       },
                       {
-                        text: totalDeuda ?? '',
+                        text:
+                          '$' +
+                          (totalDeuda ?? 0).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }),
                         style: 'tableHeader',
                         border: [true, true, true, true],
                       },

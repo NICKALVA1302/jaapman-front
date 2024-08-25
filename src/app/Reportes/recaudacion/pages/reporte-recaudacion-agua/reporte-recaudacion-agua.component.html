@@ -1,0 +1,9 @@
+<div class="container">
+  <h4 class="display-5 text-center mb-4">RECAUDACION CONSUMO DE AGUA</h4>
+  <app-form-seleccion (generar)="onGenerar($event)"></app-form-seleccion>
+
+  <div #pdfContainer class="row justify-content-center pdf-container"></div>
+  
+  <!-- El gráfico se genera en segundo plano y se usa en el PDF -->
+  <app-grafico [data]="chartData" [labels]="labels"></app-grafico>
+</div>

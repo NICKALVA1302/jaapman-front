@@ -1,0 +1,30 @@
+/* Estilo para submenús */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%; /* Posición hacia la derecha */
+    margin-top: -6px;
+    margin-left: 5px; /* Mueve el submenú un poco más a la derecha */
+    display: none;
+    border: none; /* Elimina el borde del submenú */
+    box-shadow: none; /* Elimina la sombra del submenú */
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+    padding: 0; /* Elimina el padding del submenú */
+}
+
+.dropdown-menu > li > a.dropdown-item {
+    padding: 8px 16px; /* Ajusta el padding interno para los items del submenú */
+    border: none; /* Elimina bordes alrededor de cada item */
+}
+
+.dropdown-menu > li > a.dropdown-item:hover {
+    background-color: #f8f9fa; /* Color de fondo al hacer hover, opcional */
+    color: #000; /* Color del texto al hacer hover */
+    border-radius: 0; /* Elimina bordes redondeados */
+}

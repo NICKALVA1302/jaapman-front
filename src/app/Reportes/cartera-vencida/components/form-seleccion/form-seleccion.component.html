@@ -3,6 +3,7 @@
   <select class="form-select form-select-sm me-2" [(ngModel)]="selectedLocalidadId">
     <option value="" disabled selected>Seleccione una localidad</option>
     <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{opcion.nombre}}</option>
+    <option value="Mantenimiento">Todos las localidades</option>
   </select>
 
   <label for="tipoServicio" class="me-2">Tipo de Servicio:</label>
@@ -12,6 +13,7 @@
     <option value="Alcantarillado">Alcantarillado</option>
     <option value="Instalación">Instalación</option>
     <option value="Mantenimiento">Mantenimiento</option>
+    <option value="Mantenimiento">Todos los servicios</option>
   </select>
 
   <label for="anio" class="me-2">Año:</label>

@@ -5,18 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AccesoModule } from '../../acceso/acceso.module';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { ViewReporteCVComponent } from './components/view-reporte-cv/view-reporte-cv.component';
 import { CarteraRoutingModule } from './cartera-routing.module';
 import { AppRoutingConsumoModule } from '../../M_Servicios/operador/consumo-agua/app-routing-consumo.module';
 import { FormSeleccionComponent } from './components/form-seleccion/form-seleccion.component';
 import { ReporteCarteraComponent } from './pages/reporte-cartera/reporte-cartera.component';
 import { TablaResultadosComponent } from './components/tabla-resultados/tabla-resultados.component';
 import { GraficoComponent } from './components/grafico/grafico.component';
+import { ReporteCarteraAnualComponent } from './pages/reporte-cartera-anual/reporte-cartera-anual.component';
+import { ReporteCarteraMensualComponent } from './pages/reporte-cartera-mensual/reporte-cartera-mensual.component';
 
 
 @NgModule({
-  declarations: [
-    ViewReporteCVComponent,
+  declarations: [ReporteCarteraAnualComponent,
+    ReporteCarteraMensualComponent,
     FormSeleccionComponent,
     ReporteCarteraComponent,
     TablaResultadosComponent,

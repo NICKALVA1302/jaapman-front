@@ -1,1 +1,21 @@
-<p>reporte-cartera-mensual works!</p>
+<div class="container">
+    <h4 class="display-5 text-center mb-4">CARTERA VENCIDA MENSUAL</h4>
+    <app-form-seleccion-mensual
+      (generar)="handleGenerate($event)">
+    </app-form-seleccion-mensual>
+
+    <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="loader">
+    <p>Generando reporte, por favor espera...</p>
+  </div>
+  
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  <div #pdfContainer class="row justify-content-center pdf-container"></div>
+  <div>
+    <!-- <app-tabla-resultados [data]="generalData"></app-tabla-resultados> -->
+    <app-grafico [data]="chartData" [labels]="labels"></app-grafico>
+    </div>
+</div>

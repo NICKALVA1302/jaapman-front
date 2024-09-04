@@ -1,0 +1,44 @@
+<div class="container d-flex justify-content-center align-items-center mb-3">
+    <label for="localidad" class="me-2">Localidad:</label>
+    <select class="form-select form-select-sm me-2" [(ngModel)]="selectedLocalidadId">
+      <option value="" disabled selected>Seleccione una localidad</option>
+      <option *ngFor="let opcion of localidades" [value]="opcion.id_localidad">{{opcion.nombre}}</option>
+      <option [value]="null">Todas las localidades</option>
+    </select>
+  
+    <label for="tipoServicio" class="me-2">Tipo de Servicio:</label>
+    <select class="form-select form-select-sm me-2" [(ngModel)]="selectedTipoServicio">
+      <option value="" disabled selected>Seleccione un servicio</option>
+      <option value="Agua">Agua</option>
+      <option value="Alcantarillado">Alcantarillado</option>
+      <option value="Instalación">Instalación</option>
+      <option value="Mantenimiento">Mantenimiento</option>
+      <option value="Todos">Todos los servicios</option>
+    </select>
+    
+    <label for="mes" class="me-2">Mes:</label>
+    <select class="form-select form-select-sm me-2" [(ngModel)]="selectedMes">
+        <option value="" disabled selected>Seleccione un mes</option>
+        <option value="Enero">Enero</option>
+        <option value="Febrero">Febrero</option>
+        <option value="Marzo">Marzo</option>
+        <option value="Abril">Abril</option>
+        <option value="Mayo">Mayo</option>
+        <option value="Junio">Junio</option>
+        <option value="Julio">Julio</option>
+        <option value="Agosto">Agosto</option>
+        <option value="Septiembre">Septiembre</option>
+        <option value="Octubre">Octubre</option>
+        <option value="Noviembre">Noviembre</option>
+        <option value="Diciembre">Diciembre</option>
+    </select>
+
+    <label for="anio" class="me-2">Año:</label>
+    <select class="form-select form-select-sm me-2" [(ngModel)]="selectedAnio">
+      <option value="" disabled selected>Seleccione un año</option>
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  
+    <button type="button" class="btn btn-primary btn-sm mr-2" (click)="onGenerar()">Generar</button>
+  </div>
+  

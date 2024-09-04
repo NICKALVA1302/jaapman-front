@@ -13,12 +13,14 @@ import { TablaResultadosComponent } from './components/tabla-resultados/tabla-re
 import { GraficoComponent } from './components/grafico/grafico.component';
 import { ReporteCarteraAnualComponent } from './pages/reporte-cartera-anual/reporte-cartera-anual.component';
 import { ReporteCarteraMensualComponent } from './pages/reporte-cartera-mensual/reporte-cartera-mensual.component';
+import { FormSeleccionMensualComponent } from './components/form-seleccion-mensual/form-seleccion-mensual.component';
 
 
 @NgModule({
   declarations: [ReporteCarteraAnualComponent,
     ReporteCarteraMensualComponent,
     FormSeleccionComponent,
+    FormSeleccionMensualComponent,
     ReporteCarteraComponent,
     TablaResultadosComponent,
     GraficoComponent

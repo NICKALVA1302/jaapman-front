@@ -1,0 +1,17 @@
+.hidden-chart {
+    display: none; /* Oculta completamente el elemento */
+    visibility: hidden; /* También puedes usar visibility: hidden si deseas que el espacio quede reservado */
+  }
+  
+
+/* reporte-cartera.component.css */
+.loader {
+  text-align: center;
+  font-size: 1.2em;
+  color: #007bff;
+  margin-top: 20px;
+}
+
+.alert-danger {
+  margin-top: 20px;
+}

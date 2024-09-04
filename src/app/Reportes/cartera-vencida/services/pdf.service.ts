@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TDocumentDefinitions, PageSize, PageOrientation } from 'pdfmake/interfaces';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { GeneralCarteraVA } from './cartera-vencida.service';
+import { CarteraMensual, GeneralCarteraVA } from './cartera-vencida.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -31,17 +31,17 @@ export class PdfService {
       }
     });
   }
+  
 
-  createTableContent(data: GeneralCarteraVA[]): any {
-    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const tableBody = [
+  createTableContent(data: CarteraMensual[]): any {
+   const tableBody = [
       ['Mes', 'Total con Descuento', 'Total sin Descuento', 'Total Facturado', 'Total por Facturar'].map(header => ({ text: header, style: 'tableHeader' })),
       ...data.map(item => [
-        monthNames[item.mes - 1], 
-        `$${item.total_con_descuento.toFixed(2)}`,
-        `$${item.total_sin_descuento.toFixed(2)}`,
-        `$${item.total_facturado.toFixed(2)}`,
-        `$${item.total_por_facturar.toFixed(2)}`
+        item.mes ? this.getMonthName(item.mes) : 'Sin Mes', // Asegúrate de que 'mes' no sea undefined
+        `$${data.reduce((sum, item) => sum + item.total_con_descuento, 0).toFixed(2)}`,
+            `$${data.reduce((sum, item) => sum + item.total_sin_descuento, 0).toFixed(2)}`,
+            `$${data.reduce((sum, item) => sum + item.total_facturado, 0).toFixed(2)}`,
+            `$${data.reduce((sum, item) => sum + item.total_por_facturar, 0).toFixed(2)}`
       ])
     ];
 
@@ -54,6 +54,35 @@ export class PdfService {
       layout: 'lightHorizontalLines'
     };
   }
+
+  createTableContentLocalidades(data: CarteraMensual[]): any {
+    const tableBody = [
+      ['Localidad', 'Mes', 'Total con Descuento', 'Total sin Descuento', 'Total Facturado', 'Total por Facturar'].map(header => ({ text: header, style: 'tableHeader' })),
+      ...data.map(item => [
+        item.localidad || 'Sin Localidad', // Asegúrate de que 'localidad' no sea undefined
+        item.mes ? this.getMonthName(item.mes) : 'Sin Mes', // Asegúrate de que 'mes' no sea undefined
+        item.total_con_descuento !== undefined ? `$${item.total_con_descuento.toFixed(2)}` : '$0.00', // Maneja undefined
+        item.total_sin_descuento !== undefined ? `$${item.total_sin_descuento.toFixed(2)}` : '$0.00', // Maneja undefined
+        item.total_facturado !== undefined ? `$${item.total_facturado.toFixed(2)}` : '$0.00', // Maneja undefined
+        item.total_por_facturar !== undefined ? `$${item.total_por_facturar.toFixed(2)}` : '$0.00' // Maneja undefined
+      ])
+    ];
+  
+    return {
+      table: {
+        headerRows: 1,
+        widths: ['*', '*', '*', '*', '*', '*'], // Añade un ancho adicional para la columna de 'Mes'
+        body: tableBody
+      },
+      layout: 'lightHorizontalLines'
+    };
+  }
+  
+  getMonthName(month: number): string {
+    const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    return monthNames[month - 1] || 'Sin Mes';
+  }
+  
 
   createPdfHeader(title: string): any {
     return {

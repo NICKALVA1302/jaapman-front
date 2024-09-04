@@ -15,6 +15,19 @@ export interface CarteraVA {
   tipo_de_servicio: string;
 }
 
+export interface CarteraMensual {
+  localidad: string;
+  anio: number;
+  mes: number;
+  fecha: Date;
+  total_con_descuento: number;
+  total_sin_descuento: number;
+  total_facturado: number;
+  total_por_facturar: number;
+  tipo_de_servicio: string;
+}
+
+
 export interface GeneralCarteraVA {
   anio: number;
   mes: number;
@@ -39,6 +52,16 @@ export class CarteraVencidaService {
     this.myApiURLCajero = 'api/cajero';
   }
 
+  obtenerCarteraMensual(tipo_servicio: string, fecha_inicio: string, fecha_fin: string, localidad: string | undefined): Observable<CarteraMensual[]> {
+    const body = {
+      tipo_servicio,
+      fecha_inicio,
+      fecha_fin,
+      localidad
+    };
+    return this.http.post<CarteraMensual[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraMensual`, body);
+  }
+  
   // Conectar el endpoint de cartera vencida anual
   obtenerCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date, localidad: number): Observable<CarteraVA[]> {
     const body = {
@@ -49,6 +72,7 @@ export class CarteraVencidaService {
     };
     return this.http.post<CarteraVA[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraVA`, body);
   }
+
 
   obtenerGeneralCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date): Observable<GeneralCarteraVA[]> {
     const body = {

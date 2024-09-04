@@ -46,8 +46,9 @@ export class ReporteCarteraComponent {
           this.generalData = data;
           this.labels = data.map(item => this.obtenerNombreMes(item.mes));
           this.chartData = data.map(item => item.total_facturado);
-          this.generarPdf(); // Genera el PDF después de obtener los datos
+          //this.generarPdf(); // Genera el PDF después de obtener los datos
           this.isLoading = false;
+          console.log(this.generalData);
         },
         error => {
           this.isLoading = false;
@@ -71,9 +72,10 @@ export class ReporteCarteraComponent {
             ...item,
             localidad: 'Todas las localidades' // Valor predeterminado para localidad
           }));
+          console.log(this.generalData);
           this.labels = data.map(item => this.obtenerNombreMes(item.mes));
           this.chartData = data.map(item => item.total_facturado);
-          this.generarPdfGeneral(); // Genera el PDF después de obtener los datos generales
+          //this.generarPdfGeneral(); // Genera el PDF después de obtener los datos generales
           this.isLoading = false;
         },
         error => {
@@ -86,7 +88,7 @@ export class ReporteCarteraComponent {
     }
   }
 
-  generarPdf(): void {
+  /* generarPdf(): void {
     const currentDate = new Date().toLocaleDateString('es-ES');
   
     if (this.generalData.length > 0) {
@@ -220,7 +222,7 @@ export class ReporteCarteraComponent {
       });
     }
   }
-
+ */
   obtenerNombreMes(mes: number): string {
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     return meses[mes - 1];

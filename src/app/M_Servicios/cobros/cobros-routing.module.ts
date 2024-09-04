@@ -13,6 +13,7 @@ import { ViewCobrosComponent } from './pages/view-cobros/view-cobros.component';
 import { ReporteCarteraComponent } from '../../Reportes/cartera-vencida/pages/reporte-cartera/reporte-cartera.component';
 import { ReporteValoresxmesComponent } from '../../Reportes/valoresxmes/pages/reporte-valoresxmes/reporte-valoresxmes.component';
 import { ReporteRecaudacionAguaComponent } from '../../Reportes/recaudacion/pages/reporte-recaudacion-agua/reporte-recaudacion-agua.component';
+import { ReporteCarteraMensualComponent } from '../../Reportes/cartera-vencida/pages/reporte-cartera-mensual/reporte-cartera-mensual.component';
 //Rutas hijas de modulo cobros
 const routes: Routes = [
   {
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'clientes-suspendidos', component: ViewReporteCSComponent },
       { path: 'listado-clientes', component: ViewReporteLcComponent },
       { path: 'reporte-cartera', component: ReporteCarteraComponent},
+      { path: 'reporte-cartera-mensual', component: ReporteCarteraMensualComponent},
       { path: 'reporte-valoresxmes', component: ReporteValoresxmesComponent },
       { path: 'recaudacion-agua', component: ReporteRecaudacionAguaComponent },
       { path: 'deudas-pueblo', component: ViewReporteDeudasComponent },

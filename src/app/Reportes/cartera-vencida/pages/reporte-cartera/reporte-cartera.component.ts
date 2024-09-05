@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { CarteraVA, CarteraVencidaService, GeneralCarteraVA } from '../../services/cartera-vencida.service';
+import { CarteraVencidaService, GeneralCarteraVA } from '../../services/cartera-vencida.service';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -16,7 +16,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class ReporteCarteraComponent {
   localidades: Localidad[] = [];
   years: number[] = [];
-  generalData: CarteraVA[] = [];
   labels: string[] = [];
   chartData: number[] = [];
   isLoading = false;
@@ -36,7 +35,7 @@ export class ReporteCarteraComponent {
   }
 
   handleGenerate(event: { localidadId: number | null, tipoServicio: string | null, anio: string | null }): void {
-    if (event.localidadId && event.tipoServicio && event.anio) {
+    /* if (event.localidadId && event.tipoServicio && event.anio) {
       this.selectedTipoServicio = event.tipoServicio;
       this.isLoading = true;
       const fechaInicio = new Date(`${event.anio}-01-01`);
@@ -57,11 +56,11 @@ export class ReporteCarteraComponent {
       );
     } else {
       alert('Por favor, complete todos los campos para generar el reporte.');
-    }
+    } */
   }
 
   handleGenerateGeneral(event: { tipoServicio: string | null, anio: string | null }): void {
-    if (event.tipoServicio && event.anio) {
+    /* if (event.tipoServicio && event.anio) {
       this.selectedTipoServicio = event.tipoServicio;
       this.isLoading = true;
       const fechaInicio = new Date(`${event.anio}-01-01`);
@@ -85,7 +84,7 @@ export class ReporteCarteraComponent {
       );
     } else {
       alert('Por favor, complete todos los campos para generar el reporte general.');
-    }
+    } */
   }
 
   /* generarPdf(): void {

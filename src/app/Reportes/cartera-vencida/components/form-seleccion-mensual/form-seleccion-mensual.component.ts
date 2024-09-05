@@ -45,6 +45,14 @@ export class FormSeleccionMensualComponent {
     // En caso de que selectedLocalidadId sea null, lo pasamos como null en el emit
     const localidadId = this.selectedLocalidadId;
     this.generar.emit({ localidadId: this.selectedLocalidadId, tipoServicio: this.selectedTipoServicio, mes: this.selectedMes, anio: this.selectedAnio });
+    this.resetForm();  // Llamar a resetForm después de generar el evento
   }
 
+  // Método para resetear el formulario después de generar el reporte
+  resetForm(): void {
+    this.selectedLocalidadId = null;
+    this.selectedTipoServicio = null;
+    this.selectedMes = null;
+    this.selectedAnio = null;
+  }
 }

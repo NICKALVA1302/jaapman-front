@@ -4,17 +4,6 @@ import { Observable } from 'rxjs';
 import { Localidad } from '../models/localidades';
 import { enviroment } from '../../../enviroments/enviroments';
 
-export interface CarteraVA {
-  localidad: string;
-  anio: number;
-  mes: number;
-  total_con_descuento: number;
-  total_sin_descuento: number;
-  total_facturado: number;
-  total_por_facturar: number;
-  tipo_de_servicio: string;
-}
-
 export interface CarteraMensual {
   localidad: string;
   anio: number;
@@ -26,7 +15,6 @@ export interface CarteraMensual {
   total_por_facturar: number;
   tipo_de_servicio: string;
 }
-
 
 export interface GeneralCarteraVA {
   anio: number;
@@ -61,18 +49,6 @@ export class CarteraVencidaService {
     };
     return this.http.post<CarteraMensual[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraMensual`, body);
   }
-  
-  // Conectar el endpoint de cartera vencida anual
-  obtenerCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date, localidad: number): Observable<CarteraVA[]> {
-    const body = {
-      tipo_servicio,
-      fecha_inicio,
-      fecha_fin,
-      localidad
-    };
-    return this.http.post<CarteraVA[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraVA`, body);
-  }
-
 
   obtenerGeneralCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date): Observable<GeneralCarteraVA[]> {
     const body = {

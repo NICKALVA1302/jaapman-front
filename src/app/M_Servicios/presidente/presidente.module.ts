@@ -43,6 +43,8 @@ import { FinAperturaComponent } from './consumo-agua/components/fin-apertura/fin
 import { ConsumoAguaPipe } from '../../pipes/filtros/presidente/consumo-agua.pipe';
 import { UserxlocalidadPipe } from '../../pipes/filtros/presidente/userxlocalidad.pipe';
 import { ConsumoAguaPresiPipe } from '../../pipes/filtros/presidente/consumo-agua-presi.pipe';
+import { InscribirClienteComponent } from './inscribir-cliente/components/inscribir-cliente/inscribir-cliente.component';
+import { ViewInscribirClienteComponent } from './inscribir-cliente/pages/view-inscribir-cliente/view-inscribir-cliente.component';
 
 
 
@@ -90,6 +92,8 @@ import { ConsumoAguaPresiPipe } from '../../pipes/filtros/presidente/consumo-agu
 
     InicioAperturaComponent,
     FinAperturaComponent,
+    InscribirClienteComponent,
+    ViewInscribirClienteComponent,
     
   ],
   imports: [

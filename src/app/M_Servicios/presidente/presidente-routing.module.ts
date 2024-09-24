@@ -35,6 +35,8 @@ import { AsignarOperadorComponent } from './consumo-agua/components/asignar-oper
 import { TomaLecturaComponent } from './consumo-agua/components/toma-lectura/toma-lectura.component';
 import { InicioAperturaComponent } from './consumo-agua/components/inicio-apertura/inicio-apertura.component';
 import { FinAperturaComponent } from './consumo-agua/components/fin-apertura/fin-apertura.component';
+import { ViewInscribirClienteComponent } from './inscribir-cliente/pages/view-inscribir-cliente/view-inscribir-cliente.component';
+import { InscribirClienteComponent } from './inscribir-cliente/components/inscribir-cliente/inscribir-cliente.component';
 
 
 
@@ -102,6 +104,12 @@ const routes: Routes = [
       {path: 'inicio-apertura', component: InicioAperturaComponent , canActivate: [AuthGuard]},
       {path: 'fin-apertura', component: FinAperturaComponent , canActivate: [AuthGuard]},
 
+    ]
+  },
+  {
+    path: '', component: ViewInscribirClienteComponent, canActivate: [AuthGuard],
+    children:[
+      {path: 'inscribir-cliente', component: InscribirClienteComponent, canActivate: [AuthGuard]},
     ]
   },
 ];

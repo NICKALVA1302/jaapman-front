@@ -30,7 +30,6 @@ export class SuspenderUsuarioComponent {
 
   ngOnInit(): void {
     this.obtenerLocalidades();
-    this.obtenerDatosPorLocalidad(1);
   }
 
   // Obtener la lista de localidades disponibles

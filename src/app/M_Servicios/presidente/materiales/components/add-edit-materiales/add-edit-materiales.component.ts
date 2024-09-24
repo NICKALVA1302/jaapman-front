@@ -47,7 +47,7 @@ export class AddEditMaterialesComponent implements OnInit {
       this.getMaterial(this.id_material);
       
     } else {
-      this.form?.get('estado')?.setValue(false);
+      this.form?.get('estado')?.setValue(true);
     }
   }
 
@@ -68,6 +68,18 @@ export class AddEditMaterialesComponent implements OnInit {
   }
 
   agregarMaterial() {
+    const stock = this.form.value.stock;
+    const precio = this.form.value.precio;
+
+    if (stock < 0) {
+      this.toastr.info('El stock no puede tener valores negativos', 'Información');
+      return;
+    }
+    
+    if (precio <= 0) {
+      this.toastr.info('El precio debe ser mayor a 0', 'Información');
+      return;
+    }
 
     const material: Material = {
       id_estado: this.form.value.estado,
@@ -75,29 +87,29 @@ export class AddEditMaterialesComponent implements OnInit {
       descripcion: this.form.value.descripcion,
       stock: this.form.value.stock,
       precio: this.form.value.precio
-    }
+    };
 
     const estadoActivo: boolean = this.form.value.estado;
 
     this.loading = true;
 
-    if(this.id_material != 0) {
-      //Editar
+    if (this.id_material != 0) {
+      // Editar
       material.id_material = this.id_material;
       this._materialService.putMaterial(this.id_material, material, estadoActivo).subscribe(() => {
-        this.toastr.info(`El Material ${material.nombre} fue actualizado con exito`, 'Material Actualizado')
+        this.toastr.info(`El Material ${material.nombre} fue actualizado con éxito`, 'Material Actualizado');
         this.loading = false;
         this.router.navigate(['/presidente/material']);
-      })
-
+      });
     } else {
-      //Agregar
+      // Agregar
       this._materialService.postMaterial(material, estadoActivo).subscribe(() => {
-        this.toastr.success(`El Material "${material.nombre}" fue registrado con exito`, 'Material Registrado')
+        this.toastr.success(`El Material "${material.nombre}" fue registrado con éxito`, 'Material Registrado');
         this.loading = false;
         this.router.navigate(['/presidente/material']);
-      })
+      });
     }
   }
+
 
 }

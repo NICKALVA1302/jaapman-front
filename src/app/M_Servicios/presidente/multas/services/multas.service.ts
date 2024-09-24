@@ -28,6 +28,11 @@ export class MultasService {
     return this.http.get<Localidad[]>(`${this.myAppUrl}${this.myApiURL}obtencion/localidadesRegister`);
   }
 
+  // Obtener el próximo número de id_multa
+  obtenerProximoIdMulta(): Observable<number> {
+    return this.http.get<number>(`${this.myAppUrl}${this.myApiUrlPresi}/proxNum`);
+  }
+
   //Metodo para obtener usuario por localidad
   getDatosPorLocalidad(id_localidad: number): Observable<any> {
     return this.http.post<DatosPorLocalidad[]>(`${this.myAppUrl}${this.myApiUrlPresi}/usuarioxlocalidad`, { id_localidad });

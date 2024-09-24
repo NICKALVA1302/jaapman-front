@@ -23,7 +23,7 @@ export class MantenimientoComponent {
   usuarioSeleccionado: DatosPorLocalidad | null = null;
   listaMateriales: any[] = [];
   listaTarifas: any[] = [];
-  materialSeleccionado: number = 0;
+  materialSeleccionado: number | null = null;
   cantidadMaterial: number | null = null;
   materialesSeleccionados: any[] = [];
   tarifaSeleccionadaId: number = 2; // Establecer la id de la tarifa predeterminada
@@ -43,7 +43,7 @@ export class MantenimientoComponent {
     await this.cargarListaTarifas();
   }
 
-    cargarListaMateriales() {
+  cargarListaMateriales() {
     this.mantenimientoService.listMateriales().subscribe((materiales) => {
       // Filtrar los materiales activos (estado = 'ACTIVO')
       this.listaMateriales = materiales.filter(material => material.id_estado === 1);
@@ -77,54 +77,94 @@ export class MantenimientoComponent {
   agregarMaterial() {
     console.log('Material Seleccionado:', this.materialSeleccionado);
     console.log('Cantidad Material:', this.cantidadMaterial);
-
+  
+    // Convertir cantidadMaterial a un número si no es null
+    const cantidadMaterial = this.cantidadMaterial ?? 0;
+  
     if (
       this.materialSeleccionado !== null &&
       this.materialSeleccionado !== undefined &&
-      this.cantidadMaterial !== null &&
-      this.cantidadMaterial >= 1  // Asegura que la cantidad no sea negativa
+      cantidadMaterial > 0  // Asegura que la cantidad sea positiva
     ) {
-      const materialExistente = this.materialesSeleccionados.find(
-        (m) => m.id_material === +this.materialSeleccionado!
-      );
-
-      if (materialExistente) {
-        // Si el material ya existe, actualiza la cantidad
-        materialExistente.cantidad += this.cantidadMaterial!;
-        materialExistente.subtotal = materialExistente.precio * materialExistente.cantidad;
-        this.toastr.info('Material actualizada en la lista', 'Actualizacion');
-
-      } else {
-        // Si el material no existe, agrégalo a la lista
-        const material = this.listaMateriales.find(
-          (m) => m.id_material === +this.materialSeleccionado!
-        );
-
-        if (material) {
-          material.subtotal = material.precio * this.cantidadMaterial!; // Calcular el subtotal
-          this.materialesSeleccionados.push({
-            id_material: material.id_material,
-            nombre: material.nombre,
-            cantidad: this.cantidadMaterial,
-            precio: material.precio,
-            subtotal: material.subtotal,
-          });
-          this.toastr.success('Material agregado a la lista', 'Éxito');
+      // Buscar el material seleccionado
+      const material = this.listaMateriales.find(m => m.id_material === +this.materialSeleccionado!);
+  
+      if (material) {
+        // Obtener la cantidad total del material en la lista de materiales seleccionados
+        const cantidadTotalActual = this.obtenerCantidadTotalDeMaterial(material.id_material);
+        // Calcular el stock restante
+        const stockRestante = material.stock - cantidadTotalActual;
+  
+        if (stockRestante <= 0) {
+          // Si el stock es cero o menor, mostrar mensaje de material agotado
+          this.toastr.warning(`Se ha agotado el stock del "${material.nombre}"`, 'Advertencia');
+          return;
+        } else if (cantidadMaterial > stockRestante) {
+          // Si la cantidad solicitada supera el stock restante, mostrar mensaje con el stock restante
+          this.toastr.warning(`No hay suficiente stock para "${material.nombre}". Stock restante: ${stockRestante}`, 'Advertencia');
+          return;
         }
+  
+        const materialExistente = this.materialesSeleccionados.find(m => m.id_material === +this.materialSeleccionado!);
+  
+        if (materialExistente) {
+          // Si el material ya existe, actualiza la cantidad y el subtotal
+          const nuevaCantidad = materialExistente.cantidad + cantidadMaterial;
+          const nuevoStockRestante = material.stock - this.obtenerCantidadTotalDeMaterial(material.id_material) + materialExistente.cantidad;
+  
+          if (nuevaCantidad > nuevoStockRestante) {
+            // Si la nueva cantidad supera el stock restante, mostrar mensaje de insuficiencia de stock
+            this.toastr.warning(`No hay suficiente stock para "${material.nombre}". Stock restante: ${nuevoStockRestante}`, 'Advertencia');
+            return;
+          }
+  
+          // Actualizar la cantidad y el subtotal
+          materialExistente.cantidad += cantidadMaterial;
+          materialExistente.subtotal = materialExistente.precio * materialExistente.cantidad;
+          this.toastr.info('Material actualizado en la lista', 'Actualización');
+        } else {
+          // Si el material no existe, agrégalo a la lista
+          if (material) {
+            const nuevoStockRestante = material.stock - this.obtenerCantidadTotalDeMaterial(material.id_material);
+  
+            if (cantidadMaterial > nuevoStockRestante) {
+              // Si la cantidad solicitada supera el stock restante, mostrar mensaje de insuficiencia de stock
+              this.toastr.warning(`No hay suficiente stock para "${material.nombre}". Stock restante: ${nuevoStockRestante}`, 'Advertencia');
+              return;
+            }
+  
+            material.subtotal = material.precio * cantidadMaterial; // Calcular el subtotal
+            this.materialesSeleccionados.push({
+              id_material: material.id_material,
+              nombre: material.nombre,
+              cantidad: cantidadMaterial,
+              precio: material.precio,
+              subtotal: material.subtotal,
+            });
+            this.toastr.success('Material agregado a la lista', 'Éxito');
+          }
+        }
+  
+        this.calcularSumaTotal(); // Recalcula la suma total
+  
+        console.log('Lista de Materiales Seleccionados:', this.materialesSeleccionados);
+  
+        // Reinicia la búsqueda del material y la cantidad
+        this.materialSeleccionado = 0;
+        this.cantidadMaterial = null;
       }
-
-      this.calcularSumaTotal(); // Recalcula la suma total
-
-      console.log('Lista de Materiales Seleccionados:', this.materialesSeleccionados);
-
-      // Reinicia la búsqueda del material y la cantidad
-      this.materialSeleccionado = 0;
-      this.cantidadMaterial = null;
-    } else if (this.cantidadMaterial !== null && this.cantidadMaterial < 1) {
+    } else if (cantidadMaterial <= 0) {
       this.toastr.error('Por favor, ingrese una cantidad válida', 'Error');
     } else {
-      this.toastr.error('Por favor, seleccione un material y ingrese una cantidad válida', 'Error');
+      this.toastr.error('Por favor, seleccione un material y una cantidad válida', 'Error');
     }
+  }
+  
+  // Método para obtener la cantidad total del material en la lista de materiales seleccionados
+  obtenerCantidadTotalDeMaterial(id_material: number): number {
+    return this.materialesSeleccionados
+      .filter(m => m.id_material === id_material)
+      .reduce((total, m) => total + m.cantidad, 0);
   }
 
   // Método para eliminar un material de la lista de materiales seleccionados
@@ -137,12 +177,30 @@ export class MantenimientoComponent {
   calcularSumaTotal() {
     console.log('aplicarTarifa:', this.aplicarTarifa);
 
-    // Verificar si se debe aplicar una tarifa
+    // Si se debe aplicar la tarifa, agregarla al listado de materiales seleccionados
     if (this.aplicarTarifa) {
       this.seleccionarTarifaDefault();
-      this.toastr.success('Tarifa agregada', 'Información');
+      // Verificar si la tarifa ya está en el listado
+      const tarifaExistente = this.materialesSeleccionados.find(m => m.nombre === 'TARIFA');
+
+      if (!tarifaExistente) {
+        // Si no está, agregarla
+        this.materialesSeleccionados.push({
+          id_material: -1, // No tiene ID de material porque es una tarifa
+          nombre: 'TARIFA',
+          cantidad: 1,
+          precio: this.tarifaValor,
+          subtotal: this.tarifaValor,
+        });
+        this.toastr.success('Tarifa agregada al listado', 'Éxito');
+      }
     } else {
-      this.toastr.info('Tarifa no agregada', 'Información');
+      // Si no se debe aplicar la tarifa, eliminarla del listado
+      const indexTarifa = this.materialesSeleccionados.findIndex(m => m.nombre === 'TARIFA');
+      if (indexTarifa !== -1) {
+        this.materialesSeleccionados.splice(indexTarifa, 1);
+        this.toastr.info('Tarifa eliminada del listado', 'Información');
+      }
     }
 
     // Calcula la suma de los subtotales de los materiales seleccionados
@@ -150,11 +208,39 @@ export class MantenimientoComponent {
       (total, material) => total + material.subtotal, 0
     );
 
-    // Suma la tarifa si aplica
-    this.sumaTotal = this.aplicarTarifa ? sumaMateriales + this.tarifaValor : sumaMateriales;
+    // Asignar la suma total
+    this.sumaTotal = sumaMateriales;
 
     console.log('Suma Total:', this.sumaTotal);
   }
+
+  // Método para manejar el cambio en el checkbox de la tarifa
+  toggleTarifa() {
+    this.calcularSumaTotal();
+  }
+
+  // // Método para calcular la suma total
+  // calcularSumaTotal() {
+  //   console.log('aplicarTarifa:', this.aplicarTarifa);
+
+  //   // Verificar si se debe aplicar una tarifa
+  //   if (this.aplicarTarifa) {
+  //     this.seleccionarTarifaDefault();
+  //     this.toastr.success('Tarifa agregada', 'Información');
+  //   } else {
+  //     this.toastr.info('Tarifa no agregada', 'Información');
+  //   }
+
+  //   // Calcula la suma de los subtotales de los materiales seleccionados
+  //   const sumaMateriales = this.materialesSeleccionados.reduce(
+  //     (total, material) => total + material.subtotal, 0
+  //   );
+
+  //   // Suma la tarifa si aplica
+  //   this.sumaTotal = this.aplicarTarifa ? sumaMateriales + this.tarifaValor : sumaMateriales;
+
+  //   console.log('Suma Total:', this.sumaTotal);
+  // }
 
 
   // SECCION DE MODAL DE BUSCAR USUARIO POR LOCALIDAD
@@ -191,55 +277,87 @@ export class MantenimientoComponent {
     document.getElementById('localidad')!.setAttribute('value', '');
     document.getElementById('direccion')!.setAttribute('value', '');
     document.getElementById('id_persona')!.setAttribute('value', '');
+
+    this.usuarioSeleccionado = null; // Restablecer el cliente seleccionado
     this.materialesSeleccionados = []; // Limpiar la lista de materiales seleccionados
+    this.materialSeleccionado = null; // Restablecer el material seleccionado
+    this.cantidadMaterial = null; // Restablecer la cantidad de material
     this.aplicarTarifa = false; // Restablecer la selección de tarifa
     this.sumaTotal = 0; // Restablecer la suma total
   }
 
 
-  // Método para guardar el mantenimiento
-  guardarMantenimiento() {
-    this.loading = true;
-
-    if (!this.usuarioSeleccionado && this.materialesSeleccionados.length === 0) {
-      this.toastr.warning('Selecciona un cliente y agrega al menos un material', 'Advertencia');
-      this.loading = false;
-      return;
-    }
-
-    if (!this.usuarioSeleccionado) {
-      this.toastr.warning('Selecciona un cliente', 'Advertencia');
-      this.loading = false;
-      return;
-    }
-
-    if (this.materialesSeleccionados.length === 0) {
-      this.toastr.warning('Agrega al menos un material', 'Advertencia');
-      this.loading = false;
-      return;
-    }
-
-    const id_usuario = this.usuarioSeleccionado.id_persona;
-    const id_tarifa = this.aplicarTarifa ? this.tarifaSeleccionadaId : null;
-    const id_estado_pago = this.id_estado_pago; // Obtén el valor de id_estado_pago
-    const materiales = this.materialesSeleccionados.map(material => ({
-      id_material: material.id_material,
-      cantidad: material.cantidad
-    }));
-
-    this.mantenimientoService.postAgregarMantenimiento(id_usuario, id_tarifa, id_estado_pago, materiales).subscribe(
-      (response) => {
-        this.toastr.success('Mantenimiento guardado correctamente', 'Éxito');
-      },
-      (error) => {
-        console.error('Error al guardar el mantenimiento:', error);
-        this.toastr.error('Error al guardar el mantenimiento', 'Error');
-      },
-      () => {
-        this.loading = false;
+  // Método para verificar el stock antes de agregar el mantenimiento
+  verificarStock(): boolean {
+    for (const materialSeleccionado of this.materialesSeleccionados) {
+      const material = this.listaMateriales.find(m => m.id_material === materialSeleccionado.id_material);
+      if (material && material.stock < materialSeleccionado.cantidad) {
+        this.toastr.warning(`No hay suficiente stock para el material: ${material.nombre}`, 'Advertencia');
+        return false; // Detener la verificación si no hay suficiente stock
       }
-    );
+    }
+    return true; // Todos los materiales tienen suficiente stock
   }
+
+
+  // Método para guardar el mantenimiento
+guardarMantenimiento() {
+  this.loading = true;
+
+  // Filtrar materiales para excluir la tarifa antes de hacer las verificaciones
+  const materialesSinTarifa = this.materialesSeleccionados.filter(material => material.id_material !== -1);
+
+  // Verificar si se ha seleccionado un cliente
+  if (!this.usuarioSeleccionado) {
+    this.toastr.warning('Selecciona un cliente', 'Advertencia');
+    this.loading = false;
+    return;
+  }
+
+  // Verificar si hay al menos un material válido (excluyendo la tarifa)
+  if (materialesSinTarifa.length === 0) {
+    this.toastr.warning('Agrega al menos un material', 'Advertencia');
+    this.loading = false;
+    return;
+  }
+
+  // Verificar stock
+  if (!this.verificarStock()) {
+    this.loading = false;
+    return; // Detener la operación si no hay suficiente stock
+  }
+
+  const id_usuario = this.usuarioSeleccionado.id_persona;
+  const id_tarifa = this.aplicarTarifa ? this.tarifaSeleccionadaId : null;
+  const id_estado_pago = this.id_estado_pago; // Obtén el valor de id_estado_pago
+
+  // Preparar los datos de materiales excluyendo la tarifa
+  const materiales = materialesSinTarifa.map(material => ({
+    id_material: material.id_material,
+    cantidad: material.cantidad
+  }));
+
+  // Verificar si hay materiales para enviar
+  if (materiales.length === 0) {
+    this.toastr.warning('Agrega al menos un material válido', 'Advertencia');
+    this.loading = false;
+    return;
+  }
+
+  this.mantenimientoService.postAgregarMantenimiento(id_usuario, id_tarifa, id_estado_pago, materiales).subscribe(
+    (response) => {
+      this.toastr.success('Mantenimiento guardado correctamente', 'Éxito');
+      this.cargarListaMateriales();
+    },
+    (error) => {
+      console.error('Error al guardar el mantenimiento:', error);
+      this.toastr.error('Error al guardar el mantenimiento', 'Error');
+    },
+    () => {
+      this.loading = false;
+    }
+  );
+}
 
   // Método para generar el PDF
   generarPdf() {
@@ -269,7 +387,7 @@ export class MantenimientoComponent {
         // Línea azul inicio
         {
           canvas: [
-            createLine(0, 5, pageWidth, '#007bff') 
+            createLine(0, 5, pageWidth, '#007bff')
           ]
         },
         { text: '\n' },
@@ -301,69 +419,69 @@ export class MantenimientoComponent {
         { text: '\n' },
         {
           columns: [
-              {
-                  width: '50%',
-                  margin: [70, 0, 0, 0],
-                  stack: [
-                      {
-                          text: [
-                              { text: 'Nombre: ', style: 'boldText' },
-                              { text: `${document.getElementById('nombre')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      {
-                          text: [
-                              { text: 'Apellido: ', style: 'boldText' },
-                              { text: `${document.getElementById('apellido')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      {
-                          text: [
-                              { text: 'Cédula: ', style: 'boldText' },
-                              { text: `${document.getElementById('cedula')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      {
-                          text: [
-                              { text: 'Dirección: ', style: 'boldText' },
-                              { text: `${document.getElementById('direccion')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      }
+            {
+              width: '50%',
+              margin: [70, 0, 0, 0],
+              stack: [
+                {
+                  text: [
+                    { text: 'Nombre: ', style: 'boldText' },
+                    { text: `${document.getElementById('nombre')!.getAttribute('value') || ''}`, style: 'normalText' }
                   ]
-              },
-              {
-                  width: '50%',
-                  margin: [70, 0, 0, 0],
-                  stack: [
-                      {
-                          text: [
-                              { text: 'Localidad: ', style: 'boldText' },
-                              { text: `${document.getElementById('localidad')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      {
-                          text: [
-                              { text: 'Código del Medidor: ', style: 'boldText' },
-                              { text: `${document.getElementById('codigo')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      {
-                          text: [
-                              { text: 'Número: ', style: 'boldText' },
-                              { text: `${document.getElementById('id_persona')!.getAttribute('value') || ''}`, style: 'normalText' }
-                          ]
-                      },
-                      { text: '\n' },
-                      { text: `Fecha: ${fechaActual}`, style: 'boldText' }
+                },
+                { text: '\n' },
+                {
+                  text: [
+                    { text: 'Apellido: ', style: 'boldText' },
+                    { text: `${document.getElementById('apellido')!.getAttribute('value') || ''}`, style: 'normalText' }
                   ]
-              }
+                },
+                { text: '\n' },
+                {
+                  text: [
+                    { text: 'Cédula: ', style: 'boldText' },
+                    { text: `${document.getElementById('cedula')!.getAttribute('value') || ''}`, style: 'normalText' }
+                  ]
+                },
+                { text: '\n' },
+                {
+                  text: [
+                    { text: 'Dirección: ', style: 'boldText' },
+                    { text: `${document.getElementById('direccion')!.getAttribute('value') || ''}`, style: 'normalText' }
+                  ]
+                }
+              ]
+            },
+            {
+              width: '50%',
+              margin: [70, 0, 0, 0],
+              stack: [
+                {
+                  text: [
+                    { text: 'Localidad: ', style: 'boldText' },
+                    { text: `${document.getElementById('localidad')!.getAttribute('value') || ''}`, style: 'normalText' }
+                  ]
+                },
+                { text: '\n' },
+                {
+                  text: [
+                    { text: 'Código del Medidor: ', style: 'boldText' },
+                    { text: `${document.getElementById('codigo')!.getAttribute('value') || ''}`, style: 'normalText' }
+                  ]
+                },
+                { text: '\n' },
+                {
+                  text: [
+                    { text: 'Número: ', style: 'boldText' },
+                    { text: `${document.getElementById('id_persona')!.getAttribute('value') || ''}`, style: 'normalText' }
+                  ]
+                },
+                { text: '\n' },
+                { text: `Fecha: ${fechaActual}`, style: 'boldText' }
+              ]
+            }
           ]
-      },
+        },
         { text: '\n' },
         { text: '\n' },
         { text: 'MATERIALES VENDIDOS', style: 'header' },
@@ -374,20 +492,20 @@ export class MantenimientoComponent {
         {
           alignment: 'right', // Alinea el contenedor a la derecha
           style: 'resumenSection',
-          
+
           columns: [
             { width: '*', text: '' }, // Columna vacía para alinear a la derecha
             {
               width: 'auto', // Ancho ajustado al contenido
               stack: [
                 { text: 'RESUMEN', style: 'tableHeader', alignment: 'center' }, // Título del resumen
-                { text: '\n'},
-                { 
+                { text: '\n' },
+                {
                   text: `TARIFA: ${this.aplicarTarifa ? '$' + tarifaValor : '$0'}`, alignment: 'right', style: 'boldText', fontSize: 13,
                   margin: [0, 0, 15, 0],
                 }, // Valor de la tarifa, si está definida; de lo contrario, muestra 0
                 { text: '\n' },
-                { text: `TOTAL: $${this.sumaTotal}`, style: 'tableHeader', alignment: 'right', fontSize: 13}, // Total
+                { text: `TOTAL: $${this.sumaTotal}`, style: 'tableHeader', alignment: 'right', fontSize: 13 }, // Total
                 { text: '\n' },
               ],
               alignment: 'right', // Alinea el bloque a la derecha
@@ -427,7 +545,7 @@ export class MantenimientoComponent {
           margin: [0, 10, 0, 10] // Margen superior e inferior
         }
       },
-      
+
       pageMargins: [40, 60, 40, 60] // Márgenes izquierdo, superior, derecho, inferior
     };
 

@@ -41,28 +41,16 @@ export class MultaComponent {
   }
 
   obtenerProximoNumeroMultaDisponible() {
-    this.multasService.obtenerListadoMultas().subscribe((multas: any[]) => {
-        console.log('Listado de multas:', multas);
-
-        // Verificar si hay elementos en el listado de multas
-        if (multas.length > 0) {
-    
-            const idMultas = multas.map(multa => multa.id_multa);
-
-            // Encontrar el máximo valor de id_multa
-            const maxIdMulta = Math.max(...idMultas);
-
-            // Calcular el próximo número de multa disponible sumándole 1 al máximo número de multa actual
-            this.id_multa = maxIdMulta + 1;
-        } else {
-            // Si el listado de multas está vacío, el próximo número de multa disponible es 1
-            this.id_multa = 1;
-        }
-
-        console.log('Próximo número de multa disponible:', this.id_multa);
-    });
-}
-
+    this.multasService.obtenerProximoIdMulta().subscribe(
+      (response: any) => {
+        this.id_multa = response.proximoId; // Extraer el valor numérico de la propiedad proximoId
+        console.log('Valor de id_multa:', this.id_multa);
+      },
+      (error) => {
+        console.error('Error al obtener el próximo número de multa:', error);
+      }
+    );
+  }
 
   autocompletarCampos() {
     if (this.usuarioSeleccionado) {

@@ -109,7 +109,7 @@ export class ReporteCarteraMensualComponent {
         this.labels = data.map(item => item.localidad);  // Localidades como etiquetas
         this.chartData = data.map(item => item.total_facturado);  // Total facturado por localidad
         this.isLoading = false;
-        this.graficoComponent.generarGrafico2();  // Genera el gráfico con los nuevos datos
+        this.graficoComponent.generarGrafico();  // Genera el gráfico con los nuevos datos
         this.generarPdfCaso2();
       },
       error => {

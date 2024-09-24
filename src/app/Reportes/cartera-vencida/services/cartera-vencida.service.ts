@@ -16,7 +16,8 @@ export interface CarteraMensual {
   tipo_de_servicio: string;
 }
 
-export interface GeneralCarteraVA {
+export interface CarteraAnual {
+  localidad: string;
   anio: number;
   mes: number;
   total_con_descuento: number;
@@ -50,13 +51,14 @@ export class CarteraVencidaService {
     return this.http.post<CarteraMensual[]>(`${this.myAppUrl}${this.myApiURLCajero}/getcarteraMensual`, body);
   }
 
-  obtenerGeneralCarteraVA(tipo_servicio: string, fecha_inicio: Date, fecha_fin: Date): Observable<GeneralCarteraVA[]> {
+  obtenerCarteraAnual(tipo_servicio: string, fecha_inicio: string, fecha_fin: string, localidad: string | undefined): Observable<CarteraAnual[]> {
     const body = {
       tipo_servicio,
       fecha_inicio,
-      fecha_fin
+      fecha_fin,
+      localidad
     };
-    return this.http.post<GeneralCarteraVA[]>(`${this.myAppUrl}${this.myApiURLCajero}/getGeneralCarteraVA`, body);
+    return this.http.post<CarteraAnual[]>(`${this.myAppUrl}${this.myApiURLCajero}/getCarteraAnual`, body);
   }
 
   // Llamada a la función obtenerLocalidades en el usuario-controlador del backend.

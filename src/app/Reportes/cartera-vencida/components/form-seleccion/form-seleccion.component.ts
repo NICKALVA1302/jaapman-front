@@ -9,13 +9,13 @@ import { CarteraVencidaService } from '../../services/cartera-vencida.service';
 export class FormSeleccionComponent implements OnInit {
   @Input() localidades: Localidad[] = [];
   @Input() years: number[] = [];
-  @Output() generar = new EventEmitter<{ localidadId: number | null, tipoServicio: string | null, anio: string | null }>();
-  @Output() generarGeneral = new EventEmitter<{ tipoServicio: string | null, anio: string | null }>();
-
+  @Output() generar = new EventEmitter<{ localidadId: number |null, tipoServicio: string |null, anio: string | null }>();
+  
   selectedLocalidadId: number | null = null;
   selectedTipoServicio: string | null = null;
   selectedAnio: string | null = null;
   startYear: number = new Date().getFullYear() - 5;
+
   
   constructor(private carteraService: CarteraVencidaService) {}
 
@@ -23,7 +23,7 @@ export class FormSeleccionComponent implements OnInit {
     this.obtenerLocalidades();
     this.generateYears();
   }
-  
+
   generateYears(): void {
     const currentYear = new Date().getFullYear();
     const maxYear = this.startYear + 10;
@@ -40,10 +40,16 @@ export class FormSeleccionComponent implements OnInit {
   }
 
   onGenerar(): void {
+    // En caso de que selectedLocalidadId sea null, lo pasamos como null en el emit
+    const localidadId = this.selectedLocalidadId;
     this.generar.emit({ localidadId: this.selectedLocalidadId, tipoServicio: this.selectedTipoServicio, anio: this.selectedAnio });
+    this.resetForm();  // Llamar a resetForm después de generar el evento
   }
 
-  onGenerarGeneral(): void {
-    this.generarGeneral.emit({ tipoServicio: this.selectedTipoServicio, anio: this.selectedAnio });
+  // Método para resetear el formulario después de generar el reporte
+  resetForm(): void {
+    this.selectedLocalidadId = null;
+    this.selectedTipoServicio = null;
+    this.selectedAnio = null;
   }
 }

@@ -10,13 +10,12 @@ import { AppRoutingConsumoModule } from '../../M_Servicios/operador/consumo-agua
 import { FormSeleccionComponent } from './components/form-seleccion/form-seleccion.component';
 import { ReporteCarteraComponent } from './pages/reporte-cartera/reporte-cartera.component';
 import { GraficoComponent } from './components/grafico/grafico.component';
-import { ReporteCarteraAnualComponent } from './pages/reporte-cartera-anual/reporte-cartera-anual.component';
 import { ReporteCarteraMensualComponent } from './pages/reporte-cartera-mensual/reporte-cartera-mensual.component';
 import { FormSeleccionMensualComponent } from './components/form-seleccion-mensual/form-seleccion-mensual.component';
 
 
 @NgModule({
-  declarations: [ReporteCarteraAnualComponent,
+  declarations: [
     ReporteCarteraMensualComponent,
     FormSeleccionComponent,
     FormSeleccionMensualComponent,

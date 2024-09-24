@@ -82,9 +82,12 @@ export class PdfService {
       { text: 'Direccion', style: 'tableHeader' },
       { text: 'Telefono', style: 'tableHeader' },
       { text: 'Email', style: 'tableHeader' },
-      { text: 'Total', style: 'tableHeader' }
+      { text: 'Total', style: 'tableHeader', alignment: 'right' }
     ];
-
+  
+    // Convierte los valores de 'total' a número antes de sumarlos
+    const totales = data.reduce((sum, item) => sum + parseFloat(item.total), 0);
+  
     const body = data.map(item => {
       const fechaObj = new Date(item.fecha);
       return [
@@ -94,22 +97,33 @@ export class PdfService {
         { text: item.direccion, style: 'tableData' },
         { text: item.telefono, style: 'tableData' },
         { text: item.correo, style: 'tableData' },
-        { text: `$${item.total}`, style: 'tableData', alignment: 'right' }
+        { text: `$${parseFloat(item.total).toFixed(2)}`, style: 'tableData', alignment: 'right' }
       ];
     });
-
+  
+    // Añadir la fila de totales al final, sin colSpan
+    body.push([
+      { text: '', style: 'tableData' },
+      { text: '', style: 'tableData' },  // Celda vacía para 'Cedula'
+      { text: '', style: 'tableData' },  // Celda vacía para 'Cliente'
+      { text: '', style: 'tableData' },  // Celda vacía para 'Direccion'
+      { text: '', style: 'tableData' },  // Celda vacía para 'Telefono'
+      { text: 'Valor Total', style: 'tableHeader' },  // Celda vacía para 'Email'
+      { text: `$${totales.toFixed(2)}`, style: 'tableHeader', alignment: 'right' }  // Total en la última columna
+    ]);
+  
     return {
-      table: { 
-        headerRows: 1, 
-        widths: ['auto', '*', '*', 'auto', 'auto', 'auto', 'auto'], 
-        body: [headers, ...body] 
+      table: {
+        headerRows: 1,
+        widths: ['auto', '*', '*', 'auto', 'auto', 'auto', 'auto'],
+        body: [headers, ...body]
       },
       layout: 'lightHorizontalLines',
-      margin: [0, 20, 0, 0] // Agrega un margen superior a la tabla
+      margin: [0, 20, 0, 0] // Margen superior para la tabla
     };
   }
-
-
+  
+  
   private createNoDataMessage(message: string): any {
     return {
       text: message,
